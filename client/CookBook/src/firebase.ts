@@ -1,14 +1,16 @@
 import firebase from 'firebase/compat/app';
 import {getAuth} from 'firebase/auth';
 
+if (import.meta.env.VITE_FIREBASE_API_KEY != 'AIzaSyA_Tm2ifeD0O0zMbWkJ9dnFEIA129kvbg0') {
+    console.log("Firebase API key is not set. Please set it in .env file")
+}
 const app = firebase.initializeApp({
-    // from .env.local file, replace the API names with the variables
-    apiKey: process.env.REACT_APP_API_KEY,
-    authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-    projectId: process.env.REACT_APP_PROJECT_ID,
-    storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-    messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-    appId: process.env.REACT_APP_APP_ID,
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_APP_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID,
 });
 
 export const auth = getAuth();
