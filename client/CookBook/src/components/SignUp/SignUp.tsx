@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {auth}  from '../../firebase';
 import { getAuth, createUserWithEmailAndPassword, UserCredential } from 'firebase/auth';
 import Paper from '@mui/material/Paper';
-
+import {useNavigate} from 'react-router-dom';
 
 const styles = {
   // styles moves everything to the top of the page, how to make the contents center?
@@ -63,7 +63,8 @@ export default function SignUp() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [checkBoxToggle, setCheckBoxToggle] = React.useState(false);
-  
+  const navigate = useNavigate();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     createUserWithEmailAndPassword(auth, email, password)
@@ -79,6 +80,10 @@ export default function SignUp() {
         } else {
           console.log("User does not want to receive updates via email")
         }
+
+        // Write code to redirect to dashboard page
+        navigate('/dashboard', { replace: true })
+
       })
       .catch((error) => {
         const errorCode = error.code;
