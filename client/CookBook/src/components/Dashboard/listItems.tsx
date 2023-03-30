@@ -10,9 +10,55 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 
-export const mainListItems = (
+interface ListItemsProps {
+  setPage: (page: string) => void;
+}
+
+export const mainListItems: React.FC<ListItemsProps> = ({ setPage }) => {
+  const handlePageChange = (page: string) => {
+    console.log("Page pressed: ", page);
+    setPage(page);
+  }
+  return (
+    <React.Fragment>
+    <ListItemButton onClick={() => handlePageChange('Dashboard')}> 
+      <ListItemIcon>
+        <DashboardIcon />
+      </ListItemIcon>
+      <ListItemText primary="Dashboard" />
+    </ListItemButton>
+    <ListItemButton onClick={() => handlePageChange('Orders')}>
+      <ListItemIcon>
+        <ShoppingCartIcon />
+      </ListItemIcon>
+      <ListItemText primary="Orders" />
+    </ListItemButton>
+    <ListItemButton onClick={() => handlePageChange('Customers')}>
+      <ListItemIcon>
+        <PeopleIcon />
+      </ListItemIcon>
+      <ListItemText primary="Customers" />
+    </ListItemButton>
+    <ListItemButton onClick={() => handlePageChange('Reports')}>
+      <ListItemIcon>
+        <BarChartIcon />
+      </ListItemIcon>
+      <ListItemText primary="Reports" />
+    </ListItemButton>
+    <ListItemButton onClick={() => handlePageChange('Integrations')}>
+      <ListItemIcon>
+        <LayersIcon />
+      </ListItemIcon>
+      <ListItemText primary="Integrations" />
+    </ListItemButton>
+  </React.Fragment>
+  )
+}
+          
+
+{/* export const mainListItems = (
   <React.Fragment>
-    <ListItemButton>
+    <ListItemButton > 
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
@@ -43,7 +89,7 @@ export const mainListItems = (
       <ListItemText primary="Integrations" />
     </ListItemButton>
   </React.Fragment>
-);
+); */}
 
 export const secondaryListItems = (
   <React.Fragment>

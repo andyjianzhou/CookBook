@@ -107,6 +107,8 @@ function Copyright(props: any) {
 
   function DashboardContent() {
     const [open, setOpen] = React.useState(true);
+    const [user, setUser] = React.useState<any>([]);
+    const [currentPage, setPage] = React.useState('Dashboard');
     const navigate = useNavigate();
     const toggleDrawer = () => {
       setOpen(!open);
@@ -177,7 +179,7 @@ function Copyright(props: any) {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {mainListItems}
+            {mainListItems({setPage})}
             <Divider sx={{ my: 1 }} />
             {secondaryListItems}
           </List>
@@ -200,6 +202,8 @@ function Copyright(props: any) {
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={8} lg={9}>
+                    {currentPage === 'Dashboard' && (
+                      // add in the file content here after
                         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                             <Typography component="h2" variant="h6" color="primary" gutterBottom>
                                 CookBook
@@ -208,7 +212,20 @@ function Copyright(props: any) {
                                 Welcome to CookBook! This is a place where you can store your favorite recipes and share them with others.
                             </Typography>
                         </Paper>
+                    )}
                     </Grid>
+                    {currentPage === 'Orders' && (
+                        <Grid item xs={12}>
+                            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                                <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                                    Recipes
+                                </Typography>
+                                <Typography component="p" variant="body1">
+                                    This is where you can view all of your recipes.
+                                </Typography>
+                            </Paper>
+                        </Grid>
+                    )}
                 </Grid>
             </Container>
           </Box>
