@@ -213,7 +213,6 @@ function Copyright(props: any) {
                             </Typography>
                         </Paper>
                     )}
-                    </Grid>
                     {currentPage === 'Orders' && (
                         <Grid item xs={12}>
                             <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
@@ -226,6 +225,7 @@ function Copyright(props: any) {
                             </Paper>
                         </Grid>
                     )}
+                    </Grid>
                 </Grid>
             </Container>
           </Box>
