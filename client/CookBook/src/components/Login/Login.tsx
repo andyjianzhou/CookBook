@@ -67,29 +67,30 @@ export default function SignUp() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        const email = user.email;
-        console.log("User: " + email, " signed up successfully")
+    // Login to firebase using signin credentials
+    // createUserWithEmailAndPassword(auth, email, password)
+    //   .then((userCredential) => {
+    //     // Signed in
+    //     const user = userCredential.user;
+    //     const email = user.email;
+    //     console.log("User: " + email, " signed up successfully")
 
-        if (checkBoxToggle) {
-          console.log("User wants to receive updates via email")
-          // store user email in database
-        } else {
-          console.log("User does not want to receive updates via email")
-        }
+    //     if (checkBoxToggle) {
+    //       console.log("User wants to receive updates via email")
+    //       // store user email in database
+    //     } else {
+    //       console.log("User does not want to receive updates via email")
+    //     }
 
-        // Write code to redirect to dashboard page
-        navigate('/dashboard', { replace: true })
+    //     // Write code to redirect to dashboard page
+    //     navigate('/dashboard', { replace: true })
 
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log("Error: " + errorMessage)
-      });  
+    //   })
+    //   .catch((error) => {
+    //     const errorCode = error.code;
+    //     const errorMessage = error.message;
+    //     console.log("Error: " + errorMessage)
+    //   });  
     }
   
   
@@ -116,7 +117,7 @@ export default function SignUp() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign up with your email address
+              Login to Your Account
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 5 }}>
               <Grid container spacing={2}>
@@ -145,21 +146,6 @@ export default function SignUp() {
                     onChange = {(e) => setPassword(e.target.value)}
                   />
                 </Grid>
-                <Grid item xs={12}>
-                  <FormControlLabel
-                    control={<Checkbox 
-                              value="allowExtraEmails"
-                              color="primary"
-                              checked = {checkBoxToggle}
-                              onChange = {(e) => {
-                                console.log(checkBoxToggle)
-                                setCheckBoxToggle(e.target.checked)
-                                }
-                              }
-                              />}
-                    label="I want to receive updates via email."
-                  />
-                </Grid>
               </Grid>
               <Button
                 type="submit"
@@ -167,12 +153,12 @@ export default function SignUp() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign Up
+                LOG IN
               </Button>
               <Grid container justifyContent="flex-end">
                 <Grid item>
-                  <Link href="/" variant="body2">
-                    Already have an account? Sign in
+                  <Link href="/SignUp" variant="body2">
+                    Don't have an account? Sign up!
                   </Link>
                 </Grid>
               </Grid>

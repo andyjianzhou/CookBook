@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -18,6 +18,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
+import {useNavigate} from 'react-router-dom';
+// firebase
+import {auth}  from '../../firebase';
+import { getAuth, createUserWithEmailAndPassword, UserCredential } from 'firebase/auth';
 // import Chart from './Chart';
 // import Deposits from './Deposits';
 // import Orders from './Orders';
@@ -100,13 +104,26 @@ function Copyright(props: any) {
     },
 }
 );
-  
+
   function DashboardContent() {
     const [open, setOpen] = React.useState(true);
+    const navigate = useNavigate();
     const toggleDrawer = () => {
       setOpen(!open);
     };
+    // Implement later after Login page is finished
+    // useEffect (() => {
+    //   // authenticate the users UID from firebase auth and store it in the state, then use that to query the database for the users data, else redirect to login page
+    //   const user = auth.currentUser;
+    //   if (user) {
+    //     console.log(user.uid);
+    //   } else {
+    //     console.log('no user');
+    //     navigate('/', { replace: true })
+    //   }
+    // }, []);
   
+    
     return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
