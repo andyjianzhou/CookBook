@@ -108,7 +108,7 @@ function Copyright(props: any) {
   function DashboardContent() {
     const [open, setOpen] = React.useState(true);
     const [user, setUser] = React.useState<any>([]);
-    const [currentPage, setPage] = React.useState('Dashboard');
+    const [currentPage, setPage] = React.useState('Feed');
     const navigate = useNavigate();
     const toggleDrawer = () => {
       setOpen(!open);
@@ -202,7 +202,7 @@ function Copyright(props: any) {
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={8} lg={9}>
-                    {currentPage === 'Dashboard' && (
+                    {currentPage === 'Feed' && (
                       // add in the file content here after
                         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                             <Typography component="h2" variant="h6" color="primary" gutterBottom>
@@ -213,14 +213,62 @@ function Copyright(props: any) {
                             </Typography>
                         </Paper>
                     )}
-                    {currentPage === 'Orders' && (
+                    {currentPage === 'Search' && (
                         <Grid item xs={12}>
                             <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                                 <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                                    Recipes
+                                    Search
                                 </Typography>
                                 <Typography component="p" variant="body1">
-                                    This is where you can view all of your recipes.
+                                    This is where you search for others
+                                </Typography>
+                            </Paper>
+                        </Grid>
+                    )}
+                     {currentPage === 'Explore' && (
+                        <Grid item xs={12}>
+                            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                                <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                                    Explore
+                                </Typography>
+                                <Typography component="p" variant="body1">
+                                    This is where you explore 
+                                </Typography>
+                            </Paper>
+                        </Grid>
+                    )}
+                     {currentPage === 'Create' && (
+                        <Grid item xs={12}>
+                            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                                <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                                    Create
+                                </Typography>
+                                <Typography component="p" variant="body1">
+                                    This is where you can create recipes to share with others
+                                </Typography>
+                            </Paper>
+                        </Grid>
+                    )}
+                     {currentPage === 'Scan' && (
+                        <Grid item xs={12}>
+                            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                                <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                                    Scan
+                                </Typography>
+                                <Typography component="p" variant="body1">
+                                    This is where you can scan for ingredients to create recipes which is stored in Kitchen
+                                </Typography>
+                            </Paper>
+                        </Grid>
+                    )}
+                     {currentPage === 'Kitchen' && (
+                        <Grid item xs={12}>
+                            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                                <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                                    Kitchen
+                                </Typography>
+                                <Typography component="p" variant="body1">
+                                    This is where you can see what ingredients you have in your kitchen and get recommended recipes
                                 </Typography>
                             </Paper>
                         </Grid>

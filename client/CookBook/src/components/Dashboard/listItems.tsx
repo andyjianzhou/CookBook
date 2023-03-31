@@ -7,8 +7,13 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PeopleIcon from '@mui/icons-material/People';
 import BarChartIcon from '@mui/icons-material/BarChart';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
+import KitchenIcon from '@mui/icons-material/Kitchen';
+import SearchIcon from '@mui/icons-material/Search';
+import HomeIcon from '@mui/icons-material/Home';
 
 interface ListItemsProps {
   setPage: (page: string) => void;
@@ -21,35 +26,42 @@ export const mainListItems: React.FC<ListItemsProps> = ({ setPage }) => {
   }
   return (
     <React.Fragment>
-    <ListItemButton onClick={() => handlePageChange('Dashboard')}> 
+    <ListItemButton onClick={() => handlePageChange('Feed')}> 
       <ListItemIcon>
-        <DashboardIcon />
+        <HomeIcon />
       </ListItemIcon>
-      <ListItemText primary="Dashboard" />
+      <ListItemText primary="Feed" />
     </ListItemButton>
-    <ListItemButton onClick={() => handlePageChange('Orders')}>
+    {/* In the future, combine search and explore together, and add a "+" symbol for Ingredients to scan */}
+    <ListItemButton onClick={() => handlePageChange('Search')}>
       <ListItemIcon>
-        <ShoppingCartIcon />
+        <SearchIcon />
       </ListItemIcon>
-      <ListItemText primary="Orders" />
+      <ListItemText primary="Search" />
     </ListItemButton>
-    <ListItemButton onClick={() => handlePageChange('Customers')}>
+    <ListItemButton onClick={() => handlePageChange('Explore')}>
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
-      <ListItemText primary="Customers" />
+      <ListItemText primary="Explore" />
     </ListItemButton>
-    <ListItemButton onClick={() => handlePageChange('Reports')}>
+    <ListItemButton onClick={() => handlePageChange('Create')}>
       <ListItemIcon>
-        <BarChartIcon />
+        <ControlPointIcon />
       </ListItemIcon>
-      <ListItemText primary="Reports" />
+      <ListItemText primary="Create" />
     </ListItemButton>
-    <ListItemButton onClick={() => handlePageChange('Integrations')}>
+    <ListItemButton onClick={() => handlePageChange('Scan')}>
       <ListItemIcon>
-        <LayersIcon />
+        <CameraAltIcon />
       </ListItemIcon>
-      <ListItemText primary="Integrations" />
+      <ListItemText primary="Scan" />
+    </ListItemButton>
+    <ListItemButton onClick={() => handlePageChange('Kitchen')}>
+      <ListItemIcon>
+        <KitchenIcon />
+      </ListItemIcon>
+      <ListItemText primary="Kitchen" />
     </ListItemButton>
   </React.Fragment>
   )
