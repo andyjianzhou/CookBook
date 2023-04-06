@@ -19,6 +19,11 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import {useNavigate} from 'react-router-dom';
+import {useTheme} from '@mui/material/styles';
+import { useMediaQuery } from '@mui/material';
+import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+
 // firebase
 import {auth}  from '../../firebase';
 import { getAuth, createUserWithEmailAndPassword, UserCredential } from 'firebase/auth';
@@ -39,32 +44,89 @@ function Copyright(props: any) {
     );
   }
   
-  const drawerWidth: number = 240;
+  const drawerWidth: number = 72;
   
   interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
+    mobileDisplay?: boolean;
   }
+  // const AppBar = styled(MuiAppBar, {
+  //   shouldForwardProp: (prop) => prop !== 'open',
+  // })<AppBarProps>(({ theme, open }) => ({
+  //   zIndex: theme.zIndex.drawer + 1,
+  //   transition: theme.transitions.create(['width', 'margin'], {
+  //     easing: theme.transitions.easing.sharp,
+  //     duration: theme.transitions.duration.leavingScreen,
+  //   }),
+  //   ...(open && {
+  //     marginLeft: drawerWidth,
+  //     width: `calc(100% - ${drawerWidth}px)`,
+  //     transition: theme.transitions.create(['width', 'margin'], {
+  //       easing: theme.transitions.easing.sharp,
+  //       duration: theme.transitions.duration.enteringScreen,
+  //     }),
+  //   }),
+  // }));
   
+  // const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+  //   ({ theme, open }) => ({
+  //     '& .MuiDrawer-paper': {
+  //       position: 'relative',
+  //       whiteSpace: 'nowrap',
+  //       width: drawerWidth,
+  //       transition: theme.transitions.create('width', {
+  //         easing: theme.transitions.easing.sharp,
+  //         duration: theme.transitions.duration.enteringScreen,
+  //       }),
+  //       boxSizing: 'border-box',
+  //       ...(!open && {
+  //         overflowX: 'hidden',
+  //         transition: theme.transitions.create('width', {
+  //           easing: theme.transitions.easing.sharp,
+  //           duration: theme.transitions.duration.leavingScreen,
+  //         }),
+  //         width: theme.spacing(7),
+  //         [theme.breakpoints.up('sm')]: {
+  //           width: theme.spacing(9),
+  //         },
+  //       }),
+  //     },
+  //   }),
+  // );
   const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
-  })<AppBarProps>(({ theme, open }) => ({
+  })<AppBarProps>(({ theme, mobileDisplay }) => ({
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    ...(open && {
-      marginLeft: drawerWidth,
-      width: `calc(100% - ${drawerWidth}px)`,
-      transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
+    ... (mobileDisplay && {
+      // fix the appbar to the top and make it invisible
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      zIndex: 1201,
+      boxShadow: 'none',
+      color: 'white',
+      // make the appbar height smaller
+      height: 64,
+      // make the content of the appbar smaller
+      minHeight: 64,
+      // remove the padding
+      padding: '0 8px',
     }),
   }));
+
+  interface DrawerProps {
+    open?: boolean;
+    mobileDisplay?: boolean;
+  }
   
-  const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-    ({ theme, open }) => ({
+  const drawerHeight: number = 60;
+  const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })<DrawerProps>(
+    ({ theme, open, mobileDisplay }) => ({
       '& .MuiDrawer-paper': {
         position: 'relative',
         whiteSpace: 'nowrap',
@@ -74,21 +136,59 @@ function Copyright(props: any) {
           duration: theme.transitions.duration.enteringScreen,
         }),
         boxSizing: 'border-box',
-        ...(!open && {
-          overflowX: 'hidden',
-          transition: theme.transitions.create('width', {
+        ...(mobileDisplay && {
+          height: drawerHeight,
+          width: '100%',
+          position: 'fixed',
+          bottom: 0,
+          borderTopLeftRadius: theme.shape.borderRadius,
+          borderTopRightRadius: theme.shape.borderRadius,
+          transition: theme.transitions.create('height', {
             easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
+            duration: theme.transitions.duration.enteringScreen,
           }),
-          width: theme.spacing(7),
+        }),
+        ...(!mobileDisplay && {
           [theme.breakpoints.up('sm')]: {
-            width: theme.spacing(9),
+            width: drawerWidth,
+            position: 'fixed',
+            height: '100%',
+            borderRight: 'none',
           },
         }),
       },
     }),
   );
   
+    // const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+    //   ({ theme }) => ({
+    //     '& .MuiDrawer-paper': {
+    //       position: 'relative',
+    //       whiteSpace: 'nowrap',
+    //       width: drawerWidth,
+    //       transition: theme.transitions.create('width', {
+    //         easing: theme.transitions.easing.sharp,
+    //         duration: theme.transitions.duration.enteringScreen,
+    //       }),
+    //       boxSizing: 'border-box',
+    //       [theme.breakpoints.down('sm')]: {
+    //         top: 'auto',
+    //         bottom: 0,
+    //         height: 'auto',
+    //         borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+    //         backgroundColor: theme.palette.background.paper,
+    //       },
+    //       [theme.breakpoints.up('sm')]: {
+    //         width: drawerWidth,
+    //         position: 'fixed',
+    //         height: '100%',
+    //         borderRight: 'none',
+    //       },
+    //     },
+    //   }),
+    // );
+
+
 
   const mdTheme = createTheme({
     palette: {
@@ -109,10 +209,14 @@ function Copyright(props: any) {
     const [open, setOpen] = React.useState(true);
     const [user, setUser] = React.useState<any>([]);
     const [currentPage, setPage] = React.useState('Feed');
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const navigate = useNavigate();
     const toggleDrawer = () => {
       setOpen(!open);
     };
+
+    console.log(isMobile);
     // Implement later after Login page is finished
     // useEffect (() => {
     //   // authenticate the users UID from firebase auth and store it in the state, then use that to query the database for the users data, else redirect to login page
@@ -121,6 +225,7 @@ function Copyright(props: any) {
     //     console.log(user.uid);
     //   } else {
     //     console.log('no user');
+    // redirect to login page
     //     navigate('/', { replace: true })
     //   }
     // }, []);
@@ -128,15 +233,15 @@ function Copyright(props: any) {
     
     return (
     <ThemeProvider theme={mdTheme}>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex', flexDirection: isMobile ? 'column-reverse' : 'row' }}>
         <CssBaseline />
-        <AppBar position="absolute" open={open}>
+        <AppBar position="absolute" mobileDisplay={isMobile}>
           <Toolbar
             sx={{
                 pr: '24px', // keep right padding when drawer closed
             }}
           >
-            <IconButton
+            {/* <IconButton
               edge="start"
               color="inherit"
               aria-label="open drawer"
@@ -147,7 +252,7 @@ function Copyright(props: any) {
               }}
             >
               <MenuIcon />
-            </IconButton>
+            </IconButton> */}
             <Typography
               component="h1"
               variant="h6"
@@ -164,7 +269,15 @@ function Copyright(props: any) {
             </IconButton>
           </Toolbar>
         </AppBar>
-        <Drawer variant="permanent" open={open}>
+        {isMobile ? (
+          // Mobile drawer to be at the bottom of the screen
+          <BottomNavigation sx={{ width: '100%', position: 'fixed', bottom: 0, borderTop: 1, borderColor: 'divider' }}>
+            {mainListItems({setPage})}
+          </BottomNavigation>
+        ) : (
+          // Desktop drawer to be on the left side of the screen
+          
+        <Drawer variant="permanent">
           <Toolbar
             sx={{
               display: 'flex',
@@ -173,9 +286,9 @@ function Copyright(props: any) {
               px: [1],
             }}
           >
-            <IconButton onClick={toggleDrawer}>
+            {/* <IconButton onClick={toggleDrawer}>
               <ChevronLeftIcon />
-            </IconButton>
+            </IconButton> */}
           </Toolbar>
           <Divider />
           <List component="nav">
@@ -184,6 +297,7 @@ function Copyright(props: any) {
             {secondaryListItems}
           </List>
         </Drawer>
+        )}
         <Box
           component="main"
           sx={{
@@ -195,7 +309,8 @@ function Copyright(props: any) {
             height: '100vh',
             width : '100%',
             overflow: 'auto',
-            
+            // center the content by shifting the content to the right for the width of the drawer
+            marginLeft: isMobile ? 0 : `${drawerWidth}px`,
           }}
         >
         <Toolbar />

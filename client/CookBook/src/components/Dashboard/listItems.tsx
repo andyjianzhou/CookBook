@@ -30,38 +30,38 @@ export const mainListItems: React.FC<ListItemsProps> = ({ setPage }) => {
       <ListItemIcon>
         <HomeIcon />
       </ListItemIcon>
-      <ListItemText primary="Feed" />
+      {/* <ListItemText primary="Feed" /> */}
     </ListItemButton>
     {/* In the future, combine search and explore together, and add a "+" symbol for Ingredients to scan */}
     <ListItemButton onClick={() => handlePageChange('Search')}>
       <ListItemIcon>
         <SearchIcon />
       </ListItemIcon>
-      <ListItemText primary="Search" />
+      {/* <ListItemText primary="Search" /> */}
     </ListItemButton>
     <ListItemButton onClick={() => handlePageChange('Explore')}>
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
-      <ListItemText primary="Explore" />
+      {/* <ListItemText primary="Explore" /> */}
     </ListItemButton>
     <ListItemButton onClick={() => handlePageChange('Create')}>
       <ListItemIcon>
         <ControlPointIcon />
       </ListItemIcon>
-      <ListItemText primary="Create" />
+      {/* <ListItemText primary="Create" /> */}
     </ListItemButton>
     <ListItemButton onClick={() => handlePageChange('Scan')}>
       <ListItemIcon>
         <CameraAltIcon />
       </ListItemIcon>
-      <ListItemText primary="Scan" />
+      {/* <ListItemText primary="Scan" /> */}
     </ListItemButton>
     <ListItemButton onClick={() => handlePageChange('Kitchen')}>
       <ListItemIcon>
         <KitchenIcon />
       </ListItemIcon>
-      <ListItemText primary="Kitchen" />
+      {/* <ListItemText primary="Kitchen" /> */}
     </ListItemButton>
   </React.Fragment>
   )
@@ -105,26 +105,26 @@ export const mainListItems: React.FC<ListItemsProps> = ({ setPage }) => {
 
 export const secondaryListItems = (
   <React.Fragment>
-    <ListSubheader component="div" inset>
+    {/* <ListSubheader component="div" inset>
       Saved reports
-    </ListSubheader>
+    </ListSubheader> */}
     <ListItemButton>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Current month" />
+      {/* <ListItemText primary="Current month" /> */}
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Last quarter" />
+      {/* <ListItemText primary="Last quarter" /> */}
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Year-end sale" />
+      {/* <ListItemText primary="Year-end sale" /> */}
     </ListItemButton>
   </React.Fragment>
 );
