@@ -160,36 +160,6 @@ function Copyright(props: any) {
     }),
   );
   
-    // const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-    //   ({ theme }) => ({
-    //     '& .MuiDrawer-paper': {
-    //       position: 'relative',
-    //       whiteSpace: 'nowrap',
-    //       width: drawerWidth,
-    //       transition: theme.transitions.create('width', {
-    //         easing: theme.transitions.easing.sharp,
-    //         duration: theme.transitions.duration.enteringScreen,
-    //       }),
-    //       boxSizing: 'border-box',
-    //       [theme.breakpoints.down('sm')]: {
-    //         top: 'auto',
-    //         bottom: 0,
-    //         height: 'auto',
-    //         borderTop: '1px solid rgba(0, 0, 0, 0.12)',
-    //         backgroundColor: theme.palette.background.paper,
-    //       },
-    //       [theme.breakpoints.up('sm')]: {
-    //         width: drawerWidth,
-    //         position: 'fixed',
-    //         height: '100%',
-    //         borderRight: 'none',
-    //       },
-    //     },
-    //   }),
-    // );
-
-
-
   const mdTheme = createTheme({
     palette: {
       primary: {
