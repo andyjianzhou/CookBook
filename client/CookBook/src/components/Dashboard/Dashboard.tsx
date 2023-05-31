@@ -44,8 +44,6 @@ function Copyright(props: any) {
     );
   }
   
-  const drawerWidth: number = 72;
-  
   interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
     mobileDisplay?: boolean;
@@ -124,7 +122,8 @@ function Copyright(props: any) {
     mobileDisplay?: boolean;
   }
   
-  const drawerHeight: number = 60;
+  const drawerHeight: number = 60; 
+  const drawerWidth: number = 72;
   const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })<DrawerProps>(
     ({ theme, open, mobileDisplay }) => ({
       '& .MuiDrawer-paper': {
@@ -246,7 +245,6 @@ function Copyright(props: any) {
           </BottomNavigation>
         ) : (
           // Desktop drawer to be on the left side of the screen
-          
         <Drawer variant="permanent">
           <Toolbar
             sx={{
