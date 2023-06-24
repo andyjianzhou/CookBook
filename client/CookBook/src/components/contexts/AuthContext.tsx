@@ -1,27 +1,74 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import firebase from "firebase/app";
 import {auth}  from '../../firebase';
+import { User as FirebaseUser , getAuth, createUserWithEmailAndPassword, UserCredential, User } from 'firebase/auth';
+import {useNavigate} from 'react-router-dom';
 
-const AuthContext = React.createContext();
+interface IAuthContextProps {
+  currentUser: FirebaseUser | null | undefined;
+  signUp: (email: string, password: string, checkBoxToggle: boolean) => void;
+}
+
+const AuthContext = React.createContext<IAuthContextProps>({
+  currentUser: null,
+  signUp: () => {},
+});
 
 export function useAuth() {
   return useContext(AuthContext);
 }
 
-export function AuthProvider({children}) {
-  const [currentUser, setCurrentUser] = useState();
+export function AuthProvider({children}: {children: React.ReactNode}) {
+  const [currentUser, setCurrentUser] = useState<IAuthContextProps | null> ({
+    currentUser: null,
+    signUp: () => {},
+  })
   const [loading, setLoading] = useState(true);
-  const value = {
-    currentUser
-  }
+  
+  function signUp(email: string, password: string, checkBoxToggle: boolean) {
+    createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          const email = user.email;
+          console.log("User: " + email, " signed up successfully")
+          
+          // Write code to redirect to dashboard page
+          
+          if (checkBoxToggle) {
+            console.log("User wants to receive updates via email")
+            // store user email in database
+          } else {
+            console.log("User does not want to receive updates via email")
+          }
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log("Error: " + errorMessage)
+        });
+  }  
 
-  auth.onAuthStateChanged((user) => {
-    setCurrentUser(user);
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+    setCurrentUser({  
+      currentUser: user,
+      signUp: signUp 
+      });
     setLoading(false);
-  });
+    });
+    return unsubscribe;
+  }, []);
+  
+  const value = {
+    currentUser: currentUser?.currentUser,
+    signUp
+  };
 
   return (
-    <AuthContext.Provider value={children}/>
+    <AuthContext.Provider value={value}>
+      {!loading && children}
+    </AuthContext.Provider>
   )
 
 }

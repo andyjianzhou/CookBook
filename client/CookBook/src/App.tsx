@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import SignUp from './components/SignUp/SignUp'
 import Dashboard from './components/Dashboard/Dashboard'
 import Login from './components/Login/Login'
+import { AuthProvider } from './components/contexts/AuthContext';
 // add all routers here
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return(
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }
 export default App

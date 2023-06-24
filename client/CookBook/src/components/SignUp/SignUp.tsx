@@ -16,6 +16,7 @@ import {auth}  from '../../firebase';
 import { getAuth, createUserWithEmailAndPassword, UserCredential } from 'firebase/auth';
 import Paper from '@mui/material/Paper';
 import {useNavigate} from 'react-router-dom';
+import {useAuth} from '../contexts/AuthContext';
 
 const styles = {
   // styles moves everything to the top of the page, how to make the contents center?
@@ -64,33 +65,21 @@ export default function SignUp() {
   const [password, setPassword] = React.useState('');
   const [checkBoxToggle, setCheckBoxToggle] = React.useState(false);
   const navigate = useNavigate();
+  const {signUp} = useAuth();
 
+  // if already logged in...
+  if (auth.currentUser) {
+    navigate('/dashboard', { replace: true })
+  }
+  
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        const email = user.email;
-        console.log("User: " + email, " signed up successfully")
 
-        if (checkBoxToggle) {
-          console.log("User wants to receive updates via email")
-          // store user email in database
-        } else {
-          console.log("User does not want to receive updates via email")
-        }
-
-        // Write code to redirect to dashboard page
-        navigate('/dashboard', { replace: true })
-
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log("Error: " + errorMessage)
-      });  
+    if (signUp) {
+      signUp(email, password, checkBoxToggle);
+      navigate('/dashboard', { replace: true })
     }
+  }
   
   
 
@@ -118,7 +107,7 @@ export default function SignUp() {
             <Typography component="h1" variant="h5">
               Sign up with your email address
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 5 }}>
+            <Box component="form" onSubmit={handleSubmit} sx={{ mt: 5 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
