@@ -17,7 +17,7 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { mainListItems, secondaryListItems } from './ListItems';
+import { mainListItems, secondaryListItems } from './listItems';
 import {useNavigate} from 'react-router-dom';
 import {useTheme} from '@mui/material/styles';
 import { useMediaQuery } from '@mui/material';
