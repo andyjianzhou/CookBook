@@ -23,6 +23,7 @@ import {useTheme} from '@mui/material/styles';
 import { useMediaQuery } from '@mui/material';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import { useAuth } from '../contexts/AuthContext';
 
 // firebase
 import {auth}  from '../../firebase';
@@ -177,7 +178,7 @@ function Copyright(props: any) {
 
   function DashboardContent() {
     const [open, setOpen] = React.useState(true);
-    const [user, setUser] = React.useState<any>([]);
+    const {currentUser} = useAuth();
     const [currentPage, setPage] = React.useState('Feed');
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -186,19 +187,18 @@ function Copyright(props: any) {
       setOpen(!open);
     };
 
-    console.log(isMobile);
     // Implement later after Login page is finished
-    // useEffect (() => {
-    //   // authenticate the users UID from firebase auth and store it in the state, then use that to query the database for the users data, else redirect to login page
-    //   const user = auth.currentUser;
-    //   if (user) {
-    //     console.log(user.uid);
-    //   } else {
-    //     console.log('no user');
-    // redirect to login page
-    //     navigate('/', { replace: true })
-    //   }
-    // }, []);
+    useEffect (() => {
+      // authenticate the users UID from firebase auth and store it in the state, then use that to query the database for the users data, else redirect to login page
+      
+      if (currentUser) {
+        console.log(currentUser.uid);
+      } else {
+        console.log('no user');
+      // redirect to login page
+        navigate('/', { replace: true })
+      }
+    }, []);
   
     
     return (
