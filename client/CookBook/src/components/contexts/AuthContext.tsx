@@ -47,6 +47,11 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
           const errorMessage = error.message;
           console.log("Error: " + errorMessage)
         });
+        if (checkBoxToggle) {
+          console.log("User wants to receive updates via email")
+          // store user email in database
+          // create a email service in the future using django mail service
+        }
   }  
 
   useEffect(() => {

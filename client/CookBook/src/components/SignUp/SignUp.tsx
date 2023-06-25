@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useEffect, useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -60,18 +60,23 @@ const theme = createTheme({
 }
 );
 
+
 export default function SignUp() {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [checkBoxToggle, setCheckBoxToggle] = React.useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [checkBoxToggle, setCheckBoxToggle] = useState(false);
   const navigate = useNavigate();
   const {signUp} = useAuth();
 
-  // if already logged in...
-  if (auth.currentUser) {
-    navigate('/dashboard', { replace: true })
-  }
-  
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        navigate('/dashboard', { replace: true })
+      }
+    })
+    return unsubscribe;
+  });
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
