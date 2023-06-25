@@ -17,7 +17,7 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
+import { mainListItems, secondaryListItems } from './ListItems';
 import {useNavigate} from 'react-router-dom';
 import {useTheme} from '@mui/material/styles';
 import { useMediaQuery } from '@mui/material';
@@ -27,6 +27,7 @@ import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 // firebase
 import {auth}  from '../../firebase';
 import { getAuth, createUserWithEmailAndPassword, UserCredential } from 'firebase/auth';
+import { mainMobileListItems } from './Mobile/ListItemsMobile';
 // import Chart from './Chart';
 // import Deposits from './Deposits';
 // import Orders from './Orders';
@@ -240,8 +241,9 @@ function Copyright(props: any) {
         </AppBar>
         {isMobile ? (
           // Mobile drawer to be at the bottom of the screen
+          // TODO: There are errors with this, I fixed it but there's a black border around each button
           <BottomNavigation sx={{ width: '100%', position: 'fixed', bottom: 0, borderTop: 1, borderColor: 'divider' }}>
-            {mainListItems({setPage})}
+            {mainListItems({setPage, isMobile})}
           </BottomNavigation>
         ) : (
           // Desktop drawer to be on the left side of the screen
@@ -260,7 +262,7 @@ function Copyright(props: any) {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {mainListItems({setPage})}
+            {mainListItems({setPage, isMobile})}
             <Divider sx={{ my: 1 }} />
             {secondaryListItems}
           </List>

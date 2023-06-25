@@ -17,57 +17,49 @@ import HomeIcon from '@mui/icons-material/Home';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import { BottomNavigation } from '@mui/material';
 
-interface ListItemsProps {
-  setPage: (page: string) => void;
-  isMobile: boolean;
-}
+export const mainMobileListItems = () => {
+  const mobileNavItems = [
+    {
+      label: "Feed",
+      value: "Feed",
+      icon: <HomeIcon />,
+    },
+    {
+      label: "Search",
+      value: "Search",
+      icon: <SearchIcon />,
+    },
+    {
+      label: "Explore",
+      value: "Explore",
+      icon: <PeopleIcon />,
+    },
+    {
+        label: "Create",
+        value: "Create",
+        icon: <ControlPointIcon />,
+    },
+    {
+        label: "Scan",
+        value: "Scan",
+        icon: <CameraAltIcon />,
+    },
+    {
+        label: "Kitchen",
+        value: "Kitchen",
+        icon: <KitchenIcon />,
+    }
+  ];
 
-export const mainListItems: React.FC<ListItemsProps> = ({ setPage, isMobile }) => {
-  const handlePageChange = (page: string) => {
-    console.log("Page pressed: ", page);
-    setPage(page);
-  }
-  
   return (
-    <React.Fragment>
-      <ListItemButton onClick={() => handlePageChange('Feed')}> 
-      <ListItemIcon>
-        <HomeIcon />
-      </ListItemIcon>
-      {/* <ListItemText primary="Feed" /> */}
-      </ListItemButton>
-      {/* In the future, combine search and explore together, and add a "+" symbol for Ingredients to scan */}
-      <ListItemButton onClick={() => handlePageChange('Search')}>
-        <ListItemIcon>
-          <SearchIcon />
-        </ListItemIcon>
-        {/* <ListItemText primary="Search" /> */}
-      </ListItemButton>
-      <ListItemButton onClick={() => handlePageChange('Explore')}>
-        <ListItemIcon>
-          <PeopleIcon />
-        </ListItemIcon>
-        {/* <ListItemText primary="Explore" /> */}
-      </ListItemButton>
-      <ListItemButton onClick={() => handlePageChange('Create')}>
-        <ListItemIcon>
-          <ControlPointIcon />
-        </ListItemIcon>
-        {/* <ListItemText primary="Create" /> */}
-      </ListItemButton>
-      <ListItemButton onClick={() => handlePageChange('Scan')}>
-        <ListItemIcon>
-          <CameraAltIcon />
-        </ListItemIcon>
-        {/* <ListItemText primary="Scan" /> */}
-      </ListItemButton>
-      <ListItemButton onClick={() => handlePageChange('Kitchen')}>
-        <ListItemIcon>
-          <KitchenIcon />
-        </ListItemIcon>
-        {/* <ListItemText primary="Kitchen" /> */}
-      </ListItemButton>
-    </React.Fragment>
+    mobileNavItems.map((item) => (
+        <BottomNavigationAction
+            key={item.value}
+            label={item.label}
+            value={item.value}
+            icon={item.icon}
+        />
+        ))
   );
 }
           

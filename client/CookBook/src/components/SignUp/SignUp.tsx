@@ -146,7 +146,6 @@ export default function SignUp() {
                               color="primary"
                               checked = {checkBoxToggle}
                               onChange = {(e) => {
-                                console.log(checkBoxToggle)
                                 setCheckBoxToggle(e.target.checked)
                                 }
                               }
