@@ -1,17 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
 import firebase from "firebase/app";
 import {auth}  from '../../firebase';
-import { User as FirebaseUser , getAuth, createUserWithEmailAndPassword, UserCredential, User } from 'firebase/auth';
+import { User as FirebaseUser, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import {useNavigate} from 'react-router-dom';
 
 interface IAuthContextProps {
   currentUser: FirebaseUser | null | undefined;
-  signUp: (email: string, password: string, checkBoxToggle: boolean) => void;
+  signUp: (email: string, password: string, checkBoxToggle: boolean, displayName: string) => void;
+  login: (email: string, password: string) => void;
+  logOut: () => void;
 }
 
 const AuthContext = React.createContext<IAuthContextProps>({
   currentUser: null,
   signUp: () => {},
+  login:() => {},
+  logOut: () => {}
 });
 
 export function useAuth() {
@@ -22,22 +26,49 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
   const [currentUser, setCurrentUser] = useState<IAuthContextProps | null> ({
     currentUser: null,
     signUp: () => {},
+    login: () => {},
+    logOut: () => {}
   })
   const [loading, setLoading] = useState(true);
   
-  function signUp(email: string, password: string, checkBoxToggle: boolean) {
+  function login(email: string, password: string) {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        const email = user.email;
+        console.log("User: " + email, " signed in successfully")
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log("Error: " + errorMessage + " Error Code: " + errorCode)
+      });
+  }
+
+  function signUp(email: string, password: string, checkBoxToggle: boolean, displayName: string) {
     createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
           const email = user.email;
-          console.log("User: " + email, " signed up successfully")
           
-          // Write code to redirect to dashboard page
+          // Update the user's display name
+          updateProfile(user, {
+            displayName: displayName
+          }).then(() => {
+            console.log("User display name updated successfully.");
+            // Continue with other logic or redirect the user
+          }).catch((error) => {
+            console.error("Error updating user display name:", error);
+          });
+
+          console.log("User: " + email, " signed up successfully with username: " + displayName)
           
           if (checkBoxToggle) {
             console.log("User wants to receive updates via email")
-            // store user email in database
+            // TODO: store user email in postgresql database and the users id + preferences
+
           } else {
             console.log("User does not want to receive updates via email")
           }
@@ -45,7 +76,7 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          console.log("Error: " + errorMessage)
+          console.log("Error: " + errorMessage + " Error Code: " + errorCode)
         });
         if (checkBoxToggle) {
           console.log("User wants to receive updates via email")
@@ -54,11 +85,17 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
         }
   }  
 
+  function logOut() {
+    return auth.signOut();
+  }
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
     setCurrentUser({  
       currentUser: user,
-      signUp: signUp 
+      signUp: signUp,
+      login: login,
+      logOut: logOut
       });
     setLoading(false);
     });
@@ -67,7 +104,9 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
   
   const value = {
     currentUser: currentUser?.currentUser,
-    signUp
+    signUp,
+    login,
+    logOut
   };
 
   return (

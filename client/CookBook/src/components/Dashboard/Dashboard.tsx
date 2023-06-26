@@ -14,21 +14,19 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import {useNavigate} from 'react-router-dom';
 import {useTheme} from '@mui/material/styles';
 import { useMediaQuery } from '@mui/material';
 import BottomNavigation from '@mui/material/BottomNavigation';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import { useAuth } from '../contexts/AuthContext';
+import ProfileDropDownMenu from '../Profile/ProfileDropDownMenu';
 
-// firebase
-import {auth}  from '../../firebase';
-import { getAuth, createUserWithEmailAndPassword, UserCredential } from 'firebase/auth';
+// mobile only imports
 import { mainMobileListItems } from './Mobile/ListItemsMobile';
+
+// page render imports
 // import Chart from './Chart';
 // import Deposits from './Deposits';
 // import Orders from './Orders';
@@ -187,20 +185,8 @@ function Copyright(props: any) {
       setOpen(!open);
     };
 
-    // Implement later after Login page is finished
-    useEffect (() => {
-      // authenticate the users UID from firebase auth and store it in the state, then use that to query the database for the users data, else redirect to login page
-      
-      if (currentUser) {
-        console.log(currentUser.uid);
-      } else {
-        console.log('no user');
-      // redirect to login page
-        navigate('/', { replace: true })
-      }
-    }, []);
-  
-    
+    // wait for user to be loaded for 500ms
+    // if user is not loaded, redirect to login page
     return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex', flexDirection: isMobile ? 'column-reverse' : 'row' }}>
@@ -230,8 +216,9 @@ function Copyright(props: any) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              Dashboard 
             </Typography>
+            <ProfileDropDownMenu profile={currentUser?.displayName}/>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <NotificationsIcon />

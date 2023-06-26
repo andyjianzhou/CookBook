@@ -63,6 +63,7 @@ const theme = createTheme({
 
 export default function SignUp() {
   const [email, setEmail] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [password, setPassword] = useState('');
   const [checkBoxToggle, setCheckBoxToggle] = useState(false);
   const navigate = useNavigate();
@@ -77,16 +78,14 @@ export default function SignUp() {
     return unsubscribe;
   });
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (signUp) {
-      signUp(email, password, checkBoxToggle);
+      await signUp(email, password, checkBoxToggle, displayName);
       navigate('/dashboard', { replace: true })
     }
   }
-  
-  
 
   return (
     <>
@@ -139,6 +138,20 @@ export default function SignUp() {
                     onChange = {(e) => setPassword(e.target.value)}
                   />
                 </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="displayName"
+                    label="Username"
+                    type="displayName"
+                    id="displayName"
+                    autoComplete="new-displayName"
+                    value = {displayName}
+                    onChange = {(e) => setDisplayName(e.target.value)}
+                  />
+                </Grid>
+                
                 <Grid item xs={12}>
                   <FormControlLabel
                     control={<Checkbox 

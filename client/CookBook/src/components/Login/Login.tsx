@@ -16,6 +16,8 @@ import {auth}  from '../../firebase';
 import { getAuth, createUserWithEmailAndPassword, UserCredential } from 'firebase/auth';
 import Paper from '@mui/material/Paper';
 import {useNavigate} from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 
 const styles = {
   // styles moves everything to the top of the page, how to make the contents center?
@@ -59,42 +61,26 @@ const theme = createTheme({
 }
 );
 
-export default function SignUp() {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [checkBoxToggle, setCheckBoxToggle] = React.useState(false);
+export default function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [checkBoxToggle, setCheckBoxToggle] = useState(false);
   const navigate = useNavigate();
+  const {login, currentUser} = useAuth();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // Login to firebase using signin credentials
-    // createUserWithEmailAndPassword(auth, email, password)
-    //   .then((userCredential) => {
-    //     // Signed in
-    //     const user = userCredential.user;
-    //     const email = user.email;
-    //     console.log("User: " + email, " signed up successfully")
-
-    //     if (checkBoxToggle) {
-    //       console.log("User wants to receive updates via email")
-    //       // store user email in database
-    //     } else {
-    //       console.log("User does not want to receive updates via email")
-    //     }
-
-    //     // Write code to redirect to dashboard page
-    //     navigate('/dashboard', { replace: true })
-
-    //   })
-    //   .catch((error) => {
-    //     const errorCode = error.code;
-    //     const errorMessage = error.message;
-    //     console.log("Error: " + errorMessage)
-    //   });  
+  useEffect(() => {
+    if (currentUser) {
+      navigate('/dashboard', { replace: true })
     }
-  
-  
+  });
 
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    await login(email, password);
+    console.log("Login successful")
+    navigate('/dashboard', { replace: true })
+    }
+ 
   return (
     <>
       {/*Fill paper to the entire screen dynamically with MUI  */}
