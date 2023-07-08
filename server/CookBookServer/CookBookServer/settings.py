@@ -75,10 +75,15 @@ WSGI_APPLICATION = 'CookBookServer.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'CookBook',
+        'USER': 'my_database_user', # Make this a secret environment variable
+        'PASSWORD': 'my_database_password', # Make this a secret environment variable
+        'HOST': 'localhost', # Or an IP Address that your DB is hosted on
+        'PORT': '', # Make this a secret environment variable
     }
 }
+
 
 
 # Password validation
