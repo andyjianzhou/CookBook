@@ -13,3 +13,7 @@ class Post(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
     author = models.ForeignKey('UserProfile', related_name='posts', on_delete=models.CASCADE)
+    likes = models.ManyToManyField('UserProfile', related_name='liked_posts')
+    shared = models.ManyToManyField('UserProfile', related_name='shared_posts')
+    saved = models.ManyToManyField('UserProfile', related_name='saved_posts')
+
