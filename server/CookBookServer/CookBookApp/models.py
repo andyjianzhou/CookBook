@@ -2,7 +2,6 @@ from django.db import models
 import uuid
 
 class UserProfile(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     firebase_uid = models.CharField(max_length=255, primary_key=True)
     username = models.CharField(max_length=255)
     email = models.CharField(max_length=255)

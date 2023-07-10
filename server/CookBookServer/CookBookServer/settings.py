@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from .Env import env
+
+env = env()
+
+SECRET_KEY = env("SECRET_KEY")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -75,12 +80,12 @@ WSGI_APPLICATION = 'CookBookServer.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'CookBook',
-        'USER': 'my_database_user', # Make this a secret environment variable
-        'PASSWORD': 'my_database_password', # Make this a secret environment variable
-        'HOST': 'localhost', # Or an IP Address that your DB is hosted on
-        'PORT': '', # Make this a secret environment variable
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env("DB_NAME"),
+        'USER': env("DB_USER"),
+        'PASSWORD': env("DB_PASSWORD"),
+        'HOST': env("DB_HOST"),
+        'PORT': env("DB_PORT"),
     }
 }
 
