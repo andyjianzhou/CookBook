@@ -16,3 +16,12 @@ class Post(models.Model):
     shared = models.ManyToManyField('UserProfile', related_name='shared_posts')
     saved = models.ManyToManyField('UserProfile', related_name='saved_posts')
 
+class Comment(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    content = models.TextField()
+    author = models.ForeignKey('UserProfile', related_name='comments', on_delete=models.CASCADE)
+    post = models.ForeignKey('Post', related_name='comments', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
