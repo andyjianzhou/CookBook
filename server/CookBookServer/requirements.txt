@@ -1,0 +1,7 @@
+opencv-python
+numpy
+Pillow
+matplotlib
+tqdm
+django-environ
+django-cors-headers
