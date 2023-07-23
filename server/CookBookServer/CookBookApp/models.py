@@ -2,10 +2,19 @@ from django.db import models
 import uuid
 
 class UserProfile(models.Model):
+    """
+    UserProfile Model
+    Relations:
+    - Has many Posts (related_name='posts')
+    - Has many Comments (related_name='comments')
+    - Has many Likes (related_name='likes')
+    - Has many Saves (related_name='saves')
+    - Has many Follows (related_name='follows')
+    """
     firebase_uid = models.CharField(max_length=255, primary_key=True)
     username = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
-
+        
 class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=200)
@@ -57,10 +66,9 @@ class Tag(models.Model):
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=200)
-    post = models.ForeignKey('Post', related_name='ingredients', on_delete=models.CASCADE)
 
 class Recipe(models.Model):
-    post = models.OneToOneField('Post', on_delete=models.CASCADE, primary_key=True)
+    post = models.ForeignKey('Post', related_name='recipes', on_delete=models.CASCADE)
 
 class Instruction(models.Model):
     step_number = models.IntegerField()
@@ -75,11 +83,12 @@ class Video(models.Model):
     post = models.ForeignKey('Post', related_name='videos', on_delete=models.CASCADE)
     video = models.FileField(upload_to='posts/')  # Assuming you're using Django's file handling
 
-class SavedRecipe(models.Model):
-    user = models.ForeignKey('UserProfile', related_name='saved_recipes', on_delete=models.CASCADE)
-    post = models.ForeignKey('Post', related_name='saved_recipes', on_delete=models.CASCADE)
+class SavedPost(models.Model):
+    user = models.ForeignKey('UserProfile', related_name='saved_posts', on_delete=models.CASCADE)
+    post = models.ForeignKey('Post', related_name='saved_posts', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
-
-
-
+class RecipeIngredient(models.Model):
+    # This is a Cross Reference Table for Recipe and Ingredient
+    recipe_id = models.ForeignKey('Recipe', related_name='recipe_ingredients', on_delete=models.CASCADE)
+    ingredient_id = models.ForeignKey('Ingredient', related_name='recipe_ingredients', on_delete=models.CASCADE)
