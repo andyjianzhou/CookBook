@@ -1,10 +1,34 @@
 from rest_framework import serializers
-from ...models import Post, Comment, Like, Save, Follow, Notification, Tag, Ingredient, Recipe, Instruction, Image, Video, SavedRecipe
+from ...models import Post, Comment, Like, Save, Follow, Notification, Tag, Ingredient, Recipe, Instruction, Image, Video
+from ...services.Posts.PostService import *
+from ...services.Posts.RecipeService import *
+from ...services.Users.UserService import *
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ['id', 'title', 'content', 'author']
+        fields = '__all__'
+        
+    def create(self, validated_data):
+        post = PostService.create_post(
+            title=validated_data.get('title'),
+            content=validated_data.get('content'),
+            firebase_uid=validated_data.get('firebase_uid')  # Assuming that firebase_uid is provided.
+        )
+        return post
+    
+    def update(self, instance, validated_data):
+        post = PostService.update_post(
+            post_id=instance.id, 
+            title=validated_data.get('title', None),
+            content=validated_data.get('content', None)
+        )
+        if not post:
+            raise serializers.ValidationError("Post with given id does not exist.")
+        return post
+
+    def delete(self, instance):
+        return PostService.delete_post(instance.id)
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -60,8 +84,3 @@ class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
         fields = ['post', 'video']
-
-class SavedRecipeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SavedRecipe
-        fields = ['user', 'post', 'created_at']
