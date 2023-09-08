@@ -18,7 +18,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import {useNavigate} from 'react-router-dom';
 import {useTheme} from '@mui/material/styles';
-import { useMediaQuery } from '@mui/material';
+import { Button, Modal, TextField, useMediaQuery } from '@mui/material';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import { useAuth } from '../contexts/AuthContext';
 import ProfileDropDownMenu from '../Profile/ProfileDropDownMenu';
@@ -178,6 +178,7 @@ function Copyright(props: any) {
     const [open, setOpen] = React.useState(true);
     const {currentUser} = useAuth();
     const [currentPage, setPage] = React.useState('Feed');
+    const [isCreateModalOpen, setCreateModalOpen] = React.useState(false);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const navigate = useNavigate();
@@ -230,7 +231,7 @@ function Copyright(props: any) {
           // Mobile drawer to be at the bottom of the screen
           // TODO: There are errors with this, I fixed it but there's a black border around each button
           <BottomNavigation sx={{ width: '100%', position: 'fixed', bottom: 0, borderTop: 1, borderColor: 'divider' }}>
-            {mainListItems({setPage, isMobile})}
+            {mainListItems({setPage, isMobile, setCreateModalOpen})}
           </BottomNavigation>
         ) : (
           // Desktop drawer to be on the left side of the screen
@@ -249,7 +250,7 @@ function Copyright(props: any) {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {mainListItems({setPage, isMobile})}
+            {mainListItems({setPage, isMobile, setCreateModalOpen})}
             <Divider sx={{ my: 1 }} />
             {secondaryListItems}
           </List>
@@ -309,17 +310,44 @@ function Copyright(props: any) {
                             </Paper>
                         </Grid>
                     )}
-                     {currentPage === 'Create' && (
-                        <Grid item xs={12}>
-                            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                                    Create
-                                </Typography>
-                                <Typography component="p" variant="body1">
-                                    This is where you can create recipes to share with others
-                                </Typography>
-                            </Paper>
-                        </Grid>
+                     {isCreateModalOpen === true && (
+                        <Modal
+                          open={true}
+                          onClose = {() => setCreateModalOpen(false)}
+                          aria-labelledby="modal-modal-title"
+                          aria-describedby="modal-modal-description"
+                        >
+                          <Box
+                            sx={{
+                              position: 'absolute',
+                              top: '50%',
+                              left: '50%',
+                              transform: 'translate(-50%, -50%)',
+                              width: 400,
+                              bgcolor: 'background.paper',
+                              boxShadow: 24,
+                              p: 4,
+                              borderRadius: 4,
+                            }}
+                          >
+                            {/* Input fields and buttons for creating a post */}
+                            <TextField
+                              label="What's on your mind?"
+                              multiline
+                              rows={4}
+                              variant="outlined"
+                              fullWidth
+                            />
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              sx={{ mt: 2 }}
+                            >
+                              Create Post
+                            </Button>
+                          </Box>
+                        </Modal>
+
                     )}
                      {currentPage === 'Scan' && (
                         <Grid item xs={12}>

@@ -1,4 +1,4 @@
-from ...models import UserProfile, Post, Like, Save, Follow, Tag, Comment, Notification, RecipeIngredient
+from ...models import UserProfile, Post, Like, Save, Follow, Tag, Comment, Notification
 from django.core.exceptions import ObjectDoesNotExist
 
 class UserProfileService:

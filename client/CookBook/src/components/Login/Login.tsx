@@ -77,7 +77,6 @@ export default function Login() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     await login(email, password);
-    console.log("Login successful")
     navigate('/dashboard', { replace: true })
     }
  

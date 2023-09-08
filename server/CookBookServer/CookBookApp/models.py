@@ -16,6 +16,10 @@ class UserProfile(models.Model):
     email = models.CharField(max_length=255)
         
 class Post(models.Model):
+    """
+    Post Model
+    Relations:
+    """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=200)
     content = models.TextField()
@@ -64,17 +68,6 @@ class Tag(models.Model):
     name = models.CharField(max_length=200)
     post = models.ForeignKey('Post', related_name='post_tags', on_delete=models.CASCADE)
 
-class Recipe(models.Model):
-    post = models.ForeignKey('Post', related_name='recipes', on_delete=models.CASCADE, null=True, blank=True)
-
-class Ingredient(models.Model):
-    name = models.CharField(max_length=200)
-    recipeId = models.ForeignKey('Recipe', related_name='ingredients', on_delete=models.CASCADE, null=True, blank=True)
-    
-class Instruction(models.Model):
-    step_number = models.IntegerField()
-    description = models.TextField()
-    recipe = models.ForeignKey('Recipe', related_name='instructions', on_delete=models.CASCADE)
 
 class Image(models.Model):
     post = models.ForeignKey('Post', related_name='images', on_delete=models.CASCADE)
@@ -83,11 +76,6 @@ class Image(models.Model):
 class Video(models.Model):
     post = models.ForeignKey('Post', related_name='videos', on_delete=models.CASCADE)
     video = models.FileField(upload_to='posts/')  # Assuming you're using Django's file handling
-
-class RecipeIngredient(models.Model):
-    # This is a Cross Reference Table for Recipe and Ingredient
-    recipe = models.ForeignKey('Recipe', related_name='recipe_ingredients', on_delete=models.CASCADE, null=True, blank=True)
-    ingredient = models.ForeignKey('Ingredient', related_name='ingredient_recipes', on_delete=models.CASCADE, null=True, blank=True)
 
     
 # Add grouping of ingredients here later

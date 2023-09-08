@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import firebase from "firebase/app";
 import {auth}  from '../../firebase';
 import { User as FirebaseUser, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import {useNavigate} from 'react-router-dom';
 
 interface IAuthContextProps {
   currentUser: FirebaseUser | null | undefined;

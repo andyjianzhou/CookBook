@@ -4,11 +4,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ChatIcon from '@mui/icons-material/Chat';
 import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import KitchenIcon from '@mui/icons-material/Kitchen';
@@ -20,14 +18,20 @@ import { BottomNavigation } from '@mui/material';
 interface ListItemsProps {
   setPage: (page: string) => void;
   isMobile: boolean;
+  setCreateModalOpen: (isOpen: boolean) => void;
 }
 
-export const mainListItems: React.FC<ListItemsProps> = ({ setPage, isMobile }) => {
+export const mainListItems: React.FC<ListItemsProps> = ({ setPage, isMobile, setCreateModalOpen }) => {
   const handlePageChange = (page: string) => {
     console.log("Page pressed: ", page);
     setPage(page);
   }
-  
+
+  const handleCreateModalOpen = (isOpened: boolean) => {
+    console.log("Create modal opened");
+    setCreateModalOpen(isOpened);
+  }
+
   return (
     <React.Fragment>
       <ListItemButton onClick={() => handlePageChange('Feed')}> 
@@ -49,9 +53,9 @@ export const mainListItems: React.FC<ListItemsProps> = ({ setPage, isMobile }) =
         </ListItemIcon>
         {/* <ListItemText primary="Explore" /> */}
       </ListItemButton>
-      <ListItemButton onClick={() => handlePageChange('Create')}>
+      <ListItemButton onClick={() => handleCreateModalOpen(true)}>
         <ListItemIcon>
-          <ControlPointIcon />
+          <ChatIcon />
         </ListItemIcon>
         {/* <ListItemText primary="Create" /> */}
       </ListItemButton>

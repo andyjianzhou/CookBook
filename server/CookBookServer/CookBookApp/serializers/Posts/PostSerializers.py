@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ...models import Post, Comment, Like, Save, Follow, Notification, Tag, Ingredient, Recipe, Instruction, Image, Video
+from ...models import Post, Comment, Like, Save, Follow, Notification, Tag, Image, Video
 from ...services.Posts.PostService import *
 from ...services.Posts.RecipeService import *
 from ...services.Users.UserService import *
@@ -33,7 +33,12 @@ class PostSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ['id', 'content', 'author', 'post', 'created_at', 'updated_at']
+        fields = ['id', 
+                  'content', 
+                  'author', 
+                  'post', 
+                  'created_at', 
+                  'updated_at']
 
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -53,27 +58,38 @@ class FollowSerializer(serializers.ModelSerializer):
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
-        fields = ['id', 'user', 'content', 'created_at', 'is_read', 'notification_type', 'post', 'comment', 'like', 'save', 'follow']
+        fields = ['id', 
+                  'user', 
+                  'content', 
+                  'created_at', 
+                  'is_read', 
+                  'notification_type', 
+                  'post', 
+                  'comment', 
+                  'like', 
+                  'save', 
+                  'follow']
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ['name', 'post']
 
-class IngredientSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Ingredient
-        fields = ['name', 'post']
+# TO:DO - Add serializers for Recipe, Ingredient, Instruction
+# class IngredientSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Ingredient
+#         fields = ['name', 'post']
 
-class RecipeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Recipe
-        fields = ['post']
+# class RecipeSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Recipe
+#         fields = ['post']
 
-class InstructionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Instruction
-        fields = ['step_number', 'description', 'recipe']
+# class InstructionSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Instruction
+#         fields = ['step_number', 'description', 'recipe']
 
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
