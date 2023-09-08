@@ -62,7 +62,6 @@ export const mainMobileListItems = () => {
         ))
   );
 }
-          
 
 {/* export const mainListItems = (
   <React.Fragment>
