@@ -23,6 +23,7 @@ import { Button, Modal, TextField, useMediaQuery } from '@mui/material';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import { useAuth } from '../contexts/AuthContext';
 import ProfileDropDownMenu from '../Profile/ProfileDropDownMenu';
+import PostModal from '../Post/PostModal';
 
 // mobile only imports
 import { mainMobileListItems } from './Mobile/ListItemsMobile';
@@ -312,55 +313,7 @@ function Copyright(props: any) {
                         </Grid>
                     )}
                     {isCreateModalOpen && (
-                      <Modal
-                          open={true}
-                          onClose={() => setCreateModalOpen(false)}
-                          aria-labelledby="modal-modal-title"
-                          aria-describedby="modal-modal-description"
-                      >
-                          <Box
-                              sx={{
-                                  position: 'absolute',
-                                  top: '50%',
-                                  left: '50%',
-                                  transform: 'translate(-50%, -50%)',
-                                  maxWidth: '600px', // increased width
-                                  width: '90%', // take 90% of screen width, up to 600px
-                                  height: '260px', // set a specific height
-                                  bgcolor: 'background.paper',
-                                  boxShadow: 24,
-                                  p: 4,
-                                  borderRadius: '20px', 
-                              }}
-                          >
-                              {/* Header */}
-                              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
-                                  <Typography variant="h6">Create Post</Typography>
-                                  <IconButton size="small" onClick={() => setCreateModalOpen(false)}>
-                                      <CloseIcon />
-                                  </IconButton>
-                              </Box>
-
-                              {/* Input fields and buttons for creating a post */}
-                              <TextField
-                                  label="What's on your mind?"
-                                  multiline
-                                  rows={2} // reduced the number of rows
-                                  variant="outlined"
-                                  fullWidth
-                                  sx={{ marginBottom: 2 }} 
-                              />
-                              <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    sx={{ width: '20%' }} 
-                                >
-                                    Post
-                                </Button>
-                              </Box>
-                          </Box>
-                      </Modal>
+                      <PostModal isOpen={isCreateModalOpen} onClose={() => setCreateModalOpen(false)} />
                       )}
                      {currentPage === 'Scan' && (
                         <Grid item xs={12}>
