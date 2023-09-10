@@ -1,4 +1,4 @@
-interface IPostServices {
+export interface IPostServices {
     createPost: (post: any) => Promise<any>;
     editPost: (id: string, post: any) => Promise<any>;
     getPosts: () => Promise<any>;
