@@ -1,7 +1,15 @@
-import React from 'react'
+import { Like } from "./LikeDetails";
+import { Comment } from "./CommentDetails";
 
-export default function PostDetails() {
-  return (
-    <div>PostDetails</div>
-  )
+export interface PostDetails {
+    uid: string;
+    postId: string;
+    title: string;
+    description: string;
+    // ingredients: string;
+    // steps: string;
+    likes: Like[];
+    comments: Comment[];
+    createdAt: string;
+    updatedAt: string;
 }
