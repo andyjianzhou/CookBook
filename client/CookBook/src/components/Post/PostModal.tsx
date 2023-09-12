@@ -5,6 +5,9 @@ import { EmojiEmotions, GifBox } from '@mui/icons-material';
 import CloseIcon from '@mui/icons-material/Close';
 import PostServices from '../Services/PostServices';
 import { PostDetails } from '../../models/PostDetails';
+import {v4 as uuidv4} from 'uuid';
+import { useAuth } from '../contexts/AuthContext';
+
 
 interface PostModalProps {
     isOpen: boolean;
@@ -16,6 +19,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
     const [file, setFile] = React.useState<File | null>(null);
     const [desc, setDesc] = React.useState('');
     const PostService = new PostServices();
+    const { currentUser } = useAuth();
 
     const handleImageClick = () => {
         fileInputRef.current?.click();
@@ -32,15 +36,14 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
         console.log("Uploading post...");
         try {
             const postDetails: PostDetails = {
-                uid: '',
-                postId: '',
-                title: '',
+                postId: uuidv4(),
+                userId: currentUser?.uid,
                 file: file,
                 description: desc,
                 likes: [],
                 comments: [],
-                createdAt: '',
-                updatedAt: ''
+                createdAt: new Date(),
+                updatedAt: null
             };
             const result = await PostService.createPost(postDetails);
             console.log(result);

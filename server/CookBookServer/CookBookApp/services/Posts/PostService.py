@@ -3,10 +3,13 @@ from django.core.exceptions import ObjectDoesNotExist
 
 class PostService:
     @staticmethod
-    def create_post(title, content, firebase_uid):
+    def create_post(post_id, userId, content, media_file=None):
         try:
-            user_profile = UserProfile.objects.get(firebase_uid=firebase_uid)
-            post = Post(title=title, content=content, author=user_profile)
+            post = Post(id = post_id,
+                        userId=userId,
+                        content=content, 
+                        media_file=media_file
+                        )
             post.save()
             return post
         except ObjectDoesNotExist:

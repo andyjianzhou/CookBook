@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import {auth}  from '../../firebase';
 import { User as FirebaseUser, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import axios from "../Utilities/axiosConfig";
 
 interface IAuthContextProps {
   currentUser: FirebaseUser | null | undefined;
@@ -44,44 +45,50 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
       });
   }
 
-  function signUp(email: string, password: string, checkBoxToggle: boolean, displayName: string) {
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-          const email = user.email;
-          
-          // Update the user's display name
-          updateProfile(user, {
-            displayName: displayName
-          }).then(() => {
+  async function signUp(email: string, password: string, checkBoxToggle: boolean, displayName: string) {
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        try {
+            await updateProfile(user, { displayName: displayName });
             console.log("User display name updated successfully.");
-            // Continue with other logic or redirect the user
-          }).catch((error) => {
+        } catch (error) {
             console.error("Error updating user display name:", error);
-          });
-
-          console.log("User: " + email, " signed up successfully with username: " + displayName)
-          
-          if (checkBoxToggle) {
-            console.log("User wants to receive updates via email")
-            // TODO: store user email in postgresql database and the users id + preferences
-
-          } else {
-            console.log("User does not want to receive updates via email")
-          }
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log("Error: " + errorMessage + " Error Code: " + errorCode)
-        });
-        if (checkBoxToggle) {
-          console.log("User wants to receive updates via email")
-          // store user email in database
-          // create a email service in the future using django mail service
         }
-  }  
+
+        console.log(`User: ${email} signed up successfully with username: ${displayName}`);
+
+        const userProfileData = {
+            firebase_uid: user.uid,
+            username: displayName,
+            email: user.email,
+        };
+
+        // TODO: Put this into a service file.
+        axios.post('http://127.0.0.1:8000/api/user/', userProfileData)
+            .then((response) => {
+                console.log(response);
+            }, (error) => {
+                console.log(error);
+            });
+
+        console.log("User profile created successfully in the backend");
+
+        if (checkBoxToggle) {
+            console.log("User wants to receive updates via email");
+            // TODO: Store user email in postgresql database and the user's id + preferences.
+        } else {
+            console.log("User does not want to receive updates via email");
+        }
+
+    } catch (error: any) {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log("Error:", errorMessage, "Error Code:", errorCode);
+    }
+}
+
 
   function logOut() {
     return auth.signOut();

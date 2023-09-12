@@ -11,9 +11,10 @@ class PostSerializer(serializers.ModelSerializer):
         
     def create(self, validated_data):
         post = PostService.create_post(
-            title=validated_data.get('title'),
+            post_id = validated_data.get('id'),
+            userId = validated_data.get('userId'), # Assuming that firebase_uid is provided.
             content=validated_data.get('content'),
-            firebase_uid=validated_data.get('firebase_uid')  # Assuming that firebase_uid is provided.
+            media_file = validated_data.get('media_file', None),
         )
         return post
     

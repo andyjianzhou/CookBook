@@ -20,16 +20,18 @@ class Post(models.Model):
     Post Model
     Relations:
     """
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.CharField(max_length=200)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     content = models.TextField()
-    author = models.ForeignKey('UserProfile', related_name='posts', on_delete=models.CASCADE)
-    tags = models.ManyToManyField('Tag', related_name='posts')
+    userId = models.ForeignKey('UserProfile', related_name='posts', on_delete=models.CASCADE)
+    tags = models.ManyToManyField('Tag', related_name='posts', blank=True)
+    media_file = models.FileField(upload_to='media_files/', null=True, blank=True)  # handles diverse media types, nullable to make it optional
+    createdAt = models.DateTimeField(auto_now_add=True)
+    # comments is already a many - to many relation
 
 class Comment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     content = models.TextField()
-    author = models.ForeignKey('UserProfile', related_name='comments', on_delete=models.CASCADE)
+    userId = models.ForeignKey('UserProfile', related_name='comments', on_delete=models.CASCADE)
     post = models.ForeignKey('Post', related_name='comments', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

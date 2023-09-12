@@ -1,22 +1,25 @@
 import { IPostServices } from './IPostServices'
 import { PostDetails } from '../../models/PostDetails';
+import axios from '../Utilities/axiosConfig';
 
 class PostServices implements IPostServices {
 
     async createPost(post: PostDetails): Promise<any> {
-        const formData = new FormData();
-        if (post.file) {
-            formData.append('file', post.file);
+        // transform the post to the format the backend expects
+        const postData = {
+            id: post.postId,
+            userId: post.userId,
+            content: post.description,
+            media_file: post.file,
         }
-        if (post.description) {
-            formData.append('description', post.description);
-        }
-        
-        const response = await fetch('/your-post-create-endpoint', {
-            method: 'POST',
-            body: formData,
-        });
-        return response.json();
+
+        axios.post('http://127.0.0.1:8000/api/posts/', postData)
+            .then((response) => {
+                console.log(response);
+            }, (error) => {
+                console.log(error);
+            }
+        );
     }
 
   async editPost(id: string, post: any): Promise<any> {
