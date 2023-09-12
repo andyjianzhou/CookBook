@@ -3,10 +3,21 @@ import { PostDetails } from '../../models/PostDetails';
 
 class PostServices implements IPostServices {
 
-  async createPost(post: PostDetails): Promise<any> {
-      // add placeholder
-      return Promise.resolve();
-  }
+    async createPost(post: PostDetails): Promise<any> {
+        const formData = new FormData();
+        if (post.file) {
+            formData.append('file', post.file);
+        }
+        if (post.description) {
+            formData.append('description', post.description);
+        }
+        
+        const response = await fetch('/your-post-create-endpoint', {
+            method: 'POST',
+            body: formData,
+        });
+        return response.json();
+    }
 
   async editPost(id: string, post: any): Promise<any> {
       // actual implementation here

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Modal, Box, Typography, IconButton, TextField, Button } from '@mui/material';
 import ImageIcon from '@mui/icons-material/Image';
 import { EmojiEmotions, GifBox } from '@mui/icons-material';
 import CloseIcon from '@mui/icons-material/Close';
+import PostServices from '../Services/PostServices';
+import { PostDetails } from '../../models/PostDetails';
 
 interface PostModalProps {
     isOpen: boolean;
@@ -10,6 +12,44 @@ interface PostModalProps {
 }
 
 const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
+    const fileInputRef  = useRef<HTMLInputElement>(null);
+    const [file, setFile] = React.useState<File | null>(null);
+    const [desc, setDesc] = React.useState('');
+    const PostService = new PostServices();
+
+    const handleImageClick = () => {
+        fileInputRef.current?.click();
+    }
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files[0]) {
+            setFile(event.target.files[0]);
+        }
+    };
+
+    const handlePostClick = async () => {
+        if (!file && !desc) return;  // If there's no file and no description, exit
+        console.log("Uploading post...");
+        try {
+            const postDetails: PostDetails = {
+                uid: '',
+                postId: '',
+                title: '',
+                file: file,
+                description: desc,
+                likes: [],
+                comments: [],
+                createdAt: '',
+                updatedAt: ''
+            };
+            const result = await PostService.createPost(postDetails);
+            console.log(result);
+        } catch (error) {
+            console.error("Error uploading the post:", error);
+        }
+    };
+        
+
     return (
         <Modal
             open={isOpen}
@@ -47,17 +87,27 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
                     rows={2}
                     variant="outlined"
                     fullWidth
+                    value = {desc}
+                    onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setDesc(e.target.value)}
                     sx={{ marginBottom: 2 }}
                 />
                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 
                     {/* Container for media buttons */}
                     <Box sx={{ display: 'flex', gap: '8px' }}>
-                        <IconButton size="small">
-                            <ImageIcon /> {/* Replace with actual icon for images */}
+                        {/* Invisible file input */}
+                        <input 
+                            type="file" 
+                            ref={fileInputRef} 
+                            onChange={handleFileChange} 
+                            style={{ display: 'none' }}
+                            accept="image/*, video/*"
+                        />
+                        <IconButton size="small" onClick = {handleImageClick}>
+                            <ImageIcon />
                         </IconButton>
                         <IconButton size="small">
-                            <GifBox /> {/* Replace with actual icon for gifs */}
+                            <GifBox />
                         </IconButton>
                         <IconButton size="small">
                             <EmojiEmotions /> {/* Replace with actual icon for emojis */}
@@ -70,6 +120,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
                         variant="contained"
                         color="primary"
                         sx={{ width: '20%', textTransform: 'none' }}
+                        onClick={handlePostClick}
                     >
                         Post
                     </Button>

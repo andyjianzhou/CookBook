@@ -6,8 +6,7 @@ export interface PostDetails {
     postId: string;
     title: string;
     description: string;
-    // ingredients: string;
-    // steps: string;
+    file?: File | null;
     likes: Like[];
     comments: Comment[];
     createdAt: string;
