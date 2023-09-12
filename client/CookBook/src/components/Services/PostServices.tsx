@@ -13,9 +13,13 @@ class PostServices implements IPostServices {
       return Promise.resolve();
   }
 
+  // TODO: 
+    // later use openAPI to automatically 
+    //generate types which we can map it to the 
+    //post type view model
   async getPosts(): Promise<any> {
-    const response = await fetch('/api/posts');
-    const data = await response.json();
+    const posts = await fetch('/api/posts');
+    const data = await posts.json();
     return data;
   }
 
