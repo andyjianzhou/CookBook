@@ -14,6 +14,8 @@ class PostServices implements IPostServices {
         }));
         if (post.file) {
             formData.append('media_file', post.file, post.file.name);
+        } else {
+            formData.append('media_file', '');
         }
         
 
