@@ -18,6 +18,11 @@ class PostSerializer(serializers.ModelSerializer):
         )
         return post
     
+    def get(self, instance):
+        if instance:
+            return PostService.get_post_by_id(instance.id)
+        raise serializers.ValidationError("Post with given id does not exist.")
+    
     def update(self, instance, validated_data):
         post = PostService.update_post(
             post_id=instance.id, 
