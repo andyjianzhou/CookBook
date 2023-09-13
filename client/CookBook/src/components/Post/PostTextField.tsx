@@ -8,11 +8,6 @@ interface PostTextFieldProps {
     file: File | null;
 }
 
-const ImageContainer = styled('div')({
-    position: 'relative',
-    maxWidth: '100%',
-});
-
 const PostTextField: React.FC<PostTextFieldProps> = ({ value, onChange, onFileChange, file }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -87,7 +82,9 @@ const PostTextField: React.FC<PostTextFieldProps> = ({ value, onChange, onFileCh
           sx={{
             width: '100%',
             height: 'auto',
-            borderRadius: '5px' 
+            borderRadius: '5px',
+            maxHeight: '60vh',
+            overflowY: 'auto'
           }}
         />
       )}
