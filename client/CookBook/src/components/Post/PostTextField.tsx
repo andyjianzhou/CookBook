@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { TextField, Box, styled } from '@mui/material';
+import { TextField, Box, styled, IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface PostTextFieldProps {
     value: string;
     onChange: (value: string) => void;
-    onFileChange: (file: File) => void;
+    onFileChange: (file: File | null) => void;
     file: File | null;
 }
 
@@ -22,6 +23,10 @@ const PostTextField: React.FC<PostTextFieldProps> = ({ value, onChange, onFileCh
       setImagePreview(null);
     }
   }, [file]);
+
+  const handleImageDelete = () => {
+    onFileChange(null);
+  };
 
   return (
     <Box sx={{ position: 'relative' }}>
@@ -76,17 +81,37 @@ const PostTextField: React.FC<PostTextFieldProps> = ({ value, onChange, onFileCh
       />
       {imagePreview && (
         <Box
-          component="img"
-          src={imagePreview}
-          alt="Preview"
           sx={{
+            position: 'relative',  // Relative positioning for image container
             width: '100%',
             height: 'auto',
-            borderRadius: '5px',
-            maxHeight: '60vh',
-            overflowY: 'auto'
+            borderRadius: '5px'
           }}
-        />
+        >
+          <Box
+            component="img"
+            src={imagePreview}
+            alt="Preview"
+            sx={{
+              width: '100%',
+              height: 'auto',
+              borderRadius: '5px' 
+            }}
+          />
+          
+          {/* Delete button */}
+          <IconButton 
+            size="small" 
+            sx={{
+              position: 'absolute', 
+              top: 0, 
+              left: 0
+            }}
+            onClick={handleImageDelete}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Box>
       )}
     </Box>
   );
