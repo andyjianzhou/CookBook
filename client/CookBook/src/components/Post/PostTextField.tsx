@@ -11,6 +11,7 @@ interface PostTextFieldProps {
 
 const PostTextField: React.FC<PostTextFieldProps> = ({ value, onChange, onFileChange, file }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
     if (file) {
@@ -24,10 +25,12 @@ const PostTextField: React.FC<PostTextFieldProps> = ({ value, onChange, onFileCh
     }
   }, [file]);
 
-  const handleImageDelete = () => {
+  const handleFileDelete = () => {
+    if (fileInputRef.current) {
+        fileInputRef.current.value = ""; // Clear the input value
+    }
     onFileChange(null);
-  };
-
+};
   return (
     <Box sx={{ position: 'relative' }}>
       <TextField
@@ -107,7 +110,7 @@ const PostTextField: React.FC<PostTextFieldProps> = ({ value, onChange, onFileCh
               top: 0, 
               left: 0
             }}
-            onClick={handleImageDelete}
+            onClick={handleFileDelete}
           >
             <DeleteIcon />
           </IconButton>

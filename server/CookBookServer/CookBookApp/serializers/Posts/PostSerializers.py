@@ -5,6 +5,7 @@ from ...services.Posts.RecipeService import *
 from ...services.Users.UserService import *
 
 class PostSerializer(serializers.ModelSerializer):
+    media_file = serializers.FileField(required=False)
     class Meta:
         model = Post
         fields = '__all__'

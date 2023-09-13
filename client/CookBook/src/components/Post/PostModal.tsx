@@ -34,13 +34,12 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
             const objectUrl = URL.createObjectURL(file); // Convert the file into an object URL for preview
             setFile(file);
             setImagePreview(objectUrl); // Set the image preview URL
+            
+            // Clear the input value after processing
+            event.target.value = "";
         }
     };
-
-    const deleteFile = () => {
-        setFile(null);
-        setImagePreview(null);
-    }
+    
 
     const handlePostClick = async () => {
         if (!file && !desc) return;  // If there's no file and no description, exit

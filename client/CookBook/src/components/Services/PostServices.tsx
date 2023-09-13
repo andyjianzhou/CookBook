@@ -6,14 +6,18 @@ class PostServices implements IPostServices {
 
     async createPost(post: PostDetails): Promise<any> {
         // transform the post to the format the backend expects
-        const postData = {
-            id: post.postId,
+        const formData = new FormData();
+        formData.append('post_data', JSON.stringify({
+            postId: post.postId,
             userId: post.userId,
             content: post.description,
-            media_file: post.file,
+        }));
+        if (post.file) {
+            formData.append('media_file', post.file, post.file.name);
         }
+        
 
-        axios.post('http://127.0.0.1:8000/api/posts/', postData)
+        axios.post('http://127.0.0.1:8000/api/posts/', formData)
             .then((response) => {
                 console.log(response);
             }, (error) => {
@@ -91,7 +95,6 @@ class PostServices implements IPostServices {
       // placeholder implementation
       return Promise.resolve();
   }
-
 }
 
 export default PostServices;
