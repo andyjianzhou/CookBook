@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Box, IconButton, styled } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import { TextField, Box, styled } from '@mui/material';
 
 interface PostTextFieldProps {
     value: string;
@@ -40,25 +39,42 @@ const PostTextField: React.FC<PostTextFieldProps> = ({ value, onChange, onFileCh
         onChange={(e) => onChange(e.target.value)}
         sx={{ 
           marginBottom: 2,
-          background: 'transparent',
-          '& .MuiFilledInput-root': { // Target the filled variant's styles
-            backgroundColor: 'transparent', // <- Remove the shade of gray
-            '&:before': { // This is targeting the underline
+          fontSize: '1.5rem',
+          '& .MuiInputBase-input': {
+            fontSize: '1.5rem',
+            cursor: 'text',
+          },
+          '& .MuiFilledInput-root': {
+            backgroundColor: 'transparent',
+            '&:hover': {
+              backgroundColor: 'transparent',
+              '@media (hover: none)': {
+                  backgroundColor: 'transparent',
+              },
+            },
+            '&.Mui-focused': {
+              backgroundColor: 'transparent',
+            }
+          },
+          '&:hover': {
+            '& .MuiFilledInput-root': {
+              backgroundColor: 'transparent',
+            },
+          },
+          '&.Mui-focused': {
+            '& .MuiFilledInput-root': {
+              backgroundColor: 'transparent',
+            },
+          },
+          '& .MuiFilledInput-underline': {
+            '&:before': {
               display: 'none'
             },
-            '&:hover': {
-              backgroundColor: 'transparent', // <- Ensure it stays transparent even on hover
-              '&:before': {
-                display: 'none'
-              }
-            }
-          },
-          '& .MuiFilledInput-underline': { // This is targeting the underline after being clicked (focused state)
             '&:after': {
-                display: 'none'
+              display: 'none'
             }
           },
-          '& .MuiInputLabel-filled': { // Adjust the label styling
+          '& .MuiInputLabel-filled': {
             backgroundColor: 'transparent'
           }
         }}
