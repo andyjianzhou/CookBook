@@ -61,6 +61,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
         } catch (error) {
             console.error("Error uploading the post:", error);
         }
+        onClose();
     };
         
 
@@ -72,21 +73,20 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
             aria-describedby="modal-modal-description"
         >
             <Box
-            sx={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                maxWidth: '600px',
-                width: '90%',
-                minHeight: '260px',  // minimum height
-                bgcolor: 'background.paper',
-                boxShadow: 24,
-                p: 4,
-                borderRadius: '20px',
-                overflowY: 'auto',  // Add scrolling if content overflows modal's max height
-            }}
-            >
+                sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    maxWidth: '600px',
+                    width: '90%',
+                    minHeight: '260px', // Changed height to minHeight to allow growing
+                    bgcolor: 'background.paper',
+                    boxShadow: 24,
+                    p: 4,
+                    borderRadius: '20px',
+                }}
+>
                 {/* Header */}
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
                     <Typography variant="h6">Create Post</Typography>

@@ -31,34 +31,41 @@ const PostTextField: React.FC<PostTextFieldProps> = ({ value, onChange, onFileCh
 
   return (
     <Box sx={{ position: 'relative' }}>
+      <TextField
+        label="What's on your mind?"
+        multiline
+        variant="filled" // Use filled variant for a cleaner look without outline
+        fullWidth
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        sx={{ 
+          marginBottom: 2,
+          backgroundColor: 'transparent',
+          '& .MuiOutlinedInput-root': { // Remove the border of the textfield
+            '& fieldset': {
+              borderColor: 'transparent',
+            },
+            '&:hover fieldset': {
+              borderColor: 'transparent',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: 'transparent',
+            },
+          }
+        }}
+      />
       {imagePreview && (
         <Box
           component="img"
           src={imagePreview}
           alt="Preview"
           sx={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
             width: '100%',
             height: 'auto',
-            zIndex: -1,
             borderRadius: '5px' 
           }}
         />
       )}
-      <TextField
-        label="What's on your mind?"
-        multiline
-        variant="outlined"
-        fullWidth
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        sx={{ 
-          marginBottom: 2,
-          backgroundColor: 'transparent'
-        }}
-      />
     </Box>
   );
 }
