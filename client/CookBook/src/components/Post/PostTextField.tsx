@@ -34,23 +34,32 @@ const PostTextField: React.FC<PostTextFieldProps> = ({ value, onChange, onFileCh
       <TextField
         label="What's on your mind?"
         multiline
-        variant="filled" // Use filled variant for a cleaner look without outline
+        variant="filled"
         fullWidth
         value={value}
         onChange={(e) => onChange(e.target.value)}
         sx={{ 
           marginBottom: 2,
-          backgroundColor: 'transparent',
-          '& .MuiOutlinedInput-root': { // Remove the border of the textfield
-            '& fieldset': {
-              borderColor: 'transparent',
+          background: 'transparent',
+          '& .MuiFilledInput-root': { // Target the filled variant's styles
+            backgroundColor: 'transparent', // <- Remove the shade of gray
+            '&:before': { // This is targeting the underline
+              display: 'none'
             },
-            '&:hover fieldset': {
-              borderColor: 'transparent',
-            },
-            '&.Mui-focused fieldset': {
-              borderColor: 'transparent',
-            },
+            '&:hover': {
+              backgroundColor: 'transparent', // <- Ensure it stays transparent even on hover
+              '&:before': {
+                display: 'none'
+              }
+            }
+          },
+          '& .MuiFilledInput-underline': { // This is targeting the underline after being clicked (focused state)
+            '&:after': {
+                display: 'none'
+            }
+          },
+          '& .MuiInputLabel-filled': { // Adjust the label styling
+            backgroundColor: 'transparent'
           }
         }}
       />
