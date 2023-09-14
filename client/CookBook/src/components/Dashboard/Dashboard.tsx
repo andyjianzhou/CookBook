@@ -24,7 +24,7 @@ import BottomNavigation from '@mui/material/BottomNavigation';
 import { useAuth } from '../contexts/AuthContext';
 import ProfileDropDownMenu from '../Profile/ProfileDropDownMenu';
 import PostModal from '../Post/PostModal';
-import Post from '../Post/Post';
+import Feed from '../Feed/Feed';
 
 // mobile only imports
 import { mainMobileListItems } from './Mobile/ListItemsMobile';
@@ -51,49 +51,7 @@ function Copyright(props: any) {
     open?: boolean;
     mobileDisplay?: boolean;
   }
-  // const AppBar = styled(MuiAppBar, {
-  //   shouldForwardProp: (prop) => prop !== 'open',
-  // })<AppBarProps>(({ theme, open }) => ({
-  //   zIndex: theme.zIndex.drawer + 1,
-  //   transition: theme.transitions.create(['width', 'margin'], {
-  //     easing: theme.transitions.easing.sharp,
-  //     duration: theme.transitions.duration.leavingScreen,
-  //   }),
-  //   ...(open && {
-  //     marginLeft: drawerWidth,
-  //     width: `calc(100% - ${drawerWidth}px)`,
-  //     transition: theme.transitions.create(['width', 'margin'], {
-  //       easing: theme.transitions.easing.sharp,
-  //       duration: theme.transitions.duration.enteringScreen,
-  //     }),
-  //   }),
-  // }));
-  
-  // const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  //   ({ theme, open }) => ({
-  //     '& .MuiDrawer-paper': {
-  //       position: 'relative',
-  //       whiteSpace: 'nowrap',
-  //       width: drawerWidth,
-  //       transition: theme.transitions.create('width', {
-  //         easing: theme.transitions.easing.sharp,
-  //         duration: theme.transitions.duration.enteringScreen,
-  //       }),
-  //       boxSizing: 'border-box',
-  //       ...(!open && {
-  //         overflowX: 'hidden',
-  //         transition: theme.transitions.create('width', {
-  //           easing: theme.transitions.easing.sharp,
-  //           duration: theme.transitions.duration.leavingScreen,
-  //         }),
-  //         width: theme.spacing(7),
-  //         [theme.breakpoints.up('sm')]: {
-  //           width: theme.spacing(9),
-  //         },
-  //       }),
-  //     },
-  //   }),
-  // );
+
   const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
   })<AppBarProps>(({ theme, mobileDisplay }) => ({
@@ -279,23 +237,7 @@ function Copyright(props: any) {
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={8} lg={9}>
                     {currentPage === 'Feed' && (
-                      // add in the file content here after
-                      <>
-                      <Post
-                          postId={123}
-                          userId={currentUser?.uid ? parseInt(currentUser.uid) : 0}
-                          userName={currentUser?.displayName ? currentUser.displayName : 'Test User'}
-                          content="This is a sample post content."
-                          mediaFiles={null} // or provide a File or File[] here
-                          createdAt={new Date()} />
-                        <Post
-                          postId={123}
-                          userId={currentUser?.uid ? parseInt(currentUser.uid) : 0}
-                          userName={currentUser?.displayName ? currentUser.displayName : 'Test User'}
-                          content="This is a sample post content."
-                          mediaFiles={null} // or provide a File or File[] here
-                          createdAt={new Date()} />
-                        </>
+                      <Feed />
                     )}
                     {currentPage === 'Search' && (
                         <Grid item xs={12}>

@@ -38,9 +38,14 @@ class PostServices implements IPostServices {
     //generate types which we can map it to the 
     //post type view model
   async getPosts(): Promise<any> {
-    const posts = await fetch('/api/posts');
-    const data = await posts.json();
-    return data;
+    try {
+        const response = await axios.get('http://127.0.0.1:8000/api/posts/');
+        return response.data;
+    } catch (error) {
+        console.error('Failed to fetch posts:', error);
+        throw error;
+    }
+    
   }
 
   async getPost(id: string): Promise<any> {

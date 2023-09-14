@@ -5,9 +5,10 @@ from ...services.Posts.RecipeService import *
 from ...services.Users.UserService import *
 
 class PostSerializer(serializers.ModelSerializer):
+    username = serializers.SerializerMethodField()
     class Meta:
         model = Post
-        fields = '__all__'
+        fields = ('id', 'content', 'userId', 'tags', 'media_file', 'createdAt', 'username')
         
     def create(self, validated_data):
         post = PostService.create_post(
@@ -20,8 +21,15 @@ class PostSerializer(serializers.ModelSerializer):
     
     def get(self, instance):
         if instance:
-            return PostService.get_post_by_id(instance.id)
+            return instance.userId.username
         raise serializers.ValidationError("Post with given id does not exist.")
+    
+    def get_all(self):
+        return PostService.get_all_posts()
+    
+    def get_username(self, instance):
+        user_id = instance.userId
+        return PostService.get_username(user_id)
     
     def update(self, instance, validated_data):
         post = PostService.update_post(

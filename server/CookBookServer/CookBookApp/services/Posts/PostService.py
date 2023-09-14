@@ -18,6 +18,14 @@ class PostService:
     @staticmethod
     def get_all_posts():
         return Post.objects.all()
+    
+    @staticmethod
+    def get_username(user_Id):
+        user_profile = UserProfile.objects.filter(firebase_uid=user_Id.firebase_uid).first()
+        if user_profile:
+            return user_profile.username
+        return "Unknown User"
+
 
     @staticmethod
     def get_post_by_id(post_id):

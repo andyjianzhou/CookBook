@@ -53,11 +53,6 @@ const Post: React.FC<PostProps> = ({ postId, userId, userName, content, mediaFil
   return `${date.getFullYear()}, ${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}`;
   }
 
-  // Test the function: make into unit test later
-  const testDate = new Date();
-  testDate.setHours(testDate.getHours() - 5);  // 5 hours ago
-  console.log(formatDate(testDate));
-  
   return (
     <Box
       sx={{
@@ -89,23 +84,23 @@ const Post: React.FC<PostProps> = ({ postId, userId, userName, content, mediaFil
       {mediaFiles && (
         <Box mt={2}>
           {Array.isArray(mediaFiles)
-            ? mediaFiles.map((file, index) => (
-                <CardMedia
-                  key={index}
+              ? mediaFiles.map((fileOrUrl, index) => (
+                  <CardMedia
+                      key={index}
+                      component="img"
+                      alt="Post media"
+                      height="240"
+                      src={typeof fileOrUrl === 'string' ? fileOrUrl : URL.createObjectURL(fileOrUrl)}
+                      title="Post media"
+                  />
+                ))
+              : <CardMedia
                   component="img"
                   alt="Post media"
                   height="240"
-                  src={URL.createObjectURL(file)}
+                  src={typeof mediaFiles === 'string' ? mediaFiles : URL.createObjectURL(mediaFiles)}
                   title="Post media"
                 />
-              ))
-            : <CardMedia
-                component="img"
-                alt="Post media"
-                height="240"
-                src={URL.createObjectURL(mediaFiles)}
-                title="Post media"
-              />
           }
         </Box>
       )}
