@@ -82,20 +82,28 @@ const Post: React.FC<PostProps> = ({ postId, userId, userName, content, mediaFil
           <Box mt={2}>
             {Array.isArray(mediaFiles)
                 ? mediaFiles.map((fileOrUrl, index) => (
-                    <CardMedia
-                        key={index}
-                        component="img"
-                        alt="Post media"
-                        height="240"
-                        src={typeof fileOrUrl === 'string' ? fileOrUrl : URL.createObjectURL(fileOrUrl)}
-                        title="Post media"
-                    />
+                  <CardMedia
+                    key={index}
+                    component="img"
+                    alt="Post media"
+                    height="240"
+                    src={
+                      typeof fileOrUrl === 'string' 
+                      ? ((fileOrUrl as string).startsWith('/media_files') ? `http://127.0.0.1:8000${fileOrUrl}` : fileOrUrl)
+                      : URL.createObjectURL(fileOrUrl)
+                    }
+                    title="Post media"
+                  />
                   ))
                 : <CardMedia
                     component="img"
                     alt="Post media"
                     height="240"
-                    src={typeof mediaFiles === 'string' ? mediaFiles : URL.createObjectURL(mediaFiles)}
+                    src={
+                      typeof mediaFiles === 'string' 
+                          ? ((mediaFiles as string).startsWith('/media_files') ? `http://127.0.0.1:8000${mediaFiles}` : mediaFiles)
+                          : URL.createObjectURL(mediaFiles)
+                  }
                     title="Post media"
                   />
             }
