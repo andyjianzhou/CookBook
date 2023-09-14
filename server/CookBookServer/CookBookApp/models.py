@@ -24,7 +24,7 @@ class Post(models.Model):
     content = models.TextField()
     userId = models.ForeignKey('UserProfile', related_name='posts', on_delete=models.CASCADE)
     tags = models.ManyToManyField('Tag', related_name='posts', blank=True)
-    media_file = models.FileField(upload_to='media_files/', null=True, blank=True)
+    media_file = models.FileField(upload_to='', null=True, blank=True)
     createdAt = models.DateTimeField(auto_now_add=True)
     # comments is already a many - to many relation
 

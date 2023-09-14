@@ -76,34 +76,32 @@ const Post: React.FC<PostProps> = ({ postId, userId, userName, content, mediaFil
           </Box>
         </Box>
       </Box>
-      <Box sx={{ padding: '0.5rem 2rem' }}> 
+      <Box sx={{ padding: '0rem 4rem' }}> 
         <Typography variant="body1">{content}</Typography>
-      </Box>
-
-
-      {mediaFiles && (
-        <Box mt={2}>
-          {Array.isArray(mediaFiles)
-              ? mediaFiles.map((fileOrUrl, index) => (
-                  <CardMedia
-                      key={index}
-                      component="img"
-                      alt="Post media"
-                      height="240"
-                      src={typeof fileOrUrl === 'string' ? fileOrUrl : URL.createObjectURL(fileOrUrl)}
-                      title="Post media"
+        {mediaFiles && (
+          <Box mt={2}>
+            {Array.isArray(mediaFiles)
+                ? mediaFiles.map((fileOrUrl, index) => (
+                    <CardMedia
+                        key={index}
+                        component="img"
+                        alt="Post media"
+                        height="240"
+                        src={typeof fileOrUrl === 'string' ? fileOrUrl : URL.createObjectURL(fileOrUrl)}
+                        title="Post media"
+                    />
+                  ))
+                : <CardMedia
+                    component="img"
+                    alt="Post media"
+                    height="240"
+                    src={typeof mediaFiles === 'string' ? mediaFiles : URL.createObjectURL(mediaFiles)}
+                    title="Post media"
                   />
-                ))
-              : <CardMedia
-                  component="img"
-                  alt="Post media"
-                  height="240"
-                  src={typeof mediaFiles === 'string' ? mediaFiles : URL.createObjectURL(mediaFiles)}
-                  title="Post media"
-                />
-          }
-        </Box>
-      )}
+            }
+          </Box>
+        )}
+      </Box>
       {/* Add comment and other buttons here */}
     </Box>
   );
