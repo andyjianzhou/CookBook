@@ -24,6 +24,7 @@ import BottomNavigation from '@mui/material/BottomNavigation';
 import { useAuth } from '../contexts/AuthContext';
 import ProfileDropDownMenu from '../Profile/ProfileDropDownMenu';
 import PostModal from '../Post/PostModal';
+import Post from '../Post/Post';
 
 // mobile only imports
 import { mainMobileListItems } from './Mobile/ListItemsMobile';
@@ -279,14 +280,22 @@ function Copyright(props: any) {
                     <Grid item xs={12} md={8} lg={9}>
                     {currentPage === 'Feed' && (
                       // add in the file content here after
-                        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                            <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                                CookBook
-                            </Typography>
-                            <Typography component="p" variant="body1">
-                                Welcome to CookBook! This is a place where you can store your favorite recipes and share them with others.
-                            </Typography>
-                        </Paper>
+                      <>
+                      <Post
+                          postId={123}
+                          userId={currentUser?.uid ? parseInt(currentUser.uid) : 0}
+                          userName={currentUser?.displayName ? currentUser.displayName : 'Test User'}
+                          content="This is a sample post content."
+                          mediaFiles={null} // or provide a File or File[] here
+                          createdAt={new Date()} />
+                        <Post
+                          postId={123}
+                          userId={currentUser?.uid ? parseInt(currentUser.uid) : 0}
+                          userName={currentUser?.displayName ? currentUser.displayName : 'Test User'}
+                          content="This is a sample post content."
+                          mediaFiles={null} // or provide a File or File[] here
+                          createdAt={new Date()} />
+                        </>
                     )}
                     {currentPage === 'Search' && (
                         <Grid item xs={12}>
