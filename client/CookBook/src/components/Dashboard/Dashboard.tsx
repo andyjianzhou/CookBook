@@ -233,65 +233,65 @@ function Copyright(props: any) {
           }}
         >
         <Toolbar />
-            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-                <Grid container spacing={3}>
-                    <Grid item xs={12} md={8} lg={9}>
-                    {currentPage === 'Feed' && (
-                      <Feed />
-                    )}
-                    {currentPage === 'Search' && (
-                        <Grid item xs={12}>
-                            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                                    Search
-                                </Typography>
-                                <Typography component="p" variant="body1">
-                                    This is where you search for others
-                                </Typography>
-                            </Paper>
-                        </Grid>
-                    )}
-                     {currentPage === 'Explore' && (
-                        <Grid item xs={12}>
-                            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                                    Explore
-                                </Typography>
-                                <Typography component="p" variant="body1">
-                                    This is where you explore 
-                                </Typography>
-                            </Paper>
-                        </Grid>
-                    )}
-                    {isCreateModalOpen && (
-                      <PostModal isOpen={isCreateModalOpen} onClose={() => setCreateModalOpen(false)} />
-                      )}
-                     {currentPage === 'Scan' && (
-                        <Grid item xs={12}>
-                            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                                    Scan
-                                </Typography>
-                                <Typography component="p" variant="body1">
-                                    This is where you can scan for ingredients to create recipes which is stored in Kitchen
-                                </Typography>
-                            </Paper>
-                        </Grid>
-                    )}
-                     {currentPage === 'Kitchen' && (
-                        <Grid item xs={12}>
-                            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                                    Kitchen
-                                </Typography>
-                                <Typography component="p" variant="body1">
-                                    This is where you can see what ingredients you have in your kitchen and get recommended recipes
-                                </Typography>
-                            </Paper>
-                        </Grid>
-                    )}
-                    </Grid>
+        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Grid container spacing={3} justifyContent="center">
+            <Grid item xs={12} md={8} lg={9}>
+              {currentPage === 'Feed' && (
+                <Feed />
+              )}
+              {currentPage === 'Search' && (
+                  <Grid item xs={12}>
+                      <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                          <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                              Search
+                          </Typography>
+                          <Typography component="p" variant="body1">
+                              This is where you search for others
+                          </Typography>
+                      </Paper>
+                  </Grid>
+              )}
+                {currentPage === 'Explore' && (
+                  <Grid item xs={12}>
+                      <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                          <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                              Explore
+                          </Typography>
+                          <Typography component="p" variant="body1">
+                              This is where you explore 
+                          </Typography>
+                      </Paper>
+                  </Grid>
+              )}
+              {isCreateModalOpen && (
+                <PostModal isOpen={isCreateModalOpen} onClose={() => setCreateModalOpen(false)} />
+                )}
+                {currentPage === 'Scan' && (
+                  <Grid item xs={12}>
+                      <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                          <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                              Scan
+                          </Typography>
+                          <Typography component="p" variant="body1">
+                              This is where you can scan for ingredients to create recipes which is stored in Kitchen
+                          </Typography>
+                      </Paper>
+                  </Grid>
+              )}
+                {currentPage === 'Kitchen' && (
+                  <Grid item xs={12}>
+                      <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                          <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                              Kitchen
+                          </Typography>
+                          <Typography component="p" variant="body1">
+                              This is where you can see what ingredients you have in your kitchen and get recommended recipes
+                          </Typography>
+                      </Paper>
+                  </Grid>
+                )}
                 </Grid>
+              </Grid>
             </Container>
           </Box>
         </Box>
