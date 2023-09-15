@@ -11,7 +11,10 @@ const Feed: React.FC = () => {
     if (isLoading) return <div>Loading...</div>;
     if (isError || !data) return <div>Failed to fetch posts. Please try again later.</div>;
     
-    const sortedPosts = [...data].sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    const { data: posts } = useQuery('posts', postServices.getPosts, {
+        staleTime: 5 * 60 * 1000,  // 5 minutes in milliseconds
+      });  
+    const sortedPosts = [...posts].sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
     return (
         <div>
