@@ -9,7 +9,7 @@ import {v4 as uuidv4} from 'uuid';
 import { useAuth } from '../contexts/AuthContext';
 import PostTextField from './PostTextField';
 import { useNavigate } from 'react-router-dom';
-
+import { useMutation, useQueryClient } from 'react-query';
 
 interface PostModalProps {
     isOpen: boolean;
@@ -25,8 +25,31 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
     const { csrfToken } = useAuth();
     const PostService = new PostServices();
     const { currentUser } = useAuth();
-    // Temporary before caching is implemented and invalidating the cache
+    const queryClient = useQueryClient();
     const navigate = useNavigate();
+
+    const createPostMutation = useMutation(
+        (newPost: PostDetails) => PostService.createPost(newPost, csrfToken), 
+        {
+            onMutate: (newPost: PostDetails) => {
+                const previousPosts = queryClient.getQueryData('posts');
+    
+                // Optimistically update our cache
+                queryClient.setQueryData('posts', (oldData: any) => [
+                    newPost,
+                    ...oldData
+                ]);
+    
+                return { previousPosts };
+            },
+            onError: (error, newPost, context: any) => {
+                queryClient.setQueryData('posts', context.previousPosts);
+            },
+            onSettled: () => {
+                queryClient.invalidateQueries('posts');
+            }
+        }
+    );
 
     const handleImageClick = () => {
         fileInputRef.current?.click();
@@ -45,27 +68,24 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
     };
     
 
-    const handlePostClick = async () => {
+    const handlePostClick = () => {
         if (!file && !desc) return;  // If there's no file and no description, exit
-        console.log("Uploading post...");
-        try {
-            const postDetails: PostDetails = {
-                postId: uuidv4(),
-                userId: currentUser?.uid,
-                file: file,
-                description: desc,
-                likes: [],
-                comments: [],
-                createdAt: new Date(),
-                updatedAt: null
-            };
-            const result = await PostService.createPost(postDetails, csrfToken);
-            console.log(result);
-        } catch (error) {
-            console.error("Error uploading the post:", error);
-        }
+
+        const postDetails: PostDetails = {
+            postId: uuidv4(),
+            userId: currentUser?.uid,
+            file: file,
+            description: desc,
+            likes: [],
+            comments: [],
+            createdAt: new Date(),
+            updatedAt: null
+        };
+      
+        // Use the mutation to create the post.
+        createPostMutation.mutate(postDetails);
         onClose();
-        navigate('/dashboard/'); // Temporary before caching is implemented and invalidating the cache
+        navigate('/dashboard');
     };
         
 

@@ -8,7 +8,9 @@ import Search from './components/Search/Search'
 import Login from './components/Login/Login'
 import { AuthProvider } from './components/contexts/AuthContext';
 import PrivateRoute from './components/Utilities/PrivateRoute';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
+const query = new QueryClient();
 // add all routers here
 const router = createBrowserRouter([
   {
@@ -31,9 +33,11 @@ const router = createBrowserRouter([
 
 function App() {
   return(
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <QueryClientProvider client={query}>
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 export default App

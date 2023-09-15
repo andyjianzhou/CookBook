@@ -1,34 +1,21 @@
 import React from 'react';
-import Post from '../Post/Post'; // or wherever your Post component is located
-import PostServices from '../Services/PostServices'; // adjust the path as necessary
+import Post from '../Post/Post';
+import PostServices from '../Services/PostServices';
+import { useQuery } from 'react-query';
 
 const Feed: React.FC = () => {
     const postServices = new PostServices();
-    const [posts, setPosts] = React.useState<any[]>([]);
-    const [error, setError] = React.useState<string | null>(null);
 
-    React.useEffect(() => {
-        const fetchPosts = async () => {
-            try {
-                const data = await postServices.getPosts();
-                // Sort posts by createdAt descending
-                data.sort((a: { createdAt: string | number | Date; }, b: { createdAt: string | number | Date; }) => {
-                    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-                });
-                setPosts(data);
-            } catch (err) {
-                console.error("Failed to fetch posts:", err);
-                setError('Failed to fetch posts. Please try again later.');
-            }
-        };
-
-        fetchPosts();
-    }, []);
+    const { data, isLoading, isError, error } = useQuery('posts', postServices.getPosts);
+        
+    if (isLoading) return <div>Loading...</div>;
+    if (isError || !data) return <div>Failed to fetch posts. Please try again later.</div>;
     
+    const sortedPosts = [...data].sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
     return (
         <div>
-            {error && <div>{error}</div>}
-            {posts.map((post) => (
+            {sortedPosts.map((post) => (
                 <Post
                     key={post.id}
                     postId={post.id}
