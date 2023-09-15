@@ -29,7 +29,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
     const navigate = useNavigate();
 
     const createPostMutation = useMutation(
-        (newPost: PostDetails) => PostService.createPost(newPost, csrfToken), 
+        async (newPost: PostDetails) => await PostService.createPost(newPost, csrfToken), 
         {
             onMutate: (newPost) => {
                 console.log("Mutation started");
