@@ -1,15 +1,25 @@
 import axios from 'axios';
 
-const csrfToken = getCookie('csrftoken');
-
 const axiosInstance = axios.create({
     baseURL: 'http://127.0.0.1:8000/api',
     withCredentials: true, // This ensures cookies are sent with requests
     headers: {
         'Content-Type': 'multipart/form-data',
-        'X-CSRFToken': csrfToken // Set the token fetched from the cookie
+		
     },
     // any other defaults you want
+});
+
+axiosInstance.interceptors.request.use((config) => {
+    // Assuming getCookie is available in this file
+    const csrfToken = getCookie('csrftoken');
+	console.log(csrfToken)
+    if (csrfToken) {
+        config.headers['X-CSRFToken'] = csrfToken;
+    }
+    return config;
+}, (error) => {
+    return Promise.reject(error);
 });
 
 function getCookie(name: string): string | null {
@@ -24,4 +34,10 @@ function getCookie(name: string): string | null {
 			return decodeURIComponent(cookie.substring(nameLenPlus));
 		})[0] || null;
 }
+
+function setCSRFToken(token: string) {
+    axiosInstance.defaults.headers['X-CSRFToken'] = token;
+}
+
 export default axiosInstance;
+export { setCSRFToken, getCookie };

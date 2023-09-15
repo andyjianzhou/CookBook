@@ -10,6 +10,16 @@ interface IAuthContextProps {
   logOut: () => void;
 }
 
+async function fetchCSRFToken() {
+  try {
+    const response = await axios.get('http://127.0.0.1:8000/api/get-csrf/');
+    return response.data.csrfToken;
+  } catch (error) {
+    console.error("Error fetching CSRF token:", error);
+    return null;
+  }
+}
+
 const AuthContext = React.createContext<IAuthContextProps>({
   currentUser: null,
   signUp: () => {},
@@ -29,7 +39,19 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
     logOut: () => {}
   })
   const [loading, setLoading] = useState(true);
+  const [csrfToken, setCSRFToken] = useState<string | null>(null);
   
+  useEffect(() => {
+    async function initialize() {
+      const token = await fetchCSRFToken();
+      setCSRFToken(token);
+    }
+    
+    initialize();
+  
+    // ... your auth state logic
+  }, []);
+    
   function login(email: string, password: string) {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -119,5 +141,4 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
       {!loading && children}
     </AuthContext.Provider>
   )
-
 }

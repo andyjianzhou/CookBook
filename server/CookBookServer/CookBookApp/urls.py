@@ -18,11 +18,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from .views import post_views, user_views
+from .views import post_views, user_views, csrf_view
 
 urlpatterns = [
     path('posts/', post_views.PostListView.as_view(), name="post_list"),
     path('user/', user_views.UserListView.as_view(), name="user_list"),
+    path('get-csrf/', csrf_view.CsrfTokenView.as_view(), name="get_csrf"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
