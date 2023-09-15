@@ -143,12 +143,12 @@ SESSION_COOKIE_SAMESITE = 'None'
 
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",  # frontend server
-    "https://cook-book-hpdu-rapgfrf5z-andyjianzhou.vercel.app"
+    "https://cook-book-hpdu.vercel.app"
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:5173",
-    "https://cook-book-hpdu-rapgfrf5z-andyjianzhou.vercel.app"
+    "https://cook-book-hpdu.vercel.app"
 ]
 
 # media_files blob
