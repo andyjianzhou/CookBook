@@ -29,7 +29,15 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
     const navigate = useNavigate();
 
     const createPostMutation = useMutation(
-        (newPost: PostDetails) => PostService.createPost(newPost, csrfToken), 
+        (newPost: PostDetails) => {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    PostService.createPost(newPost, csrfToken)
+                        .then(resolve)
+                        .catch(reject);
+                }, 1000); // 2 seconds delay
+            });
+        },
         {
             onMutate: (newPost) => {
                 console.log("Mutation started");
@@ -61,6 +69,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
             }
         }
     );
+    
 
     const handleImageClick = () => {
         fileInputRef.current?.click();
