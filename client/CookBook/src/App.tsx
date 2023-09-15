@@ -10,7 +10,15 @@ import { AuthProvider } from './components/contexts/AuthContext';
 import PrivateRoute from './components/Utilities/PrivateRoute';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
-const query = new QueryClient();
+const query = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,  // 5 minutes in milliseconds
+    },
+  },
+});
+
 // add all routers here
 const router = createBrowserRouter([
   {
