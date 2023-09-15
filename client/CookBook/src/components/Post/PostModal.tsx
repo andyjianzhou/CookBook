@@ -94,8 +94,8 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
         };
       
         // Use the mutation to create the post.
-        await createPostMutation.mutate(postDetails);
         onClose();
+        await createPostMutation.mutate(postDetails);
         navigate('/dashboard');
     };
         
