@@ -5,7 +5,6 @@ const axiosInstance = axios.create({
     withCredentials: true, // This ensures cookies are sent with requests
     headers: {
         'Content-Type': 'multipart/form-data',
-		
     },
     // any other defaults you want
 });
@@ -13,7 +12,6 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use((config) => {
     // Assuming getCookie is available in this file
     const csrfToken = getCookie('csrftoken');
-	console.log(csrfToken)
     if (csrfToken) {
         config.headers['X-CSRFToken'] = csrfToken;
     }
