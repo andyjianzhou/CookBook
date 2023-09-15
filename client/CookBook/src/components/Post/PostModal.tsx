@@ -32,6 +32,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
         (newPost: PostDetails) => PostService.createPost(newPost, csrfToken), 
         {
             onMutate: (newPost) => {
+                console.log("Mutation started");
                 // Backup the current cache
                 const previousPosts = queryClient.getQueryData('posts');
     
@@ -49,10 +50,12 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
                 return { previousPosts };
             },
             onError: (error, newPost, context: any) => {
+                console.log("Mutation error:", error);
                 // On error, roll back to the previous value
                 queryClient.setQueryData('posts', context.previousPosts);
             },
             onSuccess: () => {
+                console.log("Mutation settled");
                 // Refetch all todos to sync the cache with the server
                 queryClient.invalidateQueries('posts');
             }
