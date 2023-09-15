@@ -136,7 +136,7 @@ function Copyright(props: any) {
 }
 );
 
-  function DashboardContent() {
+  function SearchContent() {
     const [open, setOpen] = React.useState(true);
     const {currentUser} = useAuth();
     const [currentPage, setPage] = React.useState('Feed');
@@ -235,25 +235,30 @@ function Copyright(props: any) {
         >
         <Toolbar />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3} justifyContent="center">
-                <Grid item xs={12}>
-                    <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                        <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                            Search
-                        </Typography>
-                        <Typography component="p" variant="body1">
-                            This is where you search for others
-                        </Typography>
-                    </Paper>
-                </Grid>
+        <Grid container spacing={3} justifyContent="center">
+            <Grid item xs={12} md={8} lg={9}>
+              <Grid item xs={12}>
+                  <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                      <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                          Search
+                      </Typography>
+                      <Typography component="p" variant="body1">
+                          This is where you search for others
+                      </Typography>
+                  </Paper>
               </Grid>
-            </Container>
-          </Box>
+              {isCreateModalOpen && (
+                <PostModal isOpen={isCreateModalOpen} onClose={() => setCreateModalOpen(false)} />
+                )}
+              </Grid>
+            </Grid>
+          </Container>
         </Box>
-      </ThemeProvider>
-    );
-  }
+      </Box>
+    </ThemeProvider>
+  );
+}
   
-  export default function Dashboard() {
-    return <DashboardContent />;
-  }
+export default function Search() {
+  return <SearchContent />;
+}

@@ -63,8 +63,8 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
         } catch (error) {
             console.error("Error uploading the post:", error);
         }
-        navigate('/dashboard')
         onClose();
+        navigate('/dashboard/'); // Temporary before caching is implemented and invalidating the cache
     };
         
 
