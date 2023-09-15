@@ -1,7 +1,7 @@
 import { PostDetails } from "../../models/PostDetails";
 
 export interface IPostServices {
-    createPost: (post: PostDetails) => Promise<any>;
+    createPost: (post: PostDetails, csrfToken: string | null) => Promise<any>;
     editPost: (id: string, post: PostDetails) => Promise<any>;
     getPosts: () => Promise<any>;
     getPost: (id: string) => Promise<any>;

@@ -5,10 +5,12 @@ import axios from "../Utilities/axiosConfig";
 
 interface IAuthContextProps {
   currentUser: FirebaseUser | null | undefined;
+  csrfToken: string | null;
   signUp: (email: string, password: string, checkBoxToggle: boolean, displayName: string) => void;
   login: (email: string, password: string) => void;
   logOut: () => void;
 }
+
 
 async function fetchCSRFToken() {
   try {
@@ -22,6 +24,7 @@ async function fetchCSRFToken() {
 
 const AuthContext = React.createContext<IAuthContextProps>({
   currentUser: null,
+  csrfToken: null,
   signUp: () => {},
   login:() => {},
   logOut: () => {}
@@ -34,6 +37,7 @@ export function useAuth() {
 export function AuthProvider({children}: {children: React.ReactNode}) {
   const [currentUser, setCurrentUser] = useState<IAuthContextProps | null> ({
     currentUser: null,
+    csrfToken: null,
     signUp: () => {},
     login: () => {},
     logOut: () => {}
@@ -120,6 +124,7 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
     const unsubscribe = auth.onAuthStateChanged((user) => {
     setCurrentUser({  
       currentUser: user,
+      csrfToken: csrfToken,
       signUp: signUp,
       login: login,
       logOut: logOut
@@ -131,6 +136,7 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
   
   const value = {
     currentUser: currentUser?.currentUser,
+    csrfToken: csrfToken,
     signUp,
     login,
     logOut

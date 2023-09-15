@@ -4,7 +4,7 @@ import axios from '../Utilities/axiosConfig';
 
 class PostServices implements IPostServices {
 
-    async createPost(post: PostDetails): Promise<any> {
+    async createPost(post: PostDetails, csrfToken: string | null): Promise<any> {
         // transform the post to the format the backend expects
         const formData = new FormData();
         formData.append('post_data', JSON.stringify({
@@ -19,13 +19,17 @@ class PostServices implements IPostServices {
         }
         
 
-        axios.post('http://127.0.0.1:8000/api/posts/', formData)
-            .then((response) => {
-                console.log(response);
-            }, (error) => {
-                console.log(error);
+        axios.post('http://127.0.0.1:8000/api/posts/', formData, {
+            headers: {
+                'X-CSRFToken': csrfToken,
             }
-        );
+        })
+        .then((response) => {
+            console.log(response);
+        }, (error) => {
+            console.log(error);
+        }
+    );
     }
 
   async editPost(id: string, post: any): Promise<any> {

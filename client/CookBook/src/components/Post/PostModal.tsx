@@ -22,6 +22,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
     const [desc, setDesc] = React.useState('');
     const [imagePreview, setImagePreview] = React.useState<string | null>(null); // Added this for storing the image preview URL
 
+    const { csrfToken } = useAuth();
     const PostService = new PostServices();
     const { currentUser } = useAuth();
     // Temporary before caching is implemented and invalidating the cache
@@ -58,7 +59,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
                 createdAt: new Date(),
                 updatedAt: null
             };
-            const result = await PostService.createPost(postDetails);
+            const result = await PostService.createPost(postDetails, csrfToken);
             console.log(result);
         } catch (error) {
             console.error("Error uploading the post:", error);
