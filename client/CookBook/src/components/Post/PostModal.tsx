@@ -79,7 +79,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
     };
     
 
-    const handlePostClick = () => {
+    const handlePostClick = async () => {
         if (!file && !desc) return;  // If there's no file and no description, exit
 
         const postDetails: PostDetails = {
@@ -94,7 +94,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
         };
       
         // Use the mutation to create the post.
-        createPostMutation.mutate(postDetails);
+        await createPostMutation.mutate(postDetails);
         onClose();
         navigate('/dashboard');
     };
