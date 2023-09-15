@@ -4,6 +4,7 @@ import './App.css'
 import { createBrowserRouter, RouterProvider, Routes, Route } from "react-router-dom";
 import SignUp from './components/SignUp/SignUp'
 import Dashboard from './components/Dashboard/Dashboard'
+import Search from './components/Search/Search'
 import Login from './components/Login/Login'
 import { AuthProvider } from './components/contexts/AuthContext';
 import PrivateRoute from './components/Utilities/PrivateRoute';
@@ -19,8 +20,12 @@ const router = createBrowserRouter([
     element: <SignUp />,
   },
   {
-    path: "/Dashboard",
+    path: "/dashboard",
     element: <PrivateRoute component={Dashboard} />,
+  },
+  {
+    path: "/dashboard/search",
+    element: <PrivateRoute component={Search} />,
   }
 ]);
 

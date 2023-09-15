@@ -8,6 +8,7 @@ import { PostDetails } from '../../models/PostDetails';
 import {v4 as uuidv4} from 'uuid';
 import { useAuth } from '../contexts/AuthContext';
 import PostTextField from './PostTextField';
+import { useNavigate } from 'react-router-dom';
 
 
 interface PostModalProps {
@@ -23,6 +24,8 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
 
     const PostService = new PostServices();
     const { currentUser } = useAuth();
+    // Temporary before caching is implemented and invalidating the cache
+    const navigate = useNavigate();
 
     const handleImageClick = () => {
         fileInputRef.current?.click();
@@ -60,6 +63,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
         } catch (error) {
             console.error("Error uploading the post:", error);
         }
+        navigate('/dashboard')
         onClose();
     };
         

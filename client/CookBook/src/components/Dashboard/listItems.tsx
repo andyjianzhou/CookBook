@@ -1,19 +1,14 @@
 import * as React from 'react';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
-import DashboardIcon from '@mui/icons-material/Dashboard';
 import ChatIcon from '@mui/icons-material/Chat';
 import PeopleIcon from '@mui/icons-material/People';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import KitchenIcon from '@mui/icons-material/Kitchen';
 import SearchIcon from '@mui/icons-material/Search';
 import HomeIcon from '@mui/icons-material/Home';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import { BottomNavigation } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 interface ListItemsProps {
   setPage: (page: string) => void;
@@ -22,9 +17,20 @@ interface ListItemsProps {
 }
 
 export const mainListItems: React.FC<ListItemsProps> = ({ setPage, isMobile, setCreateModalOpen }) => {
+  const navigate = useNavigate();
   const handlePageChange = (page: string) => {
-    console.log("Page pressed: ", page);
     setPage(page);
+
+    switch (page) {
+      case 'Feed':
+        navigate('/dashboard');
+        break;
+      case 'Search':
+        navigate('/dashboard/search');
+        break;
+      default:
+        break;
+    }
   }
 
   const handleCreateModalOpen = (isOpened: boolean) => {
@@ -34,7 +40,7 @@ export const mainListItems: React.FC<ListItemsProps> = ({ setPage, isMobile, set
 
   return (
     <React.Fragment>
-      <ListItemButton onClick={() => handlePageChange('Feed')}> 
+      <ListItemButton onClick={() => handlePageChange('Feed')}>
       <ListItemIcon>
         <HomeIcon />
       </ListItemIcon>

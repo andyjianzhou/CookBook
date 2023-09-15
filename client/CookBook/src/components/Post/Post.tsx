@@ -1,6 +1,10 @@
 import React from 'react'
-import { Avatar, Box, CardMedia, Typography, styled } from '@mui/material'
+import { Avatar, Box, CardMedia, IconButton, Typography } from '@mui/material'
 import { useAuth } from '../contexts/AuthContext';
+import ModeCommentOutlinedIcon from '@mui/icons-material/ModeCommentOutlined';
+import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
+import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
+import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 
 interface PostProps {
   postId: number,
@@ -63,7 +67,6 @@ const Post: React.FC<PostProps> = ({ postId, userId, userName, content, mediaFil
         '&:hover': {
           backgroundColor: 'action.hover',
         },
-        cursor: 'pointer',
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem' }}>
@@ -76,42 +79,59 @@ const Post: React.FC<PostProps> = ({ postId, userId, userName, content, mediaFil
           </Box>
         </Box>
       </Box>
-      <Box sx={{ padding: '0rem 4rem' }}> 
+      <Box sx={{ padding: '0rem 4rem' }}>
         <Typography variant="body1">{content}</Typography>
         {mediaFiles && (
           <Box mt={2}>
             {Array.isArray(mediaFiles)
-                ? mediaFiles.map((fileOrUrl, index) => (
+              ? mediaFiles.map((fileOrUrl, index) => (
                   <CardMedia
-                    key={index}
-                    component="img"
-                    alt="Post media"
-                    height="240"
-                    src={
-                      typeof fileOrUrl === 'string' 
-                      ? ((fileOrUrl as string).startsWith('/media_files') ? `http://127.0.0.1:8000${fileOrUrl}` : fileOrUrl)
-                      : URL.createObjectURL(fileOrUrl)
-                    }
-                    title="Post media"
+                      key={index}
+                      component="img"
+                      alt="Post media"
+                      height="240"
+                      src={
+                          typeof fileOrUrl === 'string'
+                              ? ((fileOrUrl as string).startsWith('/media_files') ? `http://127.0.0.1:8000${fileOrUrl}` : fileOrUrl)
+                              : URL.createObjectURL(fileOrUrl)
+                      }
+                      title="Post media"
                   />
-                  ))
-                : <CardMedia
-                    component="img"
-                    alt="Post media"
-                    height="240"
-                    src={
-                      typeof mediaFiles === 'string' 
-                          ? ((mediaFiles as string).startsWith('/media_files') ? `http://127.0.0.1:8000${mediaFiles}` : mediaFiles)
-                          : URL.createObjectURL(mediaFiles)
-                  }
-                    title="Post media"
-                  />
+              ))
+              : 
+              <CardMedia
+                component="img"
+                alt="Post media"
+                height={mediaFiles.size}
+                sx={{ borderRadius: '1rem' }}
+                src={
+                    typeof mediaFiles === 'string'
+                        ? ((mediaFiles as string).startsWith('/media_files') ? `http://127.0.0.1:8000${mediaFiles}` : mediaFiles)
+                        : URL.createObjectURL(mediaFiles)
+                }
+                title="Post media"
+              />
             }
           </Box>
         )}
-      </Box>
-      {/* Add comment and other buttons here */}
+
+        {/* Icons Container */}
+        <Box mt={1} display="flex" justifyContent="space-between">
+            <IconButton size="small">
+                <ModeCommentOutlinedIcon />
+            </IconButton>
+            <IconButton size="small">
+                <BookmarkBorderOutlinedIcon />
+            </IconButton>
+            <IconButton size="small">
+                <ShareOutlinedIcon />
+            </IconButton >
+            <IconButton size="small">
+                <SendOutlinedIcon />
+            </IconButton>
+        </Box>
     </Box>
+  </Box>
   );
 };
 

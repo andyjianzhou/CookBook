@@ -25,6 +25,7 @@ import { useAuth } from '../contexts/AuthContext';
 import ProfileDropDownMenu from '../Profile/ProfileDropDownMenu';
 import PostModal from '../Post/PostModal';
 import Feed from '../Feed/Feed';
+import { BrowserRouter, Router } from 'react-router-dom';
 
 // mobile only imports
 import { mainMobileListItems } from './Mobile/ListItemsMobile';
@@ -191,7 +192,7 @@ function Copyright(props: any) {
         {isMobile ? (
           // Mobile drawer to be at the bottom of the screen
           // TODO: There are errors with this, I fixed it but there's a black border around each button
-          <BottomNavigation sx={{ width: '100%', position: 'fixed', bottom: 0, borderTop: 1, borderColor: 'divider' }}>
+          <BottomNavigation sx={{ width: '100%', position: 'fixed', bottom: 0, borderTop: 1, borderColor: 'divider'}}>
             {mainListItems({setPage, isMobile, setCreateModalOpen})}
           </BottomNavigation>
         ) : (
@@ -237,7 +238,7 @@ function Copyright(props: any) {
         <Grid container spacing={3} justifyContent="center">
             <Grid item xs={12} md={8} lg={9}>
               {currentPage === 'Feed' && (
-                <Feed />
+                  <Feed />
               )}
               {currentPage === 'Search' && (
                   <Grid item xs={12}>
