@@ -28,6 +28,15 @@ export const mainListItems: React.FC<ListItemsProps> = ({ setPage, isMobile, set
       case 'Search':
         navigate('/dashboard/search');
         break;
+      case 'Explore':
+        navigate('/dashboard/explore');
+        break;
+      case 'Scan':
+        navigate('/dashboard/scan');
+        break;
+      case 'Kitchen':
+        navigate('/dashboard/kitchen');
+        break;
       default:
         break;
     }
