@@ -16,6 +16,7 @@ import environ
 
 env = environ.Env()
 environ.Env.read_env()  # this line loads the .env file
+# does .env file exist?
 
 SECRET_KEY = env('SECRET_KEY')
 
