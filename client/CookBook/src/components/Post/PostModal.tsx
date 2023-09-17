@@ -34,27 +34,31 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
             onMutate: async (newPost) => {
                 console.log("Mutation started");
                 await queryClient.cancelQueries('posts');
-            
                 // Backup the current cache
-                const cachedData = queryClient.getQueryData<PostDetails[]>('posts');
-                const previousPosts = Array.isArray(cachedData) ? cachedData : [];
-            
-                console.log(newPost);
-            
-                // Update the cache optimistically
-                queryClient.setQueryData('posts', [
-                    newPost,
-                    ...previousPosts
-                ]);
+                const cachedData = queryClient.getQueryData<PostDetails[][]>('posts');
+                if (!Array.isArray(cachedData) || !cachedData.length || !Array.isArray(cachedData[0])) {
+                    console.error("Cached data format is incorrect");
+                    return;
+                }
     
-                // Return a context object with the previous posts
-                return { previousPosts };
+                const previousPosts = cachedData[0]; // Assuming the newest posts are in the first page
+    
+                // Update the cache optimistically
+                await queryClient.setQueryData('posts', [
+                    [newPost, ...previousPosts],
+                    ...cachedData.slice(1)
+                ]);
+                
+                // Return a context object with the entire cached data (all pages) for potential rollback
+                return { cachedData };
             },
             onError: (error, newPost, context: any) => {
                 console.log("Mutation error:", error);
                 
                 // On error, roll back to the previous value
-                queryClient.setQueryData('posts', context.previousPosts);
+                if (context?.cachedData) {
+                    queryClient.setQueryData('posts', context.cachedData);
+                }
             },
             onSuccess: () => {
                 console.log("Mutation successful");
