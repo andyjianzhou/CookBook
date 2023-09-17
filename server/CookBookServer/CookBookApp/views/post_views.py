@@ -3,6 +3,7 @@ from django.views import View
 from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
 from ..models import Post
 from ..serializers.Posts.PostSerializers import PostSerializer
+from django.core.paginator import Paginator, EmptyPage
 import json
 
 # Create your views
@@ -10,8 +11,22 @@ class PostListView(View):
     parser_classes = (FormParser, MultiPartParser)
 
     def get(self, request):
+        page = request.GET.get('page', 1)
+        page_size = request.GET.get('page_size', 20)  # 10 posts per page by default
+
         posts = Post.objects.all()
-        serializer = PostSerializer(posts, many=True)
+        
+        # sort by date
+        posts = posts.order_by('-createdAt')
+        
+        paginator = Paginator(posts, page_size)
+
+        try:
+            current_page_data = paginator.page(page)
+        except EmptyPage:
+            return JsonResponse([], safe=False)  # Return empty list if there are no more posts
+
+        serializer = PostSerializer(current_page_data, many=True)
         return JsonResponse(serializer.data, safe=False)
 
     def post(self, request):
