@@ -29,34 +29,32 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
     const navigate = useNavigate();
 
     const createPostMutation = useMutation(
-        async (newPost: PostDetails) => await PostService.createPost(newPost, csrfToken), 
+        async (newPost: PostDetails) => await PostService.createPost(newPost, csrfToken),
         {
-            onMutate: (newPost) => {
+            onMutate: async (newPost) => {
                 console.log("Mutation started");
+                await queryClient.cancelQueries('posts');
                 // Backup the current cache
-                const previousPosts = queryClient.getQueryData('posts');
-    
+                const previousPosts = queryClient.getQueryData<PostDetails[]>('posts') || [];
+                console.log(newPost);
                 // Update the cache optimistically
-                queryClient.setQueryData('posts', (oldData: PostDetails[] | undefined) => {
-                    if (!oldData) return [newPost];
-                    
-                    return [
-                      newPost,
-                      ...oldData
-                    ];
-                  });                  
+                await queryClient.setQueryData('posts', [
+                    newPost,
+                    ...previousPosts
+                ]);
     
                 // Return a context object with the previous posts
                 return { previousPosts };
             },
             onError: (error, newPost, context: any) => {
                 console.log("Mutation error:", error);
+                
                 // On error, roll back to the previous value
                 queryClient.setQueryData('posts', context.previousPosts);
             },
             onSuccess: () => {
-                console.log("Mutation settled");
-                // Refetch all todos to sync the cache with the server
+                console.log("Mutation successful");
+                // Invalidate the 'posts' query so the data is re-fetched next time
                 queryClient.invalidateQueries('posts');
             }
         }
@@ -94,8 +92,8 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
         };
       
         // Use the mutation to create the post.
-        onClose();
         await createPostMutation.mutate(postDetails);
+        onClose();
         navigate('/dashboard');
     };
         

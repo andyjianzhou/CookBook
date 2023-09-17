@@ -4,7 +4,7 @@ import axios from '../Utilities/axiosConfig';
 
 class PostServices implements IPostServices {
 
-    async createPost(post: PostDetails, csrfToken: string | null): Promise<any> {
+    async createPost(post: PostDetails, csrfToken: string | null): Promise<PostDetails> {
         // transform the post to the format the backend expects
         const formData = new FormData();
         formData.append('post_data', JSON.stringify({
@@ -12,25 +12,26 @@ class PostServices implements IPostServices {
             userId: post.userId,
             content: post.description,
         }));
+        
         if (post.file) {
             formData.append('media_file', post.file, post.file.name);
         } else {
             formData.append('media_file', '');
         }
         
-
-        axios.post('http://127.0.0.1:8000/api/posts/', formData, {
-            headers: {
-                'X-CSRFToken': csrfToken,
-            }
-        })
-        .then((response) => {
-            console.log(response);
-        }, (error) => {
-            console.log(error);
+        try {
+            const response = await axios.post('http://127.0.0.1:8000/api/posts/', formData, {
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                }
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error creating post:", error);
+            throw error;
         }
-    );
     }
+    
 
   async editPost(id: string, post: any): Promise<any> {
       // actual implementation here
