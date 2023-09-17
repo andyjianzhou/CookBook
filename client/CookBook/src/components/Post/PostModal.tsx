@@ -34,22 +34,27 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
             onMutate: async (newPost) => {
                 console.log("Mutation started");
                 await queryClient.cancelQueries('posts');
+                
                 // Backup the current cache
-                const cachedData = queryClient.getQueryData<PostDetails[][]>('posts');
-                if (!Array.isArray(cachedData) || !cachedData.length || !Array.isArray(cachedData[0])) {
+                const cachedData = queryClient.getQueryData<{ pages: PostDetails[][], pageParams: any[] }>('posts');
+                if (!cachedData || !Array.isArray(cachedData.pages) || !cachedData.pages.length || !Array.isArray(cachedData.pages[0])) {
                     console.error("Cached data format is incorrect");
+                    console.log("Actual cached data:", cachedData);
                     return;
                 }
     
-                const previousPosts = cachedData[0]; // Assuming the newest posts are in the first page
+                const previousPosts = cachedData.pages[0]; // Assuming the newest posts are in the first page
     
                 // Update the cache optimistically
-                await queryClient.setQueryData('posts', [
-                    [newPost, ...previousPosts],
-                    ...cachedData.slice(1)
-                ]);
+                await queryClient.setQueryData('posts', {
+                    ...cachedData,
+                    pages: [
+                        [newPost, ...previousPosts],
+                        ...cachedData.pages.slice(1)
+                    ]
+                });
                 
-                // Return a context object with the entire cached data (all pages) for potential rollback
+                // Return a context object with the entire cached data (all pages and params) for potential rollback
                 return { cachedData };
             },
             onError: (error, newPost, context: any) => {

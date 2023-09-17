@@ -13,6 +13,7 @@ import Login from './components/Login/Login'
 import Scan from './components/Scan/Scan';
 import Kitchen from './components/Kitchen/Kitchen';
 import Explore from './components/Explore/Explore';
+import HomePages from './components/LandingPage/HomePages';
 
 const query = new QueryClient({
   defaultOptions: {
@@ -26,10 +27,14 @@ const query = new QueryClient({
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <HomePages />,
+  },
+  {
+    path: "/login",
     element: <Login />,
   },
   {
-    path: "/SignUp",
+    path: "/signup",
     element: <SignUp />,
   },
   {
