@@ -2,13 +2,17 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
 import { createBrowserRouter, RouterProvider, Routes, Route } from "react-router-dom";
+import { AuthProvider } from './components/contexts/AuthContext';
+import PrivateRoute from './components/Utilities/PrivateRoute';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
 import SignUp from './components/SignUp/SignUp'
 import Dashboard from './components/Dashboard/Dashboard'
 import Search from './components/Search/Search'
 import Login from './components/Login/Login'
-import { AuthProvider } from './components/contexts/AuthContext';
-import PrivateRoute from './components/Utilities/PrivateRoute';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import Scan from './components/Scan/Scan';
+import Kitchen from './components/Kitchen/Kitchen';
+import Explore from './components/Explore/Explore';
 
 const query = new QueryClient({
   defaultOptions: {
@@ -35,7 +39,19 @@ const router = createBrowserRouter([
   {
     path: "/dashboard/search",
     element: <PrivateRoute component={Search} />,
-  }
+  },
+  {
+    path: "/dashboard/scan",
+    element: <PrivateRoute component={Scan} />,
+  },
+  {
+    path: "/dashboard/kitchen",
+    element: <PrivateRoute component={Kitchen} />,
+  },
+  {
+    path: "/dashboard/explore",
+    element: <PrivateRoute component={Explore} />,
+  },
 ]);
 
 function App() {
