@@ -1,38 +1,69 @@
 import React from 'react';
 import Post from '../Post/Post';
 import PostServices from '../Services/PostServices';
-import { useQuery } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 const Feed: React.FC = () => {
     const postService = new PostServices();
 
-    const { data, isLoading, isError, error, refetch } = useQuery('posts', postService.getPosts, {
-        refetchOnWindowFocus: false,
-        refetchOnMount: true,
-        refetchOnReconnect: false,
-    });
+    const {
+        data,
+        isLoading,
+        isError,
+        error,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+    } = useInfiniteQuery('posts', 
+        ({ pageParam = 1 }) => postService.getPosts(pageParam),
+        {
+            getNextPageParam: (lastPage, pages) => {
+                if (lastPage.length > 0) {
+                    return pages.length + 1;
+                }
+                return false;
+            },
+            refetchOnWindowFocus: false,
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+        }
+    );
+
+    const observer = new IntersectionObserver(
+        entries => {
+            if (entries[0].isIntersecting) {
+                if (hasNextPage) {
+                    fetchNextPage();
+                }
+            }
+        },
+        { threshold: 1 }
+    );
 
     React.useEffect(() => {
-        const handleNewPost = () => {
-            refetch();
-        };
-
-        // Listen for any event that signifies a new post has been made
-        window.addEventListener('newPost', handleNewPost);
+        const trigger = document.getElementById('load-more-trigger');
+        if (trigger) {
+            observer.observe(trigger);
+        }
 
         return () => {
-            window.removeEventListener('newPost', handleNewPost);
+            if (trigger) {
+                observer.unobserve(trigger);
+            }
         };
-    }, [refetch]);
+    }, [observer]);
 
-    if (isLoading) return <p>Loading...</p>;
+    if (isLoading) return <Box sx={{ display: 'flex', justifyContent: 'center' }}><CircularProgress /></Box>;
+    
     if (isError) return <p>Error: {(error as Error).message}</p>;
 
-    const sortedPosts = [...data].sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    const allPosts = data?.pages?.flat() || [];
 
     return (
         <div>
-            {sortedPosts.map((post) => (
+            {allPosts?.map((post) => (
                 <Post
                     key={post.id}
                     postId={post.id}
@@ -43,7 +74,12 @@ const Feed: React.FC = () => {
                     createdAt={new Date(post.createdAt)}
                 />
             ))}
+            <div id="load-more-trigger"></div>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <CircularProgress />
+            </Box>
         </div>
     );
 }
+
 export default Feed;
