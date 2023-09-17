@@ -12,9 +12,10 @@ class PostListView(View):
 
     def get(self, request):
         page = request.GET.get('page', 1)
-        page_size = request.GET.get('page_size', 10)  # 10 posts per page by default
+        page_size = request.GET.get('page_size', 20)  # 10 posts per page by default
 
         posts = Post.objects.all()
+        
         # sort by date
         posts = posts.order_by('-createdAt')
         

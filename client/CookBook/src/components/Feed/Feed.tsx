@@ -2,6 +2,8 @@ import React from 'react';
 import Post from '../Post/Post';
 import PostServices from '../Services/PostServices';
 import { useInfiniteQuery } from 'react-query';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 const Feed: React.FC = () => {
     const postService = new PostServices();
@@ -53,7 +55,8 @@ const Feed: React.FC = () => {
         };
     }, [observer]);
 
-    if (isLoading) return <p>Loading...</p>;
+    if (isLoading) return <Box sx={{ display: 'flex', justifyContent: 'center' }}><CircularProgress /></Box>;
+    
     if (isError) return <p>Error: {(error as Error).message}</p>;
 
     const allPosts = data?.pages?.flat() || [];
@@ -72,7 +75,9 @@ const Feed: React.FC = () => {
                 />
             ))}
             <div id="load-more-trigger"></div>
-            {isFetchingNextPage && <p>Loading more...</p>}
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <CircularProgress />
+            </Box>
         </div>
     );
 }
