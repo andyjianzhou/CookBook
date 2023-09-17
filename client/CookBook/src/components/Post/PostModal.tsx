@@ -34,11 +34,15 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
             onMutate: async (newPost) => {
                 console.log("Mutation started");
                 await queryClient.cancelQueries('posts');
+            
                 // Backup the current cache
-                const previousPosts = queryClient.getQueryData<PostDetails[]>('posts') || [];
+                const cachedData = queryClient.getQueryData<PostDetails[]>('posts');
+                const previousPosts = Array.isArray(cachedData) ? cachedData : [];
+            
                 console.log(newPost);
+            
                 // Update the cache optimistically
-                await queryClient.setQueryData('posts', [
+                queryClient.setQueryData('posts', [
                     newPost,
                     ...previousPosts
                 ]);
