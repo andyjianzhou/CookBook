@@ -1,5 +1,5 @@
 export interface IUserServices {
-    register: (user: any) => Promise<any>;
+    register: (user: any, csrfToken: string | null) => Promise<any>;
     login: (user: any) => Promise<any>;
     logout: () => Promise<any>;
     getUser: (id: string) => Promise<any>;

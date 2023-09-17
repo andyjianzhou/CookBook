@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import {auth}  from '../../firebase';
 import { User as FirebaseUser, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import axios from "../Utilities/axiosConfig";
+import UserServices from "../Services/UserServices";
 
 interface IAuthContextProps {
   currentUser: FirebaseUser | null | undefined;
@@ -44,7 +45,9 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
   })
   const [loading, setLoading] = useState(true);
   const [csrfToken, setCSRFToken] = useState<string | null>(null);
-  
+
+  const userServices = new UserServices();
+
   useEffect(() => {
     async function initialize() {
       const token = await fetchCSRFToken();
@@ -53,7 +56,6 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
     
     initialize();
   
-    // ... your auth state logic
   }, []);
     
   function login(email: string, password: string) {
@@ -91,15 +93,8 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
             email: user.email,
         };
 
-        // TODO: Put this into a service file.
-        axios.post('http://127.0.0.1:8000/api/user/', userProfileData)
-            .then((response) => {
-                console.log(response);
-            }, (error) => {
-                console.log(error);
-            });
-
-        console.log("User profile created successfully in the backend");
+        const registeredUser = await userServices.register(userProfileData, csrfToken)
+        console.log("User registered successfully:", registeredUser)
 
         if (checkBoxToggle) {
             console.log("User wants to receive updates via email");

@@ -4,19 +4,35 @@ from rest_framework.parsers import JSONParser
 from ..models import UserProfile
 from ..serializers.Users.UsersSerializers import UserProfileSerializer  # Assuming you have this serializer
 
+from django.views import View
+from django.http import JsonResponse
+import json
+from rest_framework.parsers import FormParser, MultiPartParser
+from ..models import UserProfile
+from ..serializers.Users.UsersSerializers import UserProfileSerializer
+
 class UserListView(View):
+    parser_classes = (FormParser, MultiPartParser)
+
     def get(self, request):
         users = UserProfile.objects.all()
         serializer = UserProfileSerializer(users, many=True)
         return JsonResponse(serializer.data, safe=False)
 
     def post(self, request):
-        data = JSONParser().parse(request)
-        serializer = UserProfileSerializer(data=data)
+        # First, get the JSON string from 'user_data' (or whatever key you choose)
+        user_data_json_str = request.POST.get('user_data')
+        
+        # Convert the JSON string to a dictionary
+        user_data = json.loads(user_data_json_str)
+        
+        # Now use the user_data dictionary with the serializer
+        serializer = UserProfileSerializer(data=user_data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
+
 
 
 class UserDetailView(View):
