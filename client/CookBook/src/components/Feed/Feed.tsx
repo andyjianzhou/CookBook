@@ -63,9 +63,9 @@ const Feed: React.FC = () => {
 
     return (
         <div>
-            {allPosts?.map((post) => (
+            {allPosts?.map((post, index) => (
                 <Post
-                    key={post.id}
+                    key={index}
                     postId={post.id}
                     userId={post.userId}
                     userName={post.username}
