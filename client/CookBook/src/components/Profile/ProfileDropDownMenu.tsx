@@ -26,7 +26,7 @@ const ProfileDropDownMenu: React.FC<Props> = ({ profile }) => {
 
     const handleLogout = async () => {
         await logOut();
-        navigate('/');
+        navigate('/login');
     }
 
     return (
