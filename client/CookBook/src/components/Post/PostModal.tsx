@@ -28,7 +28,6 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
     
-    console.log(csrfToken);
     const createPostMutation = useMutation(
         async (newPost: PostDetails) => await PostService.createPost(newPost, csrfToken),
         {
@@ -58,9 +57,9 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
                 // Return a context object with the entire cached data (all pages and params) for potential rollback
                 return { cachedData };
             },
-            onError: (error, newPost, context: any) => {
+            onError: (error: any, newPost, context: any) => {
                 console.log("Mutation error:", error);
-                
+                console.error("Detailed error:", error.response?.data); 
                 // On error, roll back to the previous value
                 if (context?.cachedData) {
                     queryClient.setQueryData('posts', context.cachedData);
