@@ -27,7 +27,8 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
     const { currentUser } = useAuth();
     const queryClient = useQueryClient();
     const navigate = useNavigate();
-
+    
+    console.log(csrfToken);
     const createPostMutation = useMutation(
         async (newPost: PostDetails) => await PostService.createPost(newPost, csrfToken),
         {

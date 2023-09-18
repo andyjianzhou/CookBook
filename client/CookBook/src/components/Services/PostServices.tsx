@@ -1,7 +1,6 @@
 import { IPostServices } from './IPostServices'
 import { PostDetails } from '../../models/PostDetails';
-import axiosInstance from '../Utilities/axiosConfig';
-import axios from 'axios';
+import axios from '../Utilities/axiosConfig';
 
 class PostServices implements IPostServices {
 
@@ -21,7 +20,7 @@ class PostServices implements IPostServices {
         }
         
         try {
-            const response = await axiosInstance.post('http://127.0.0.1:8000/api/posts/', formData, {
+            const response = await axios.post('http://127.0.0.1:8000/api/posts/', formData, {
                 headers: {
                     'X-CSRFToken': csrfToken,
                 }
