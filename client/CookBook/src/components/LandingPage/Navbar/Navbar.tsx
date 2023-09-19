@@ -45,6 +45,7 @@ const List = styled.ul`
 
 const ListItem = styled.li`
   cursor: pointer;
+  z-index: 1;
 `;
 
 const Icons = styled.div`

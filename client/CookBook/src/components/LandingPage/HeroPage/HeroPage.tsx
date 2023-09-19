@@ -176,7 +176,7 @@ const Hero = () => {
   return (
     <>
       <Section>
-        {/* <FruitDisplay/> */}
+        <FruitDisplay/>
         <Navbar />
         <Container>
           <Left>
