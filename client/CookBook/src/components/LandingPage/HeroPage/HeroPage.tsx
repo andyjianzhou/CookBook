@@ -91,7 +91,6 @@ const Title = styled.h1`
   }
 `;
 
-
 const WhatWeDo = styled.div`
   display: flex;
   align-items: center;
