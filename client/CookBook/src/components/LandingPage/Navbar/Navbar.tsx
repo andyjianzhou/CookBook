@@ -61,7 +61,7 @@ const Icon = styled.img`
 const Button = styled.button`
   width: 100px;
   padding: 10px;
-  background-color: #da4ea2;
+  background-color: #93E9BE;
   color: white;
   border: none;
   border-radius: 5px;
@@ -73,7 +73,7 @@ export const Navbar = () => {
       <Section>
         <Container>
           <Links>
-            <Logo src="./img/logo.png" />
+            {/* <Logo src="./img/logo.png" /> */}
             <List>
               <ListItem>Home</ListItem>
               <ListItem>Studio</ListItem>
@@ -84,7 +84,7 @@ export const Navbar = () => {
           <Icons>
             {/* Changed the image due to copyright problems */}
             <Icon src="./img/search.png" />
-            <Button>Hire Now</Button>
+            <Button>Try Now</Button>
           </Icons>
         </Container>
       </Section>

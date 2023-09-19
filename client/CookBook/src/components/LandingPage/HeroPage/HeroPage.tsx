@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import { Navbar } from "../Navbar/Navbar";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Sphere, MeshDistortMaterial } from "@react-three/drei";
@@ -47,6 +47,44 @@ const Left = styled.div`
 
 const Title = styled.h1`
   font-size: 74px;
+  position: relative;
+
+  .scan {
+    display: inline-flex;
+    overflow: hidden;
+    position: relative;
+
+    span {
+      display: inline-block;
+      position: relative;
+      transform-origin: bottom;
+      overflow: hidden;
+      color: transparent;
+      background-clip: text;
+      animation: revealText 0.5s forwards;
+      animation-delay: calc(0.15s * var(--index));
+
+      &::before {
+        content: attr(data-char);
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: #93E9BE; /* sea foam green */
+        transform: translateY(100%);
+        transition: transform 0.3s;
+      }
+
+      &:hover::before {
+        transform: translateY(0);
+      }
+    }
+  }
+
+  @keyframes revealText {
+    to {
+      color: black; /* Adjust this to whatever the original color of the text should be */
+    }
+  }
 
   @media only screen and (max-width: 768px) {
     text-align: center;
@@ -64,20 +102,30 @@ const Line = styled.img`
 `;
 
 const Subtitle = styled.h2`
-  color: #da4ea2;
+  color: #FFFF00;
 `;
 
 const Desc = styled.p`
   font-size: 24px;
-  color: lightgray;
+  color: white;
+  transition: transform 0.3s ease, color 0.3s ease; // smooth transition for transform and color
+  transform: perspective(600px) translateZ(0); // adding perspective for 3D effect
+  cursor: pointer; // to indicate to the user that it's hoverable
+
+  &:hover {
+    transform: perspective(600px) translateZ(20px); // popping effect
+    color: #93E9BE; // Sea Foam Green
+  }
+
   @media only screen and (max-width: 768px) {
     padding: 20px;
     text-align: center;
   }
 `;
 
+
 const Button = styled.button`
-  background-color: #da4ea2;
+  background-color: #93E9BE;
   color: white;
   font-weight: 500;
   width: 100px;
@@ -120,19 +168,33 @@ const Img = styled.img`
   }
 `;
 
+const GlobalStyle = createGlobalStyle`
+  span[data-index="0"] { --index: 0; }
+  span[data-index="1"] { --index: 1; }
+  span[data-index="2"] { --index: 2; }
+  span[data-index="3"] { --index: 3; }
+`;
+
 const Hero = () => {
   return (
     <Section>
       <Navbar />
       <Container>
         <Left>
-          <Title>Sizzle, Serve, Scan.</Title>
+        <Title>
+          Sizzle, Serve, 
+          <span className="scan">
+            <span data-char="S" data-index="0">S</span>
+            <span data-char="c" data-index="1">c</span>
+            <span data-char="a" data-index="2">a</span>
+            <span data-char="n" data-index="3">n</span>
+          </span>.
+        </Title>
           <WhatWeDo>
             <Line src="./img/line.png" />
-            <Subtitle>What we Do</Subtitle>
           </WhatWeDo>
           <Desc>
-            we enjoy creating delightful, human-centered digital experiences.
+            With the power of AI, we can help you find the perfect recipe for your ingredients.
           </Desc>
           <Button>Learn More</Button>
         </Left>
@@ -144,7 +206,7 @@ const Hero = () => {
               <directionalLight position={[3, 2, 1]} />
               <Sphere args={[1, 100, 200]} scale={2.4}>
                 <MeshDistortMaterial
-                  color="#3d1c56"
+                  color="#FFFDD0"
                   attach="material"
                   distort={0.5}
                   speed={2}
