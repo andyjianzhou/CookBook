@@ -6,3 +6,4 @@ tqdm
 django-environ
 django-cors-headers
 torch
+environ
