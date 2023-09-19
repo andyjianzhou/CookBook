@@ -32,7 +32,7 @@ const PostTextField: React.FC<PostTextFieldProps> = ({ value, onChange, onFileCh
     onFileChange(null);
 };
   return (
-    <Box sx={{ position: 'relative' }}>
+    <Box component="div" sx={{ position: 'relative' }}>
       <TextField
         label="What's on your mind?"
         multiline
@@ -83,7 +83,7 @@ const PostTextField: React.FC<PostTextFieldProps> = ({ value, onChange, onFileCh
         }}
       />
       {imagePreview && (
-        <Box
+        <Box component="div"
           sx={{
             position: 'relative',  // Relative positioning for image container
             width: '100%',

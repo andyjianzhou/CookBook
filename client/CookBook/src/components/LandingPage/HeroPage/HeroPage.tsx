@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import styled, { createGlobalStyle } from "styled-components";
+import styled from "styled-components";
 import { Navbar } from "../Navbar/Navbar";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Sphere, MeshDistortMaterial } from "@react-three/drei";
@@ -166,13 +166,6 @@ const Img = styled.img`
       transform: translateY(20px);
     }
   }
-`;
-
-const GlobalStyle = createGlobalStyle`
-  span[data-index="0"] { --index: 0; }
-  span[data-index="1"] { --index: 1; }
-  span[data-index="2"] { --index: 2; }
-  span[data-index="3"] { --index: 3; }
 `;
 
 const Hero = () => {

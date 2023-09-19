@@ -58,7 +58,7 @@ const Post: React.FC<PostProps> = ({ postId, userId, userName, content, mediaFil
   }
 
   return (
-    <Box
+    <Box component="div"
       sx={{
         borderTop: '1px solid',
         borderLeft: '1px solid',
@@ -69,20 +69,20 @@ const Post: React.FC<PostProps> = ({ postId, userId, userName, content, mediaFil
         },
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Box component="div" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem' }}>
+        <Box component="div" sx={{ display: 'flex', alignItems: 'center' }}>
           <Avatar alt={userName} src={userAvatar || ''} sx={{ width: 32, height: 32, marginRight: 1.5 }} />
-          <Box>
+          <Box component="div">
             <Typography variant="subtitle1" display="inline">{userName}</Typography>
             <Typography variant="caption" color="text.secondary" display="inline" sx={{ ml: 0.5, fontSize: '1.1rem' }}>&middot;</Typography>
             <Typography variant="body2" color="text.secondary" display = "inline" sx={{ ml:0.5, fontSize: '0.8rem' }}>{formatDate(createdAt)}</Typography>
           </Box>
         </Box>
       </Box>
-      <Box sx={{ padding: '0rem 4rem' }}>
+      <Box component="div" sx={{ padding: '0rem 4rem' }}>
         <Typography variant="body1">{content}</Typography>
         {mediaFiles && (
-          <Box mt={2}>
+          <Box component="div" mt={2}>
             {Array.isArray(mediaFiles)
               ? mediaFiles.map((fileOrUrl, index) => (
                   <CardMedia
@@ -116,7 +116,7 @@ const Post: React.FC<PostProps> = ({ postId, userId, userName, content, mediaFil
         )}
 
         {/* Icons Container */}
-        <Box mt={1} display="flex" justifyContent="space-between">
+        <Box component="div" mt={1} display="flex" justifyContent="space-between">
             <IconButton size="small">
                 <ModeCommentOutlinedIcon />
             </IconButton>

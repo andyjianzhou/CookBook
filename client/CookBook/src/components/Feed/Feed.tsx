@@ -55,7 +55,7 @@ const Feed: React.FC = () => {
         };
     }, [observer]);
 
-    if (isLoading) return <Box sx={{ display: 'flex', justifyContent: 'center' }}><CircularProgress /></Box>;
+    if (isLoading) return <Box component="div" sx={{ display: 'flex', justifyContent: 'center' }}><CircularProgress /></Box>;
     
     if (isError) return <p>Error: {(error as Error).message}</p>;
 
@@ -75,7 +75,7 @@ const Feed: React.FC = () => {
                 />
             ))}
             <div id="load-more-trigger"></div>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Box component="div" sx={{ display: 'flex', justifyContent: 'center' }}>
                 <CircularProgress />
             </Box>
         </div>

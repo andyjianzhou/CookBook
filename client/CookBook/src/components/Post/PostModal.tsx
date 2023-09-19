@@ -118,7 +118,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <Box
+            <Box component="div"
                 sx={{
                     position: 'absolute',
                     top: '50%',
@@ -138,14 +138,14 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
                 }}
             >
                 {/* Header */}
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
+                <Box component="div" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
                     <Typography variant="h6">Create Post</Typography>
                     <IconButton size="small" onClick={onClose}>
                         <CloseIcon />
                     </IconButton>
                 </Box>
                 
-                <Box sx={{ flex: 1, overflowY: 'auto' }}>
+                <Box component="div" sx={{ flex: 1, overflowY: 'auto' }}>
                     {/* Input fields and buttons for creating a post */}
                     <PostTextField
                         value={desc}
@@ -155,7 +155,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
                     />
                 </Box>
                 {/* Sticky Controls */}
-                <Box 
+                <Box component="div"
                     sx={{ 
                         position: 'sticky',
                         bottom: 0,
@@ -167,9 +167,9 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
                         gap: '8px'  // space between controls
                     }}
                 >
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box component="div" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     {/* Container for media buttons */}
-                        <Box sx={{ display: 'flex', gap: '8px' }}>
+                        <Box component="div" sx={{ display: 'flex', gap: '8px' }}>
                             {/* Invisible file input */}
                             <input 
                                 type="file" 
@@ -190,7 +190,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
                         </Box>
                     </Box>
                     
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Box component="div" sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <Button
                             variant="contained"
                             color="primary"

@@ -152,7 +152,7 @@ function Copyright(props: any) {
     // if user is not loaded, redirect to login page
     return (
     <ThemeProvider theme={mdTheme}>
-      <Box sx={{ display: 'flex', flexDirection: isMobile ? 'column-reverse' : 'row' }}>
+      <Box component="div" sx={{ display: 'flex', flexDirection: isMobile ? 'column-reverse' : 'row' }}>
         <CssBaseline />
         <AppBar position="absolute" mobileDisplay={isMobile}>
           <Toolbar
