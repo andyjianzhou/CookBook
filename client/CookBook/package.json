@@ -17,6 +17,7 @@
     "@react-three/fiber": "^8.14.2",
     "@types/three": "^0.156.0",
     "axios": "^1.5.0",
+    "clean": "^4.0.2",
     "firebase": "^9.17.1",
     "react": "^18.2.0",
     "react-datetime": "^3.2.0",
