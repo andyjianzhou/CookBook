@@ -13,6 +13,8 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.9",
     "@mui/material": "^5.14.9",
+    "@react-three/drei": "^9.84.0",
+    "@react-three/fiber": "^8.14.2",
     "@types/three": "^0.156.0",
     "axios": "^1.5.0",
     "firebase": "^9.17.1",
