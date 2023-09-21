@@ -1,8 +1,9 @@
 import React, { useState, useEffect, Suspense } from "react";
 import styled from "styled-components";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import { PerspectiveCamera } from "@react-three/drei";
 import { Banana } from "../3DModels/Banana";
+import { useSpring, a } from "@react-spring/three";
 
 const CanvasContainer = styled.div`
   position: absolute;  
@@ -46,6 +47,17 @@ const FruitDisplay = () => {
     return () => window.removeEventListener('resize', updateViewport);
   }, []);
 
+  const springProps = useSpring({
+    from: { y: 0 },
+    to: async (next) => {
+      while (1) {
+        await next({ y: 0.5 });
+        await next({ y: -0.5 });
+      }
+    },
+    config: { duration: 2000 },
+  });
+
   return (
     <CanvasContainer>
       <Canvas>
@@ -54,7 +66,9 @@ const FruitDisplay = () => {
         <directionalLight position={[1, 2, 3]} intensity={1} />
         <Suspense fallback={null}>
           {displayBananas.map((pos, idx) => (
-            <Banana key={idx} position={pos as [number, number, number]} rotation={[0, 0.7, 0]} />
+            <a.group key={idx} position-y={springProps.y.to(val => val + pos[1])}>
+              <Banana position={[pos[0], 0, pos[2]]} rotation={[0, 0.7, 0]} />
+            </a.group>
           ))}
         </Suspense>
       </Canvas>
