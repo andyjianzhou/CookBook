@@ -14,9 +14,10 @@ interface ListItemsProps {
   setPage: (page: string) => void;
   isMobile: boolean;
   setCreateModalOpen: (isOpen: boolean) => void;
+  setCameraDrawerOpen: (isOpen: boolean) => void;
 }
 
-export const mainListItems: React.FC<ListItemsProps> = ({ setPage, isMobile, setCreateModalOpen }) => {
+export const mainListItems: React.FC<ListItemsProps> = ({ setPage, isMobile, setCreateModalOpen, setCameraDrawerOpen }) => {
   const navigate = useNavigate();
   const handlePageChange = (page: string) => {
     setPage(page);
@@ -31,9 +32,10 @@ export const mainListItems: React.FC<ListItemsProps> = ({ setPage, isMobile, set
       case 'Explore':
         navigate('/dashboard/explore');
         break;
-      case 'Scan':
-        navigate('/dashboard/scan');
-        break;
+      // TODO: Change this to refridgerator page, so far Scan is just a swipeable drawer to enable camera action
+      // case 'Scan':
+      //   navigate('/dashboard/scan');
+      //   break;
       case 'Kitchen':
         navigate('/dashboard/kitchen');
         break;
@@ -45,6 +47,11 @@ export const mainListItems: React.FC<ListItemsProps> = ({ setPage, isMobile, set
   const handleCreateModalOpen = (isOpened: boolean) => {
     console.log("Create modal opened");
     setCreateModalOpen(isOpened);
+  }
+
+  const handleCameraDrawerOpen = (isOpened: boolean) => {
+    console.log("Camera drawer opened");
+    setCameraDrawerOpen(isOpened);
   }
 
   return (
@@ -74,7 +81,7 @@ export const mainListItems: React.FC<ListItemsProps> = ({ setPage, isMobile, set
         </ListItemIcon>
         {/* <ListItemText primary="Create" /> */}
       </ListItemButton>
-      <ListItemButton onClick={() => handlePageChange('Scan')}>
+      <ListItemButton onClick={() => handleCameraDrawerOpen(true)}>
         <ListItemIcon>
           <CameraAltIcon />
         </ListItemIcon>

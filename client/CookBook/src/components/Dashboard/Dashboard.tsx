@@ -25,7 +25,7 @@ import { useAuth } from '../contexts/AuthContext';
 import ProfileDropDownMenu from '../Profile/ProfileDropDownMenu';
 import PostModal from '../Post/PostModal';
 import Feed from '../Feed/Feed';
-import { BrowserRouter, Router } from 'react-router-dom';
+import CameraDrawer from '../Scan/CameraDrawer';
 
 // mobile only imports
 import { mainMobileListItems } from './Mobile/ListItemsMobile';
@@ -139,13 +139,17 @@ function Copyright(props: any) {
   function DashboardContent() {
     const [open, setOpen] = React.useState(true);
     const {currentUser} = useAuth();
+
     const [currentPage, setPage] = React.useState('Feed');
     const [isCreateModalOpen, setCreateModalOpen] = React.useState(false);
+    const [isCameraDrawerOpen, setCameraDrawerOpen] = React.useState(false);
+
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const navigate = useNavigate();
-    const toggleDrawer = () => {
-      setOpen(!open);
+
+    const handleToggle = () => {
+      setCameraDrawerOpen(!isCameraDrawerOpen);
     };
 
     // wait for user to be loaded for 500ms
@@ -193,7 +197,7 @@ function Copyright(props: any) {
           // Mobile drawer to be at the bottom of the screen
           // TODO: There are errors with this, I fixed it but there's a black border around each button
           <BottomNavigation sx={{ width: '100%', position: 'fixed', bottom: 0, borderTop: 1, borderColor: 'divider'}}>
-            {mainListItems({setPage, isMobile, setCreateModalOpen})}
+            {mainListItems({setPage, isMobile, setCreateModalOpen, setCameraDrawerOpen})}
           </BottomNavigation>
         ) : (
           // Desktop drawer to be on the left side of the screen
@@ -212,7 +216,7 @@ function Copyright(props: any) {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {mainListItems({setPage, isMobile, setCreateModalOpen})}
+            {mainListItems({setPage, isMobile, setCreateModalOpen, setCameraDrawerOpen})}
             <Divider sx={{ my: 1 }} />
             {secondaryListItems}
           </List>
@@ -263,22 +267,13 @@ function Copyright(props: any) {
                           </Typography>
                       </Paper>
                   </Grid>
-              )}
-              {isCreateModalOpen && (
-                <PostModal isOpen={isCreateModalOpen} onClose={() => setCreateModalOpen(false)} />
                 )}
-                {currentPage === 'Scan' && (
-                  <Grid item xs={12}>
-                      <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                          <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                              Scan
-                          </Typography>
-                          <Typography component="p" variant="body1">
-                              This is where you can scan for ingredients to create recipes which is stored in Kitchen
-                          </Typography>
-                      </Paper>
-                  </Grid>
-              )}
+                {isCreateModalOpen && (
+                  <PostModal isOpen={isCreateModalOpen} onClose={() => setCreateModalOpen(false)} />
+                )}
+                {isCameraDrawerOpen && (
+                    <CameraDrawer isOpened={isCameraDrawerOpen} onToggle={handleToggle}/>
+                )}
                 {currentPage === 'Kitchen' && (
                   <Grid item xs={12}>
                       <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
