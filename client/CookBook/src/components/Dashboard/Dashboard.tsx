@@ -25,7 +25,7 @@ import { useAuth } from '../contexts/AuthContext';
 import ProfileDropDownMenu from '../Profile/ProfileDropDownMenu';
 import PostModal from '../Post/PostModal';
 import Feed from '../Feed/Feed';
-import { CameraDrawer } from '../Scan/CameraDrawer';
+import CameraDrawer from '../Scan/CameraDrawer';
 
 // mobile only imports
 import { mainMobileListItems } from './Mobile/ListItemsMobile';
@@ -147,8 +147,9 @@ function Copyright(props: any) {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const navigate = useNavigate();
-    const toggleDrawer = () => {
-      setOpen(!open);
+
+    const handleToggle = () => {
+      setCameraDrawerOpen(!isCameraDrawerOpen);
     };
 
     // wait for user to be loaded for 500ms
@@ -271,7 +272,7 @@ function Copyright(props: any) {
                   <PostModal isOpen={isCreateModalOpen} onClose={() => setCreateModalOpen(false)} />
                 )}
                 {isCameraDrawerOpen && (
-                    <CameraDrawer isOpen={isCameraDrawerOpen} onClose={() => setCameraDrawerOpen(false)}/>
+                    <CameraDrawer isOpened={isCameraDrawerOpen} onToggle={handleToggle}/>
                 )}
                 {currentPage === 'Kitchen' && (
                   <Grid item xs={12}>

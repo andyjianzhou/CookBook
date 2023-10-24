@@ -29,7 +29,7 @@ import { BrowserRouter, Router } from 'react-router-dom';
 
 // mobile only imports
 import { mainMobileListItems } from '../Dashboard/Mobile/ListItemsMobile';
-import { CameraDrawer } from '../Scan/CameraDrawer';
+import CameraDrawer from '../Scan/CameraDrawer';
 
 // page render imports
 // import Chart from './Chart';
@@ -148,8 +148,9 @@ function Copyright(props: any) {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const navigate = useNavigate();
-    const toggleDrawer = () => {
-      setOpen(!open);
+    
+    const handleToggle = () => {
+      setCameraDrawerOpen(!isCameraDrawerOpen);
     };
 
     // wait for user to be loaded for 500ms
@@ -253,7 +254,7 @@ function Copyright(props: any) {
             <PostModal isOpen={isCreateModalOpen} onClose={() => setCreateModalOpen(false)} />
             )}
             {isCameraDrawerOpen && (
-              <CameraDrawer isOpen={isCameraDrawerOpen} onClose={() => setCameraDrawerOpen(false)}/>
+              <CameraDrawer isOpened={isCameraDrawerOpen} onToggle={handleToggle}/>
             )}
             </Container>
           </Box>
