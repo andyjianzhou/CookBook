@@ -196,7 +196,8 @@ function Copyright(props: any) {
         {isMobile ? (
           // Mobile drawer to be at the bottom of the screen
           // TODO: There are errors with this, I fixed it but there's a black border around each button
-          <BottomNavigation sx={{ width: '100%', position: 'fixed', bottom: 0, borderTop: 1, borderColor: 'divider'}}>
+
+          <BottomNavigation sx={{ width: '100%', position: 'fixed', bottom: 0, borderTop: 1, borderColor: 'divider', zIndex: 1}}>
             {mainListItems({setPage, isMobile, setCreateModalOpen, setCameraDrawerOpen})}
           </BottomNavigation>
         ) : (
