@@ -10,7 +10,7 @@ import SignUp from './components/SignUp/SignUp'
 import Dashboard from './components/Dashboard/Dashboard'
 import Search from './components/Search/Search'
 import Login from './components/Login/Login'
-import Scan from './components/Scan/Scan';
+// import Scan from './components/Scan/Camera';
 import Kitchen from './components/Kitchen/Kitchen';
 import Explore from './components/Explore/Explore';
 import HomePages from './components/LandingPage/HomePages';
@@ -45,10 +45,12 @@ const router = createBrowserRouter([
     path: "/dashboard/search",
     element: <PrivateRoute component={Search} />,
   },
-  {
-    path: "/dashboard/scan",
-    element: <PrivateRoute component={Scan} />,
-  },
+  // TODO: Change this to be a refridgerator page, where you can add items to your fridge, find recipe's
+  // Right now, this Scan is just a drawer that you can take pictures on.
+  // {
+  //   path: "/dashboard/scan",
+  //   element: <PrivateRoute component={Scan} />,
+  // },
   {
     path: "/dashboard/kitchen",
     element: <PrivateRoute component={Kitchen} />,

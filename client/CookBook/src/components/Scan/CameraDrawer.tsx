@@ -1,13 +1,18 @@
 import React from 'react'
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
-export const Camera: React.FC = () => {
+interface CameraDrawerProps {
+    isOpen: boolean;
+    onClose: () => void;
+}
+
+export const CameraDrawer: React.FC<CameraDrawerProps> = ({isOpen, onClose}) => {
     return (
         <div>
             <SwipeableDrawer
                 anchor="bottom"
-                open={true}
-                onClose={() => {}}
+                open={isOpen}
+                onClose={onClose}
                 // Add Scan functionality here
                 onOpen={() => {}}
             >
