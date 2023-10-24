@@ -29,6 +29,7 @@ import { BrowserRouter, Router } from 'react-router-dom';
 
 // mobile only imports
 import { mainMobileListItems } from '../Dashboard/Mobile/ListItemsMobile';
+import { CameraDrawer } from '../Scan/CameraDrawer';
 
 // page render imports
 // import Chart from './Chart';
@@ -140,7 +141,10 @@ function Copyright(props: any) {
     const [open, setOpen] = React.useState(true);
     const {currentUser} = useAuth();
     const [currentPage, setPage] = React.useState('Feed');
+
     const [isCreateModalOpen, setCreateModalOpen] = React.useState(false);
+    const [isCameraDrawerOpen, setCameraDrawerOpen] = React.useState(false);
+
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const navigate = useNavigate();
@@ -193,7 +197,7 @@ function Copyright(props: any) {
           // Mobile drawer to be at the bottom of the screen
           // TODO: There are errors with this, I fixed it but there's a black border around each button
           <BottomNavigation sx={{ width: '100%', position: 'fixed', bottom: 0, borderTop: 1, borderColor: 'divider'}}>
-            {mainListItems({setPage, isMobile, setCreateModalOpen})}
+            {mainListItems({setPage, isMobile, setCreateModalOpen, setCameraDrawerOpen})}
           </BottomNavigation>
         ) : (
           // Desktop drawer to be on the left side of the screen
@@ -212,7 +216,7 @@ function Copyright(props: any) {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {mainListItems({setPage, isMobile, setCreateModalOpen})}
+            {mainListItems({setPage, isMobile, setCreateModalOpen, setCameraDrawerOpen})}
             <Divider sx={{ my: 1 }} />
             {secondaryListItems}
           </List>
@@ -249,7 +253,10 @@ function Copyright(props: any) {
               </Grid>
               {isCreateModalOpen && (
                 <PostModal isOpen={isCreateModalOpen} onClose={() => setCreateModalOpen(false)} />
-                )}
+              )}
+              {isCameraDrawerOpen && (
+                <CameraDrawer isOpen={isCameraDrawerOpen} onClose={() => setCameraDrawerOpen(false)}/>
+              )}
               </Grid>
             </Grid>
           </Container>
