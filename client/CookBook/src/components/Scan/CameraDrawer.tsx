@@ -38,8 +38,9 @@ const Puller = styled(Box)(({ theme }) => ({
 
 export default function SwipeableEdgeDrawer(props: Props) {
   const { window, isOpened, onToggle } = props;
-
   const container = window !== undefined ? () => window().document.body : undefined;
+
+  if (!isOpened) return null;  // Don't render the drawer if it's not opened
 
   return (
     <Root>
@@ -47,7 +48,7 @@ export default function SwipeableEdgeDrawer(props: Props) {
       <Global
         styles={{
           '.MuiDrawer-root > .MuiPaper-root': {
-            height: '70%', // Setting to 50% for half-screen height.
+            height: '70%',
             overflow: 'visible',
           },
         }}
@@ -78,7 +79,7 @@ export default function SwipeableEdgeDrawer(props: Props) {
         >
           <Puller />
           <Typography sx={{ p: 2, color: 'text.secondary' }}>X Items detected</Typography>
-          <Webcam isVideoPlaying={isOpened}/> {/* This will start/stop the webcam based on isOpened */}
+          <Webcam isVideoPlaying={isOpened} />
         </StyledBox>
       </SwipeableDrawer>
     </Root>
