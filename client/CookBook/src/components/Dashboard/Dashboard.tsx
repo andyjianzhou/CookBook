@@ -272,9 +272,9 @@ function Copyright(props: any) {
                 {isCreateModalOpen && (
                   <PostModal isOpen={isCreateModalOpen} onClose={() => setCreateModalOpen(false)} />
                 )}
-                {isCameraDrawerOpen && (
-                    <CameraDrawer isOpened={isCameraDrawerOpen} onToggle={handleToggle}/>
-                )}
+
+                {/* Camera drawer */}
+                <CameraDrawer isOpened={isCameraDrawerOpen} onToggle={handleToggle}/>
                 {currentPage === 'Kitchen' && (
                   <Grid item xs={12}>
                       <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>

@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import Webcam from '../../Webcam/webcam';
+import Webcam from '../../Webcam/webcam'; // Ensure this path is correct
 
 interface Props {
   window?: () => Window;
@@ -76,9 +76,9 @@ export default function SwipeableEdgeDrawer(props: Props) {
             height: '100%',
           }}
         >
-        <Puller />
-        <Typography sx={{ p: 2, color: 'text.secondary' }}>X Items detected</Typography>
-        <Webcam />
+          <Puller />
+          <Typography sx={{ p: 2, color: 'text.secondary' }}>X Items detected</Typography>
+          <Webcam isVideoPlaying={isOpened}/> {/* This will start/stop the webcam based on isOpened */}
         </StyledBox>
       </SwipeableDrawer>
     </Root>
