@@ -256,9 +256,9 @@ function Copyright(props: any) {
               {isCreateModalOpen && (
                 <PostModal isOpen={isCreateModalOpen} onClose={() => setCreateModalOpen(false)} />
               )}
-              {isCameraDrawerOpen && (
-                <CameraDrawer isOpened={isCameraDrawerOpen} onToggle={handleToggle}/>
-              )}
+              
+              {/* Camera drawer */}
+              <CameraDrawer isOpened={isCameraDrawerOpen} onToggle={handleToggle}/>
               </Grid>
             </Grid>
           </Container>
