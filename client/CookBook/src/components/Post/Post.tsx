@@ -119,7 +119,7 @@ const Post: React.FC<PostProps> = ({ postId, userId, userName, content, mediaFil
         <Box component="div" mt={1} display="flex" justifyContent="space-between">
             <IconButton size="small">
                 <ModeCommentOutlinedIcon />
-            </IconButton>
+            </IconButton> 
             <IconButton size="small">
                 <BookmarkBorderOutlinedIcon />
             </IconButton>
