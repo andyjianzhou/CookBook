@@ -25,7 +25,7 @@ import { useAuth } from '../contexts/AuthContext';
 import ProfileDropDownMenu from '../Profile/ProfileDropDownMenu';
 import PostModal from '../Post/PostModal';
 import Feed from '../Feed/Feed';
-import CameraDrawer from '../Scan/CameraDrawer';
+import CameraPage from '../Scan/Camera';
 
 // mobile only imports
 import { mainMobileListItems } from './Mobile/ListItemsMobile';
@@ -274,7 +274,19 @@ function Copyright(props: any) {
                 )}
 
                 {/* Camera drawer */}
-                <CameraDrawer isOpened={isCameraDrawerOpen} onToggle={handleToggle}/>
+                {currentPage === 'Scan' && (
+                   <Grid item xs={12}>
+                   <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                       <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                           Kitchen
+                       </Typography>
+                       <Typography component="p" variant="body1">
+                           Scan Page
+                       </Typography>
+                   </Paper>
+               </Grid>
+                )}
+
                 {currentPage === 'Kitchen' && (
                   <Grid item xs={12}>
                       <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>

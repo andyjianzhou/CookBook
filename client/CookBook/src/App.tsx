@@ -14,6 +14,7 @@ import Login from './components/Login/Login'
 import Kitchen from './components/Kitchen/Kitchen';
 import Explore from './components/Explore/Explore';
 import HomePages from './components/LandingPage/HomePages';
+import CameraPage from './components/Scan/CameraPage';
 
 const query = new QueryClient({
   defaultOptions: {
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
   {
     path: "/dashboard/explore",
     element: <PrivateRoute component={Explore} />,
+  },
+  {
+    path: "/dashboard/scan",
+    element: <PrivateRoute component={CameraPage} />,
   },
 ]);
 

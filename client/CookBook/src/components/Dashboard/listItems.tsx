@@ -39,6 +39,9 @@ export const mainListItems: React.FC<ListItemsProps> = ({ setPage, isMobile, set
       case 'Kitchen':
         navigate('/dashboard/kitchen');
         break;
+      case 'Scan':
+        navigate('/dashboard/scan');
+        break;
       default:
         break;
     }
@@ -81,7 +84,8 @@ export const mainListItems: React.FC<ListItemsProps> = ({ setPage, isMobile, set
         </ListItemIcon>
         {/* <ListItemText primary="Create" /> */}
       </ListItemButton>
-      <ListItemButton onClick={() => handleCameraDrawerOpen(true)}>
+      {/* <ListItemButton onClick={() => handleCameraDrawerOpen(true)}> */}
+      <ListItemButton onClick={() => handlePageChange('Scan')}>
         <ListItemIcon>
           <CameraAltIcon />
         </ListItemIcon>
