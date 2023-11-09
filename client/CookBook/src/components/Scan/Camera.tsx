@@ -57,7 +57,7 @@ const Camera = () => {
       
     console.log(capturedImages.length);
     return (
-        <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
         <video ref={videoRef} autoPlay playsInline style={{ width: '100%', height: '100%' }} />
         <canvas ref={canvasRef} style={{ display: 'none' }} />
         <button
@@ -78,34 +78,22 @@ const Camera = () => {
             }}
             onClick={handleCapture}
         />
-        <div 
-            style={{
-                position: 'absolute',
-                bottom: '100px', // Adjust this value to place it correctly above the button
-                left: '50%',
-                transform: 'translateX(-50%)',
-                display: 'flex',
-                flexDirection: 'row', // Use 'column' if you want them in a vertical stack
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}
-        >
-            {capturedImages.map((src, index) => (
-                <img 
-                    key={index} 
-                    src={src} 
-                    alt={`Captured ${index}`} 
-                    style={{ 
-                        width: '100px', // Adjust width as necessary
-                        height: '100px', // Adjust height as necessary
-                        objectFit: 'cover',
-                        border: '2px solid white', 
-                        borderRadius: '10px', // Optional: if you want rounded corners
-                        marginLeft: '5px', // Adds space between thumbnails
-                    }} 
-                />
-            ))}
-        </div>
+        {capturedImages.length > 0 && (
+            <img 
+                src={capturedImages[capturedImages.length - 1]} // Display the most recent image
+                alt="Recent Capture" 
+                style={{ 
+                    position: 'absolute',
+                    bottom: '20px', // Adjust as needed
+                    left: '10px', // Position at the left side of the container
+                    width: '50px', // Adjust width as necessary
+                    height: '50px', // Adjust height as necessary
+                    objectFit: 'cover',
+                    border: '2px solid white', 
+                    borderRadius: '10px', // Optional: for rounded corners
+                }} 
+            />
+        )}
         {image && 
         <img 
             src={image} 
