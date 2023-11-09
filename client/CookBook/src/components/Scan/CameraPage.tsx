@@ -26,6 +26,7 @@ import ProfileDropDownMenu from '../Profile/ProfileDropDownMenu';
 import PostModal from '../Post/PostModal';
 import Feed from '../Feed/Feed';
 import { BrowserRouter, Router } from 'react-router-dom';
+import Camera from '../Scan/Camera';
 
 // mobile only imports
 import { mainMobileListItems } from '../Dashboard/Mobile/ListItemsMobile';
@@ -137,7 +138,7 @@ function Copyright(props: any) {
 }
 );
 
-  function KitchenContent() {
+  function CameraContent() {
     const [open, setOpen] = React.useState(true);
     const {currentUser} = useAuth();
     const [currentPage, setPage] = React.useState('Feed');
@@ -240,16 +241,7 @@ function Copyright(props: any) {
         >
         <Toolbar />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                    <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                        Kitchen
-                    </Typography>
-                    <Typography component="p" variant="body1">
-                        This is where you can see what ingredients you have in your kitchen and get recommended recipes
-                    </Typography>
-                </Paper>
-            </Grid>
+            <Camera/>
             {isCreateModalOpen && (
             <PostModal isOpen={isCreateModalOpen} onClose={() => setCreateModalOpen(false)} />
             )}
@@ -260,6 +252,6 @@ function Copyright(props: any) {
     );
   }
   
-  export default function Kitchen() {
-    return <KitchenContent />;
+  export default function CameraPage() {
+    return <CameraContent />;
   }
