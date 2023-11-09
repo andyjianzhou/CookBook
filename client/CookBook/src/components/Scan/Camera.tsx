@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-
+// REMEMBER THIS! 
+// TODO: https://github.com/mrousavy/react-native-vision-camera, this is for react native
 const Camera = () => {
     const [image, setImage] = useState<string | null>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [capturedImages, setCapturedImages] = useState<string[]>([]); 
 
     useEffect(() => {
         // Access the user's webcam
@@ -49,34 +51,76 @@ const Camera = () => {
         if (video.srcObject) {
           (video.srcObject as MediaStream).getTracks().forEach(track => track.stop());
         }
+
+        setCapturedImages(images => [...images, dataURL]);
       };
       
-
+    console.log(capturedImages.length);
     return (
         <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-            <video ref={videoRef} autoPlay playsInline style={{ width: '100%', height: '100%' }} />
-            <canvas ref={canvasRef} style={{ display: 'none' }} />
-            <button
-                style={{
-                    position: 'absolute',
-                    bottom: '20px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '80px',
-                    height: '80px',
-                    borderRadius: '50%',
-                    border: '2px solid white',
-                    backgroundColor: '#ff4081', // You can choose a better color
-                    color: 'white',
-                    fontSize: '24px', // Adjust as necessary
-                    outline: 'none',
-                    cursor: 'pointer',
-                }}
-                onClick={handleCapture}
-            >
-            </button>
-            {image && <img src={image} alt="Captured" style={{ position: 'absolute', top: '10px', left: '10px', maxWidth: '200px', maxHeight: '200px', border: '3px solid white' }} />}
+        <video ref={videoRef} autoPlay playsInline style={{ width: '100%', height: '100%' }} />
+        <canvas ref={canvasRef} style={{ display: 'none' }} />
+        <button
+            style={{
+                position: 'absolute',
+                bottom: '20px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '80px',
+                height: '80px',
+                borderRadius: '50%',
+                border: '2px solid white',
+                backgroundColor: '#ff4081',
+                color: 'white',
+                fontSize: '24px',
+                outline: 'none',
+                cursor: 'pointer',
+            }}
+            onClick={handleCapture}
+        />
+        <div 
+            style={{
+                position: 'absolute',
+                bottom: '100px', // Adjust this value to place it correctly above the button
+                left: '50%',
+                transform: 'translateX(-50%)',
+                display: 'flex',
+                flexDirection: 'row', // Use 'column' if you want them in a vertical stack
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}
+        >
+            {capturedImages.map((src, index) => (
+                <img 
+                    key={index} 
+                    src={src} 
+                    alt={`Captured ${index}`} 
+                    style={{ 
+                        width: '100px', // Adjust width as necessary
+                        height: '100px', // Adjust height as necessary
+                        objectFit: 'cover',
+                        border: '2px solid white', 
+                        borderRadius: '10px', // Optional: if you want rounded corners
+                        marginLeft: '5px', // Adds space between thumbnails
+                    }} 
+                />
+            ))}
         </div>
+        {image && 
+        <img 
+            src={image} 
+            alt="Captured" 
+            style={{ 
+                position: 'absolute', 
+                top: '10px', 
+                left: '10px', 
+                maxWidth: '200px', 
+                maxHeight: '200px', 
+                border: '3px solid white' 
+            }} 
+        />
+        }
+    </div>
     );
 };
 
