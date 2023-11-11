@@ -74,6 +74,7 @@ const Camera = () => {
                     onClick={handleCapture}
                 />
             )}
+            {/* Add image edit component */}
             {image && (
                 <img 
                     src={image} 
