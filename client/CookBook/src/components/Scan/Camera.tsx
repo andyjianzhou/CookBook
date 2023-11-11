@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import CapturedImage from './CapturedImage';
 
 const Camera = () => {
     const [image, setImage] = useState<string | null>(null);
@@ -76,17 +77,7 @@ const Camera = () => {
             )}
             {/* Add image edit component */}
             {image && (
-                <img 
-                    src={image} 
-                    alt="Captured" 
-                    style={{ 
-                        width: '100%', 
-                        height: '100%', 
-                        position: 'absolute', 
-                        top: 0, 
-                        left: 0 
-                    }} 
-                />
+               <CapturedImage image={image} />
             )}
         </div>
     );
