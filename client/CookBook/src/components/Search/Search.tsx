@@ -80,6 +80,7 @@ function Copyright(props: any) {
     }),
   }));
 
+  // TODO: Create filter section, basically filtering by names
   interface DrawerProps {
     open?: boolean;
     mobileDisplay?: boolean;
