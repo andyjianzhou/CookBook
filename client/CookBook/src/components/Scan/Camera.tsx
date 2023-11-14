@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import CapturedImage from './CapturedImage';
 
+// // TODO: https://github.com/mrousavy/react-native-vision-camera, this is for react native
+
 const Camera = () => {
     const [image, setImage] = useState<string | null>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
