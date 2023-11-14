@@ -8,13 +8,20 @@ type CapturedImageProps = {
 }
 
 const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
-  const [inlineResult, setInlineResult] = useState();
+  const [inlineResult, setInlineResult] = useState<string | null>(null);
   return (
-    <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      <PinturaEditor>
+    <div style={{height: '80vh'}}>
+    {/* <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}> */}
+      <PinturaEditor
         {...getEditorDefaults()}
-        <img src={image} alt="captured" style={{ maxWidth: '100%', maxHeight: '100%' }} />
-      </PinturaEditor>
+          src={image}
+          onProcess={(res) =>
+              setInlineResult(URL.createObjectURL(res.dest))
+          }
+      />
+
+      {inlineResult && <img src={inlineResult} alt="" />}
+    {/* </div> */}
     </div>
   );
 }
