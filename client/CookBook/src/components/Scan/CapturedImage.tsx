@@ -12,6 +12,7 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
   return (
     <div style={{height: '80vh'}}>
     {/* <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}> */}
+      {/* Create a custom component to make edits on the image - copy snapchat in Features page */}
       <PinturaEditor
         {...getEditorDefaults()}
           src={image}
@@ -19,7 +20,6 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
               setInlineResult(URL.createObjectURL(res.dest))
           }
       />
-
       {inlineResult && <img src={inlineResult} alt="" />}
     {/* </div> */}
     </div>
