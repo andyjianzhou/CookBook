@@ -32,7 +32,7 @@ const Camera = () => {
             const tracks = (videoRef.current?.srcObject as MediaStream)?.getVideoTracks();
             tracks?.forEach((track) => track.stop());
         };
-    }, [isCameraActive]); // Only run effect if isCameraActive changes
+    }, [isCameraActive]);  
 
     const handleCapture = () => {
         const canvas = canvasRef.current;
