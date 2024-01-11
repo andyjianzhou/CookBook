@@ -50,6 +50,7 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
           onProcess={(res) =>
               // setInlineResult(URL.createObjectURL(res.dest))
               handleClick(res.dest)
+              setInlineResult(URL.createObjectURL(res.dest))
           }
       />
       {inlineResult && <img src={inlineResult} alt="" />}
