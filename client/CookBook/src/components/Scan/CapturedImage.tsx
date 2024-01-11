@@ -23,7 +23,8 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
     try {
         const response = await axiosInstance.post('http://127.0.0.1:8000/api/detect-receipt/', formData, {
             headers: {
-                'Content-Type': 'multipart/form-data'
+                'X-CSRFToken': csrfToken,
+                'Content-Type': 'multipart/form-data',
             }
         });
         console.log(response.data);
