@@ -1,4 +1,4 @@
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.views import View
 from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
 from ..models import Post
@@ -51,7 +51,6 @@ class PostListView(View):
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
-
 
     
 class PostDetailView(View):
