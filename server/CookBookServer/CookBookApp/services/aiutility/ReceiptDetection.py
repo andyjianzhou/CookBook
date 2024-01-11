@@ -74,7 +74,7 @@ def complete(prompt, image):
 def analyze_image(image):
     prompt = """
     Please analyze the receipt in the provided image. Identify the store name, each product listed along with its brand 
-    (if the brand is not available, put 'null'), and the price of each product. Output the information in JSON format 
+    (if the brand is not available, put 'null'), and the price of each product. Make sure you only get the product, not the Subtotals, etc etc. Output the information in JSON format 
     with the following structure:
     {
     'store': '[store name]',

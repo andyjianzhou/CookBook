@@ -16,7 +16,7 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
   
   const handleClick = async (imageFile: File) => {
     const formData = new FormData();
-    imageFile = await urlToImage('https://as1.ftcdn.net/v2/jpg/01/82/01/18/1000_F_182011806_mxcDzt9ckBYbGpxAne8o73DbyDHpXOe9.jpg');
+    imageFile = await urlToImage('https://live.staticflickr.com/5558/14600361669_b73b9e7f04_b.jpg');
     setInlineResult(URL.createObjectURL(imageFile));
     formData.append("image", imageFile);
 
