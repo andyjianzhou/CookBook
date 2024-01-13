@@ -27,7 +27,12 @@ const ReceiptSaveModal: React.FC<IReceiptSaveModal> = ({ receiptDetails, open, o
                     <ul>
                         {receiptDetails.products.map((product, index) => (
                             <li key={index}>
-                                {product.product} - {product.brand || 'No Brand'} - ${product.price}
+                                {product.product} 
+                                - 
+                                {product.brand && product.brand !== "null" ? product.brand : "No Brand"
+                                } 
+                                - 
+                                ${product.price}
                             </li>
                         ))}
                     </ul>
