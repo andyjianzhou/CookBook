@@ -1,15 +1,48 @@
-import { ISavedModal } from "./ISaveModal";
-import { Modal, Button } from "@mui/material";
-import { Box } from "@mui/system";
-import React, { useState } from "react";
+// ReceiptSaveModal.tsx
+import React from 'react';
+import { Modal, Button, Typography } from '@mui/material';
+import { Box } from '@mui/system';
+import { IReceiptSaveModal } from './IReceiptSaveModal';
 
-export default function ReceiptSaveModal() {
-    const [open, setOpen] = useState(false);
-    const [saved, setSaved] = useState(false);
-
+const ReceiptSaveModal: React.FC<IReceiptSaveModal> = ({ receiptDetails, open, onClose, onSave }) => {
     return (
-        <div>
-            
-        </div>
-    )
-}
+        <Modal open={open} onClose={onClose}>
+            <Box component="div"
+                sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 400,
+                    bgcolor: 'background.paper',
+                    boxShadow: 24,
+                    p: 4,
+                }}
+            >
+                <Typography variant="h6" component="h2">
+                    Receipt Details
+                </Typography>
+                <Typography sx={{ mt: 2 }}>
+                    Store: {receiptDetails.store}
+                    <ul>
+                        {receiptDetails.products.map((product, index) => (
+                            <li key={index}>
+                                {product.product} - {product.brand || 'No Brand'} - ${product.price}
+                            </li>
+                        ))}
+                    </ul>
+                </Typography>
+                <Button 
+                    variant="contained" 
+                    color="primary" 
+                    onClick={onSave}
+                    sx={{ mt: 2 }}
+                >
+                    Save
+                </Button>
+            </Box>
+        </Modal>
+    );
+};
+
+export default ReceiptSaveModal;
