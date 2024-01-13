@@ -14,7 +14,7 @@ type CapturedImageProps = {
 }
 
 const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
-  const [inlineResult, setInlineResult] = useState<string | null>(null);
+  const [inlineResult, setInlineResult] = useState<string | undefined>(undefined);
   const [data, setData] = useState<any>(null);
   const { csrfToken } = useAuth();
   const [receiptDetails, setReceiptDetails] = useState<ReceiptDetails | null>(null);
@@ -72,15 +72,15 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
               handleClick(res.dest)
           }
       />
-      {inlineResult && <img src={inlineResult} alt="" />}
-        {receiptDetails && (
-          <ReceiptSaveModal
-            open={modalOpen}
-            onClose={() => setModalOpen(false)}
-            receiptDetails={receiptDetails}
-            onSave={handleSave} // Pass the onSave function
-        />
-        )}
+      {receiptDetails && (
+        <ReceiptSaveModal
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          receiptDetails={receiptDetails}
+          onSave={handleSave} // Pass the onSave function
+          receiptImg={inlineResult}
+      />
+      )}
     </div>
   );
 }
