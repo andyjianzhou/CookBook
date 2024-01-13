@@ -22,10 +22,13 @@ const ReceiptSaveModal: React.FC<IReceiptSaveModal> = ({
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: 'auto',
+          width: 500, // Set a fixed width
+          height: 600, // Set a fixed height
           bgcolor: 'background.paper',
           boxShadow: 24,
           p: 4,
+          borderRadius: '16px', // Rounded corners
+          overflow: 'auto', // Add scroll if content is larger than the modal
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center'
