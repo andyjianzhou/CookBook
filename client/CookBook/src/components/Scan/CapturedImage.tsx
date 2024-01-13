@@ -4,6 +4,9 @@ import '@pqina/pintura/pintura.css';
 import { getEditorDefaults } from '@pqina/pintura';
 import axiosInstance from '../Utilities/axiosConfig';
 import { useAuth } from '../contexts/AuthContext';
+import ReceiptDetails from '../../models/ReceiptDetails';
+import { ISavedServices } from '../Services/ISavedServices';
+import { SavedServices } from '../Services/SavedServices';
 
 type CapturedImageProps = {
   image: string;
@@ -13,7 +16,10 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
   const [inlineResult, setInlineResult] = useState<string | null>(null);
   const [data, setData] = useState<any>(null);
   const { csrfToken } = useAuth();
-  
+  const [receiptDetails, setReceiptDetails] = useState<ReceiptDetails | null>(null);
+
+  const savedServices: ISavedServices = new SavedServices();
+
   const handleClick = async (imageFile: File) => {
     const formData = new FormData();
     imageFile = await urlToImage('https://live.staticflickr.com/5558/14600361669_b73b9e7f04_b.jpg');
@@ -28,6 +34,9 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
             }
         });
         console.log(response.data);
+        const receiptDetails = savedServices.createReceiptDetails(response.data);
+        setReceiptDetails(receiptDetails);
+        // convert data into ReceiptDetails
     } catch (error) {
         console.error("Error uploading image:", error);
     }
