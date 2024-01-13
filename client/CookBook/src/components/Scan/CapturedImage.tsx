@@ -4,6 +4,10 @@ import '@pqina/pintura/pintura.css';
 import { getEditorDefaults } from '@pqina/pintura';
 import axiosInstance from '../Utilities/axiosConfig';
 import { useAuth } from '../contexts/AuthContext';
+import ReceiptDetails from '../../models/ReceiptDetails';
+import { ISavedServices } from '../Services/ISavedServices';
+import { SavedServices } from '../Services/SavedServices';
+import ReceiptSaveModal from '../Save/ReceiptSaveModal';
 
 type CapturedImageProps = {
   image: string;
@@ -13,7 +17,11 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
   const [inlineResult, setInlineResult] = useState<string | null>(null);
   const [data, setData] = useState<any>(null);
   const { csrfToken } = useAuth();
-  
+  const [receiptDetails, setReceiptDetails] = useState<ReceiptDetails | null>(null);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+
+  const savedServices: ISavedServices = new SavedServices();
+
   const handleClick = async (imageFile: File) => {
     const formData = new FormData();
     imageFile = await urlToImage('https://live.staticflickr.com/5558/14600361669_b73b9e7f04_b.jpg');
@@ -28,10 +36,21 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
             }
         });
         console.log(response.data);
+        // Convert ReceiptData to ReceiptDetails
+        const receiptDetails = savedServices.createReceiptDetails(response.data);
+        setReceiptDetails(receiptDetails);
+        setModalOpen(true);
     } catch (error) {
         console.error("Error uploading image:", error);
     }
-};
+  };
+
+  const handleSave = () => {
+    console.log('Saving Receipt:', receiptDetails);
+    // Implement your save logic here
+    // For example, sending the receiptDetails to a backend server or updating a global state
+  };
+
 
 
   const urlToImage = async (url: string) => {
@@ -54,7 +73,14 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
           }
       />
       {inlineResult && <img src={inlineResult} alt="" />}
-    {/* </div> */}
+        {receiptDetails && (
+          <ReceiptSaveModal
+            open={modalOpen}
+            onClose={() => setModalOpen(false)}
+            receiptDetails={receiptDetails}
+            onSave={handleSave} // Pass the onSave function
+        />
+        )}
     </div>
   );
 }
