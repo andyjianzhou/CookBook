@@ -1,5 +1,6 @@
 // ISaveModal.ts
 export interface IReceiptSaveModal {
+
     receiptDetails: {
         store: string;
         products: Array<{
@@ -11,4 +12,5 @@ export interface IReceiptSaveModal {
     open: boolean;
     onClose: () => void;
     onSave: () => void;
+    receiptImg: string | undefined;
 }
