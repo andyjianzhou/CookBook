@@ -22,21 +22,25 @@ const ReceiptSaveModal: React.FC<IReceiptSaveModal> = ({
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: 500, // Set a fixed width
-          height: 600, // Set a fixed height
+          width: { xs: '90vw', sm: '70vw', md: 500 }, // Responsive width
+          height: 'auto', // Auto height for better mobile experience
           bgcolor: 'background.paper',
           boxShadow: 24,
           p: 4,
-          borderRadius: '16px', // Rounded corners
-          overflow: 'auto', // Add scroll if content is larger than the modal
+          borderRadius: '16px',
+          overflow: 'auto',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center'
+          alignItems: 'center',
+          '& img': {
+            maxWidth: '100%',
+            maxHeight: { xs: '50vh', sm: '60vh', md: '80vh' }, // Responsive image size
+          }
         }}
       >
         {showImage ? (
           <>
-            <img src={receiptImg} alt="Receipt" style={{ maxWidth: '100%', maxHeight: '80vh' }} />
+            <img src={receiptImg} alt="Receipt" />
             <IconButton
               onClick={() => setShowImage(false)}
               sx={{ position: 'absolute', top: '50%', left: 0, transform: 'translateY(-50%)' }}
