@@ -54,6 +54,7 @@ const ReceiptSaveModal: React.FC<IReceiptSaveModal> = ({
               Receipt Details
             </Typography>
             <Typography sx={{ mt: 2 }}>
+            {/* Create a page where you can edit the tabs, make it look modern */}
               Store: {receiptDetails.store}
               <ul>
                 {receiptDetails.products.map((product, index) => (
