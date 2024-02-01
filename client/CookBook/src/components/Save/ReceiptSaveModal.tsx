@@ -13,6 +13,7 @@ const ReceiptSaveModal: React.FC<IReceiptSaveModal> = ({
   receiptImg
 }) => {
   const [showImage, setShowImage] = useState(false);
+  const [totalFoodItems, setTotalFoodItems] = useState([null]);
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -65,6 +66,7 @@ const ReceiptSaveModal: React.FC<IReceiptSaveModal> = ({
                   </li>
                 ))}
               </ul>
+              Food Items Detected: {receiptDetails.foods ? receiptDetails.foods : "No Food Items Detected"}
             </Typography>
             <Button 
               variant="contained" 

@@ -78,6 +78,7 @@ export class SavedServices implements ISavedServices {
         // Assuming the response data structure is already similar to ReceiptDetails
         return {
             store: data.store,
+            foods: data.foods,
             products: data.products.map((product: any) => ({
                 product: product.product,
                 brand: product.brand,
