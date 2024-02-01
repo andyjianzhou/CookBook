@@ -54,9 +54,11 @@ const ReceiptSaveModal: React.FC<IReceiptSaveModal> = ({
             <Typography variant="h6" component="h2">
               Receipt Details
             </Typography>
-            <Typography sx={{ mt: 2 }}>
+            <Typography component={'span'} sx={{ mt: 2 }}>
             {/* Create a page where you can edit the tabs, make it look modern */}
               Store: {receiptDetails.store}
+              <br />
+              Food Items Detected: {receiptDetails.foods ? receiptDetails.foods : "No Food Items Detected"}
               <ul>
                 {receiptDetails.products.map((product, index) => (
                   <li key={index}>
@@ -66,7 +68,6 @@ const ReceiptSaveModal: React.FC<IReceiptSaveModal> = ({
                   </li>
                 ))}
               </ul>
-              Food Items Detected: {receiptDetails.foods ? receiptDetails.foods : "No Food Items Detected"}
             </Typography>
             <Button 
               variant="contained" 
