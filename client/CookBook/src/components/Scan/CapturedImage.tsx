@@ -19,6 +19,7 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
   const { csrfToken } = useAuth();
   const [receiptDetails, setReceiptDetails] = useState<ReceiptDetails | null>(null);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [allFoodItems, setAllFoodItems] = useState<string[]>([]);
 
   const savedServices: ISavedServices = new SavedServices();
 

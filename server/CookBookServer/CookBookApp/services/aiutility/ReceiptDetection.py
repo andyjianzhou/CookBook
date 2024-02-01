@@ -74,18 +74,19 @@ def complete(prompt, image):
 def analyze_image(image):
     prompt = """
     Please analyze the receipt in the provided image. Identify the store name, each product listed along with its brand 
-    (if the brand is not available, put 'null'), and the price of each product. Make sure you only get the product, not the Subtotals, etc etc. Output the information in JSON format 
+    (if the brand is not available, put 'null'), and the price of each product. If there is ANY food detected, lets say an apple, orange, then add it into a single array list. Else, make it an empty array. Make sure you only get the product, not the Subtotals, etc etc. Output the information in JSON format 
     with the following structure:
     {
     'store': '[store name]',
+    'foods': '[food name]',
     'products': [
         {
-        'product': '[product name]',
-        'brand': '[brand or null]',
-        'price': '[price]'
+            'product': '[product name]',
+            'brand': '[brand or null]',
+            'price': '[price]'
         },
-        // additional products here
-    ]
+        // additional products here,
+    ],
     }
     Make sure that you output only valid JSON in the format above. Start your response with '{' and NOTHING else. Start your response with '{'.
     """
@@ -105,28 +106,6 @@ def analyze_image(image):
     # Convert the dictionary back to a JSON string to return
     return json.dumps(response_dict)
 
-
-# Maybe change this code to have another purpose?
-# def evaluate_product(text, image):
-#     prompt = f"What are three sustainability concerns with the product {text}?" + "\nBack each concern up with three points of evidence. You can include positive and negative points, do your best to make it honest and relative to other products. Include a score 1-10 for each category. Please answer in the following format:" +"""\n
-#     {
-#         "concerns": [
-#             {
-#                 "name": "concern 1"
-#                 "points": [
-#                     "point 1",
-#                     "point 2",
-#                     "point 3"
-#                 ],
-#                 "overall_score": 5
-#             }
-#         ]
-#     }""" +"\nMake sure that you output only valid json in the format above. Start your response with the character {"
-#     print(prompt)
-
-#     return complete(prompt, image)
-
-
 if __name__ == "__main__":
     json_response = analyze_image("https://upload.wikimedia.org/wikipedia/commons/0/0b/ReceiptSwiss.jpg")
 
@@ -145,7 +124,8 @@ if __name__ == "__main__":
             product_name = product.get('product')
             brand = product.get('brand', 'null')  # Default to 'null' if brand is not available
             price = product.get('price')
+            foods = product.get('foods', [])
 
-            print(f"Store: {store}, Product: {product_name}, Brand: {brand}, Price: {price}")
+            print(f"Store: {store}, Product: {product_name}, Brand: {brand}, Price: {price}, Foods: {foods}")
     else:
         print("Failed to get a valid response.")

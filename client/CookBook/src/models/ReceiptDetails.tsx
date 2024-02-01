@@ -6,6 +6,7 @@ type Product = {
 
 type ReceiptDetails = {
     store: string;
+    foods: string;
     products: Product[];
 };
 
