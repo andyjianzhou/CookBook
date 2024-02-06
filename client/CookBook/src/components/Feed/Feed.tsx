@@ -42,6 +42,7 @@ const Feed: React.FC = () => {
         { threshold: 1 }
     );
 
+    // This entire useEffect's purpose is to observe the trigger element that is at the bottom of the page
     React.useEffect(() => {
         const trigger = document.getElementById('load-more-trigger');
         if (trigger) {
