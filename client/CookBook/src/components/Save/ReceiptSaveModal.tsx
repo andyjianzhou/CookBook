@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Button, Typography, IconButton, TextField, List, ListItem, ListItemText, ListItemSecondaryAction } from '@mui/material';
 import { Box } from '@mui/system';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Divider from '@mui/material/Divider';
 import { IReceiptSaveModal } from './IReceiptSaveModal';
 
@@ -18,6 +19,13 @@ const ReceiptSaveModal: React.FC<IReceiptSaveModal> = ({
   const [showImage, setShowImage] = useState(false);
   const [products, setProducts] = useState(receiptDetails.products);
   const [newFoodItem, setNewFoodItem] = useState('');
+  const [foodBasket, setFoodBasket] = useState(receiptDetails.foods);
+
+  useEffect(() => {
+    receiptDetails.products = products;
+    receiptDetails.foods = foodBasket;
+    }, [products, foodBasket])
+
 
   const handleProductChange = (index: number, field: keyof IReceiptSaveModal['receiptDetails']['products'][number], value: string) => {
     const updatedProducts = [...products];
@@ -27,7 +35,7 @@ const ReceiptSaveModal: React.FC<IReceiptSaveModal> = ({
 
   const addFoodItem = () => {
     if (newFoodItem) {
-      setProducts([...products, { product: newFoodItem, brand: null, price: '' }]);
+      setProducts([...products, { product: newFoodItem, brand: null, price: ''}]);
       setNewFoodItem('');
     }
   };
@@ -36,7 +44,21 @@ const ReceiptSaveModal: React.FC<IReceiptSaveModal> = ({
     const updatedProducts = [...products];
     updatedProducts.splice(index, 1);
     setProducts(updatedProducts);
+    receiptDetails.products = updatedProducts;
   };
+
+  const checkMarkFoodItem = (index: number) => {
+    const chosenProduct = products[index];
+    setFoodBasket([...foodBasket, chosenProduct.product]);
+  }
+
+  const getFoodCounts = (foods: string[]) => {
+    return foods.reduce((acc:any, food:any) => {
+      acc[food] = (acc[food] || 0) + 1;
+      return acc;
+    }, {});
+  };
+  
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -79,7 +101,21 @@ const ReceiptSaveModal: React.FC<IReceiptSaveModal> = ({
           <Typography component={'span'} sx={{ mt: 2, width: '100%' }}>
             Store: {receiptDetails.store}
             <br />
-            Food Items Detected:
+            Food Items:
+            <Box component="div" sx={{ maxHeight: '100px', overflow: 'auto', width: '100%', mt: 1 }}>
+              <List dense>
+                {Object.entries(getFoodCounts(foodBasket)).map(([food, count], index) => (
+                  <ListItem key={index}>
+                    <ListItemText primary={`${food}: ${count}`} />
+                    <ListItemSecondaryAction>
+                      <IconButton edge="end" aria-label="delete" onClick={() => setFoodBasket(foodBasket.filter((item) => item !== food))}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
             <Box component = "div" sx={{ width: '100%', maxHeight: '50vh', overflow: 'auto' }}>
               <List dense>
                 {products.map((product, index) => (
@@ -110,6 +146,9 @@ const ReceiptSaveModal: React.FC<IReceiptSaveModal> = ({
                         />
                       </ListItemText>
                       <ListItemSecondaryAction>
+                      <IconButton edge="end" aria-label="check" onClick={() => checkMarkFoodItem(index)}>
+                          <CheckCircleOutlineIcon />
+                        </IconButton>
                         <IconButton edge="end" aria-label="delete" onClick={() => removeFoodItem(index)}>
                           <DeleteIcon />
                         </IconButton>

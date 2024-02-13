@@ -15,7 +15,6 @@ type CapturedImageProps = {
 
 const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
   const [inlineResult, setInlineResult] = useState<string | undefined>(undefined);
-  const [data, setData] = useState<any>(null);
   const { csrfToken } = useAuth();
   const [receiptDetails, setReceiptDetails] = useState<ReceiptDetails | null>(null);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
