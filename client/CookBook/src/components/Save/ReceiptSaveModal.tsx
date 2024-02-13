@@ -101,8 +101,8 @@ const ReceiptSaveModal: React.FC<IReceiptSaveModal> = ({
           <Typography component={'span'} sx={{ mt: 2, width: '100%' }}>
             Store: {receiptDetails.store}
             <br />
+            Food Items:
             <Box component="div" sx={{ maxHeight: '100px', overflow: 'auto', width: '100%', mt: 1 }}>
-              Food Items:
               <List dense>
                 {Object.entries(getFoodCounts(foodBasket)).map(([food, count], index) => (
                   <ListItem key={index}>
