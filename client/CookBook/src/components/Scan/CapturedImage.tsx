@@ -8,6 +8,7 @@ import ReceiptDetails from '../../models/ReceiptDetails';
 import { ISavedServices } from '../Services/ISavedServices';
 import { SavedServices } from '../Services/SavedServices';
 import ReceiptSaveModal from '../Save/ReceiptSaveModal';
+import LoadingOverlay from './LoadingOverlay';
 
 type CapturedImageProps = {
   image: string;
@@ -18,8 +19,7 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
   const { csrfToken } = useAuth();
   const [receiptDetails, setReceiptDetails] = useState<ReceiptDetails | null>(null);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [allFoodItems, setAllFoodItems] = useState<string[]>([]);
-
+  const [loading, setLoading] = useState(false);
   const savedServices: ISavedServices = new SavedServices();
 
   const handleClick = async (imageFile: File) => {
@@ -27,7 +27,7 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
     imageFile = await urlToImage('https://live.staticflickr.com/5558/14600361669_b73b9e7f04_b.jpg');
     setInlineResult(URL.createObjectURL(imageFile));
     formData.append("image", imageFile);
-
+    setLoading(true);
     try {
         const response = await axiosInstance.post('http://127.0.0.1:8000/api/detect-receipt/', formData, {
             headers: {
@@ -35,7 +35,7 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
                 'Content-Type': 'multipart/form-data',
             }
         });
-        console.log(response.data);
+        setLoading(false);
         // Convert ReceiptData to ReceiptDetails
         const receiptDetails = savedServices.createReceiptDetails(response.data);
         setReceiptDetails(receiptDetails);
@@ -72,6 +72,8 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
               handleClick(res.dest)
           }
       />
+      {loading && <LoadingOverlay />}
+
       {receiptDetails && (
         <ReceiptSaveModal
           open={modalOpen}
