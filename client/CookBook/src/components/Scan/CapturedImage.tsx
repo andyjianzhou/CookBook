@@ -24,7 +24,9 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
 
   const handleClick = async (imageFile: File) => {
     const formData = new FormData();
+    // change this to the image file read from webcam
     imageFile = await urlToImage('https://live.staticflickr.com/5558/14600361669_b73b9e7f04_b.jpg');
+    // imageFile = await urlToImage(image);
     setInlineResult(URL.createObjectURL(imageFile));
     formData.append("image", imageFile);
     setLoading(true);
@@ -50,8 +52,6 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
     // Implement your save logic here
     // For example, sending the receiptDetails to a backend server or updating a global state
   };
-
-
 
   const urlToImage = async (url: string) => {
     const response = await fetch(url);

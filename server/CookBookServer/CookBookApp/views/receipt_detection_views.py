@@ -23,3 +23,4 @@ class AIDetectionView(View):
             result = {'error': 'An error occurred'}
 
         return JsonResponse(result)
+    

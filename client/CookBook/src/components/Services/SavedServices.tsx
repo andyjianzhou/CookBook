@@ -1,6 +1,7 @@
 import React from 'react'
 import { ISavedServices } from './ISavedServices'
 import ReceiptDetails from '../../models/ReceiptDetails';
+import axiosInstance from '../Utilities/axiosConfig';
 
 export class SavedServices implements ISavedServices {
     
@@ -70,7 +71,7 @@ export class SavedServices implements ISavedServices {
       }
     
       async saveReceiptDetection(formData: any): Promise<any> {
-        // save ReceiptDetails into database 
+        // const response = await axiosInstance.post('/receipts', formData);
       }
 
       createReceiptDetails(data: any): ReceiptDetails {

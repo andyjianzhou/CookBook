@@ -35,7 +35,7 @@ class Comment(models.Model):
     post = models.ForeignKey('Post', related_name='comments', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    
 class Like(models.Model):
     user = models.ForeignKey('UserProfile', related_name='likes', on_delete=models.CASCADE)
     post = models.ForeignKey('Post', related_name='likes', on_delete=models.CASCADE)
@@ -46,6 +46,17 @@ class Save(models.Model):
     post = models.ForeignKey('Post', related_name='saved_posts', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
+class Receipt(models.Model):
+    store = models.CharField(max_length=255)
+    userId = models.ForeignKey('UserProfile', related_name='receipts', on_delete=models.CASCADE, null=True, blank=True)  # Allowing null for userId as per your structure
+    foods = models.JSONField(null=True, blank=True)  # Making JSONField nullable and optionally blank in forms
+
+class Product(models.Model):
+    receipt = models.ForeignKey(Receipt, related_name='products', on_delete=models.CASCADE)
+    product = models.CharField(max_length=255)
+    brand = models.CharField(max_length=255, null=True, blank=True)  # Allowing null for brand as per your structure
+    price = models.CharField(max_length=255)  
+        
 class Follow(models.Model):
     follower = models.ForeignKey('UserProfile', related_name='followings', on_delete=models.CASCADE)
     followed = models.ForeignKey('UserProfile', related_name='followers', on_delete=models.CASCADE)
