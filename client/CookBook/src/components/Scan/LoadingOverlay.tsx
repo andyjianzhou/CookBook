@@ -35,11 +35,11 @@ export default function LoadingOverlay() {
         }}>
             <CircularProgress />
             <div style={{
-                marginTop: '20px', // Ensure some space between the progress bar and the message
-                color: '#1976d2', // Nice blue color
+                marginTop: '20px',
+                color: '#1976d2',
                 opacity: fade ? 1 : 0,
                 transition: 'opacity 0.5s ease-in-out',
-                fontSize: '1.25rem', // Adjust font size as needed
+                fontSize: '1.25rem',
             }}>
                 {currentMessage}
             </div>
