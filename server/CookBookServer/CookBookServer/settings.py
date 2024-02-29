@@ -146,12 +146,14 @@ SESSION_COOKIE_SECURE = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",  # frontend server
-    "https://cook-book-hpdu.vercel.app"
+    "https://cook-book-hpdu.vercel.app",
+    "http://localhost:5173",  # frontend server
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:5173",
-    "https://cook-book-hpdu.vercel.app"
+    "https://cook-book-hpdu.vercel.app",
+    "http://localhost:5173",
 ]
 
 # media_files blob
