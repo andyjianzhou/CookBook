@@ -71,6 +71,8 @@ export class SavedServices implements ISavedServices {
       }
     
       async saveReceiptDetection(formData: any): Promise<any> {
+        // ensure that foods is in json format string
+        // formData.foods = JSON.stringify(formData.foods);
         // const response = await axiosInstance.post('/receipts', formData);
       }
 
