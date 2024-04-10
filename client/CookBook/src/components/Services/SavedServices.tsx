@@ -70,15 +70,31 @@ export class SavedServices implements ISavedServices {
         return Promise.resolve();
       }
     
-      async saveReceiptDetection(formData: any): Promise<any> {
+      async saveReceiptDetection(guid: string, userId: string | undefined, receiptDetails: ReceiptDetails | null, csrfToken: string | null): Promise<any> {
         // ensure that foods is in json format string
-        // formData.foods = JSON.stringify(formData.foods);
-        // const response = await axiosInstance.post('/receipts', formData);
+        const combinedReceiptDetails = {
+          receipt_id: guid,
+          firebase_uid: userId,
+          store: receiptDetails?.store,
+          foods: JSON.stringify(receiptDetails?.foods),
+          products: receiptDetails?.products,
+        }
+
+        console.log("Combined with userID: ", combinedReceiptDetails);
+        try {
+          const response = await axiosInstance.post('http://127.0.0.1:8000/api/receipt-save/', combinedReceiptDetails, {
+              headers: {
+                  'X-CSRFToken': csrfToken,
+              }
+          });
+          return response.data;
+      } catch (error) {
+          console.error("Error creating post:", error);
+          throw error;
       }
+    }
 
       createReceiptDetails(data: any): ReceiptDetails {
-        // Transform the data into the structure defined by ReceiptDetails
-        // Assuming the response data structure is already similar to ReceiptDetails
         return {
             store: data.store,
             foods: data.foods,

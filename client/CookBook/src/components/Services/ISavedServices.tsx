@@ -14,6 +14,6 @@ export interface ISavedServices {
     unlikeComment(id: string, commentId: string): Promise<any>;
     replyComment(id: string, commentId: string, reply: any): Promise<any>;
     deleteReply(id: string, commentId: string, replyId: string): Promise<any>;
-    saveReceiptDetection(formData: FormData): Promise<any>;
+    saveReceiptDetection(guid: string, userId: string | undefined, receiptDetails: ReceiptDetails | null, csrfToken: string | null): Promise<any>;
     createReceiptDetails(data: any): ReceiptDetails;
 }

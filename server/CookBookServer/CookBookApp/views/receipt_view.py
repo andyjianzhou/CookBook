@@ -1,22 +1,27 @@
 from django.http import JsonResponse
 from django.views import View
 import json
+from uuid import UUID
 from ..models import Receipt, Product, UserProfile  # Adjust the import path as needed
 
 class ReceiptFormView(View):
     def post(self, request):
         try:
+            receipt_id_str = request.POST.get('receipt_id')
+            receipt_id = UUID(receipt_id_str)
             store = request.POST.get('store')
             foods_json = request.POST.get('foods')
             firebase_uid = request.POST.get('firebase_uid')
 
             # Retrieve the UserProfile instance for the given firebase_uid, creating one if it doesn't exist
-            user_profile = UserProfile.objects.get_or_create(firebase_uid=firebase_uid)[0]
+            # Here, user_profile is the object, and created is a boolean indicating if the object was created
+            user_profile, created = UserProfile.objects.get_or_create(firebase_uid=firebase_uid)
 
             # Create a new Receipt instance, associating it with the user and storing the foods as JSON
             receipt = Receipt.objects.create(
+                receipt_id=receipt_id,
                 store=store,
-                user=user_profile,
+                userId=user_profile,  # Ensure you use the correct field name for the ForeignKey relation to UserProfile
                 foods=json.loads(foods_json) if foods_json else []  # Parse the JSON-formatted string into Python objects
             )
 

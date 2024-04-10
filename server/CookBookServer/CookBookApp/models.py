@@ -47,6 +47,7 @@ class Save(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 class Receipt(models.Model):
+    receipt_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     store = models.CharField(max_length=255)
     userId = models.ForeignKey('UserProfile', related_name='receipts', on_delete=models.CASCADE, null=True, blank=True)  # Allowing null for userId as per your structure
     foods = models.JSONField(null=True, blank=True)  # Making JSONField nullable and optionally blank in forms
