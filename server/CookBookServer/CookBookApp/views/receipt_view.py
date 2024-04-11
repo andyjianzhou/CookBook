@@ -26,11 +26,16 @@ class ReceiptFormView(View):
             user_profile = UserProfile.objects.get_or_create(firebase_uid=firebase_uid)[0]
 
             # Create a new Receipt instance, associating it with the user and storing the foods as JSON
-            receipt = Receipt.objects.create(
-                store=store,
-                user=user_profile,
-                foods=json.loads(foods_json) if foods_json else []  # Parse the JSON-formatted string into Python objects
+            receipt, created = Receipt.objects.get_or_create(
+                receipt_id=receipt_id,
+                defaults={'store': store, 'userId': user_profile, 'foods': json.loads(foods_json) if foods_json else []}
             )
+            
+            if not created:
+                receipt.store = store
+                receipt.userId = user_profile
+                receipt.foods = json.loads(foods_json) if foods_json else []
+                receipt.save()
 
             # Handling multiple products from form data
             for key, value in request.POST.items():
