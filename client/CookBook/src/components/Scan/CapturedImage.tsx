@@ -9,6 +9,7 @@ import { ISavedServices } from '../Services/ISavedServices';
 import { SavedServices } from '../Services/SavedServices';
 import ReceiptSaveModal from '../Save/ReceiptSaveModal';
 import LoadingOverlay from './LoadingOverlay';
+import { v4 as uuidv4 } from 'uuid';
 
 type CapturedImageProps = {
   image: string;
@@ -16,12 +17,13 @@ type CapturedImageProps = {
 
 const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
   const [inlineResult, setInlineResult] = useState<string | undefined>(undefined);
-  const { csrfToken } = useAuth();
+  const { csrfToken, currentUser } = useAuth();
   const [receiptDetails, setReceiptDetails] = useState<ReceiptDetails | null>(null);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const savedServices: ISavedServices = new SavedServices();
-
+  
+  const [receiptId] = useState<string>(uuidv4());
   const handleClick = async (imageFile: File) => {
     const formData = new FormData();
     // change this to the image file read from webcam
@@ -40,6 +42,7 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
         setLoading(false);
         // Convert ReceiptData to ReceiptDetails
         const receiptDetails = savedServices.createReceiptDetails(response.data);
+        console.log("Receipt Details: ", receiptDetails);
         setReceiptDetails(receiptDetails);
         setModalOpen(true);
     } catch (error) {
@@ -48,9 +51,16 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
   };
 
   const handleSave = () => {
-    console.log('Saving Receipt:', receiptDetails);
+    const userId = currentUser?.uid;
     // Implement your save logic here
     // For example, sending the receiptDetails to a backend server or updating a global state
+    savedServices.saveReceiptDetection(receiptId, userId, receiptDetails, csrfToken)
+    .then(() => {
+      setModalOpen(false);
+    })
+    .catch((error) => {
+      console.error("Error saving receipt:", error);
+    });
   };
 
   const urlToImage = async (url: string) => {
