@@ -26,6 +26,7 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
   const [receiptId] = useState<string>(uuidv4());
   const handleClick = async (imageFile: File) => {
     const formData = new FormData();
+    
     // change this to the image file read from webcam
     imageFile = await urlToImage('https://live.staticflickr.com/5558/14600361669_b73b9e7f04_b.jpg');
     // imageFile = await urlToImage(image);
@@ -52,10 +53,15 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
 
   const handleSave = () => {
     const userId = currentUser?.uid;
-    console.log('Saving Receipt:', receiptDetails);
     // Implement your save logic here
     // For example, sending the receiptDetails to a backend server or updating a global state
-    savedServices.saveReceiptDetection(receiptId, userId, receiptDetails, csrfToken);
+    savedServices.saveReceiptDetection(receiptId, userId, receiptDetails, csrfToken)
+    .then(() => {
+      setModalOpen(false);
+    })
+    .catch((error) => {
+      console.error("Error saving receipt:", error);
+    });
   };
 
   const urlToImage = async (url: string) => {
