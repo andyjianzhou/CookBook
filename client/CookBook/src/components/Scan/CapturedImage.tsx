@@ -26,7 +26,6 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
   const [receiptId] = useState<string>(uuidv4());
   const handleClick = async (imageFile: File) => {
     const formData = new FormData();
-    
     // change this to the image file read from webcam
     imageFile = await urlToImage('https://live.staticflickr.com/5558/14600361669_b73b9e7f04_b.jpg');
     // imageFile = await urlToImage(image);

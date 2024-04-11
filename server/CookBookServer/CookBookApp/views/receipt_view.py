@@ -22,6 +22,13 @@ class ReceiptFormView(View):
                 receipt_id=receipt_id,
                 store=store,
                 userId=user_profile,  # Ensure you use the correct field name for the ForeignKey relation to UserProfile
+            )
+            user_profile = UserProfile.objects.get_or_create(firebase_uid=firebase_uid)[0]
+
+            # Create a new Receipt instance, associating it with the user and storing the foods as JSON
+            receipt = Receipt.objects.create(
+                store=store,
+                user=user_profile,
                 foods=json.loads(foods_json) if foods_json else []  # Parse the JSON-formatted string into Python objects
             )
 
