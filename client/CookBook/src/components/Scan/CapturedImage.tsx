@@ -27,7 +27,6 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image, mode }) => {
   const savedServices: ISavedServices = new SavedServices();
   const [receiptId] = useState<string>(uuidv4());
 
-  console.log("Mode", mode)
   const handleClick = async (imageFile: File) => {
     const formData = new FormData();
     // change this to the image file read from webcam
@@ -62,14 +61,19 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image, mode }) => {
   const onConfirmSave = () => {
     const userId = currentUser?.uid;
     const currentDateTime = new Date().toISOString();
-    savedServices.saveReceiptDetection(receiptId, userId, receiptDetails, csrfToken, currentDateTime)
-      .then(() => {
-        // Close the recipe modal
-        setModalOpen(false)
-      })
-      .catch((error) => {
-        console.error("Error saving receipt:", error);
-      });
+    if (mode === "receipts") {
+      savedServices.saveReceiptDetection(receiptId, userId, receiptDetails, csrfToken, currentDateTime)
+        .then(() => {
+          // Close the recipe modal
+          setModalOpen(false)
+        })
+        .catch((error) => {
+          console.error("Error saving receipt:", error);
+        });
+      } else {
+        // save to fridge
+        console.log("Save to fridge")
+      }
     };
 
 
@@ -93,8 +97,9 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image, mode }) => {
           }
       />
       {loading && <LoadingOverlay />}
+      
 
-      {receiptDetails && (
+      {receiptDetails && mode === 'receipts' && (
         <ReceiptSaveModal
           open={modalOpen}
           onClose={() => setModalOpen(false)}
