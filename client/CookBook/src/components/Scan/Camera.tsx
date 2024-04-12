@@ -2,8 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import CapturedImage from './CapturedImage';
 
 // // TODO: https://github.com/mrousavy/react-native-vision-camera, this is for react native
+interface CameraProps {
+    mode: string;
+}
 
-const Camera = () => {
+const Camera = ({ mode }: CameraProps) => {
     const [image, setImage] = useState<string | null>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -79,7 +82,7 @@ const Camera = () => {
             )}
             {/* Add image edit component */}
             {image && (
-               <CapturedImage image={image} />
+               <CapturedImage image={image} mode={mode} />
             )}
         </div>
     );

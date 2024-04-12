@@ -14,9 +14,10 @@ import ConfirmationModal from '../Save/ConfirmationModal';
 
 type CapturedImageProps = {
   image: string;
+  mode: string;
 }
 
-const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
+const CapturedImage: React.FC<CapturedImageProps> = ({ image, mode }) => {
   const [inlineResult, setInlineResult] = useState<string | undefined>(undefined);
   const { csrfToken, currentUser } = useAuth();
   const [receiptDetails, setReceiptDetails] = useState<ReceiptDetails | null>(null);
@@ -26,6 +27,7 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
   const savedServices: ISavedServices = new SavedServices();
   const [receiptId] = useState<string>(uuidv4());
 
+  console.log("Mode", mode)
   const handleClick = async (imageFile: File) => {
     const formData = new FormData();
     // change this to the image file read from webcam
