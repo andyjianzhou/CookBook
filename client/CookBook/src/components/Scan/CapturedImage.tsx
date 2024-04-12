@@ -53,22 +53,13 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
   };
 
   const handleSave = () => {
-    // const userId = currentUser?.uid;
-    // // Implement your save logic here
-    // // For example, sending the receiptDetails to a backend server or updating a global state
-    // savedServices.saveReceiptDetection(receiptId, userId, receiptDetails, csrfToken)
-    // .then(() => {
-    //   setModalOpen(false);
-    // })
-    // .catch((error) => {
-    //   console.error("Error saving receipt:", error);
-    // });
-      setShowConfirmationModal(true);
+    setShowConfirmationModal(true);
   };
 
   const onConfirmSave = () => {
     const userId = currentUser?.uid;
-    savedServices.saveReceiptDetection(receiptId, userId, receiptDetails, csrfToken)
+    const currentDate = new Date().toISOString().split('T')[0];
+    savedServices.saveReceiptDetection(receiptId, userId, receiptDetails, csrfToken, currentDate)
       .then(() => {
         // Close the recipe modal
         setModalOpen(false);

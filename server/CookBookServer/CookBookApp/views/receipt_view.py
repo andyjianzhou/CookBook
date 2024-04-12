@@ -12,6 +12,7 @@ class ReceiptFormView(View):
             store = request.POST.get('store')
             foods_json = request.POST.get('foods')
             firebase_uid = request.POST.get('firebase_uid')
+            date = request.POST.get('createdAt')
 
             # Retrieve the UserProfile instance for the given firebase_uid, creating one if it doesn't exist
             # Here, user_profile is the object, and created is a boolean indicating if the object was created
@@ -21,14 +22,15 @@ class ReceiptFormView(View):
             receipt = Receipt.objects.create(
                 receipt_id=receipt_id,
                 store=store,
-                userId=user_profile,  # Ensure you use the correct field name for the ForeignKey relation to UserProfile
+                userId=user_profile,
+                date=date,
             )
             user_profile = UserProfile.objects.get_or_create(firebase_uid=firebase_uid)[0]
 
             # Create a new Receipt instance, associating it with the user and storing the foods as JSON
             receipt, created = Receipt.objects.get_or_create(
                 receipt_id=receipt_id,
-                defaults={'store': store, 'userId': user_profile, 'foods': json.loads(foods_json) if foods_json else []}
+                defaults={'store': store, 'userId': user_profile, 'foods': json.loads(foods_json) if foods_json else [], 'date': date}
             )
             
             if not created:

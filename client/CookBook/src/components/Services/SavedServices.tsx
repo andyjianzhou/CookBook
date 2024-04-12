@@ -70,7 +70,7 @@ export class SavedServices implements ISavedServices {
         return Promise.resolve();
       }
     
-      async saveReceiptDetection(guid: string, userId: string | undefined, receiptDetails: ReceiptDetails | null, csrfToken: string | null): Promise<any> {
+      async saveReceiptDetection(guid: string, userId: string | undefined, receiptDetails: ReceiptDetails | null, csrfToken: string | null, createdAt: string): Promise<any> {
         // ensure that foods is in json format string
         const combinedReceiptDetails = {
           receipt_id: guid,
@@ -78,6 +78,7 @@ export class SavedServices implements ISavedServices {
           store: receiptDetails?.store,
           foods: JSON.stringify(receiptDetails?.foods),
           products: receiptDetails?.products,
+          createdAt: createdAt,
         }
 
         console.log("Combined with userID: ", combinedReceiptDetails);
@@ -89,7 +90,7 @@ export class SavedServices implements ISavedServices {
           });
           return response.data;
       } catch (error) {
-          console.error("Error creating post:", error);
+          console.error("Error saving receipt:", error);
           throw error;
       }
     }

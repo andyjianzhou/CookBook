@@ -50,7 +50,14 @@ class Receipt(models.Model):
     receipt_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     store = models.CharField(max_length=255)
     userId = models.ForeignKey('UserProfile', related_name='receipts', on_delete=models.CASCADE, null=True, blank=True)  # Allowing null for userId as per your structure
-    foods = models.JSONField(null=True, blank=True)  # Making JSONField nullable and optionally blank in forms
+    foods = models.JSONField(null=True, blank=True)
+    date = models.DateField()
+
+class FridgeDetection(models.Model):
+    fridge_detection_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    userId = models.ForeignKey('UserProfile', related_name='fridge_detections', on_delete=models.CASCADE)
+    foods = models.JSONField()
+    date = models.DateField()
 
 class Product(models.Model):
     receipt = models.ForeignKey(Receipt, related_name='products', on_delete=models.CASCADE)
