@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -19,7 +19,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from '../Dashboard/listItems';
 import {useNavigate} from 'react-router-dom';
 import {useTheme} from '@mui/material/styles';
-import { Button, Modal, TextField, useMediaQuery } from '@mui/material';
+import { Button, Modal, TextField, ToggleButton, ToggleButtonGroup, useMediaQuery } from '@mui/material';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import { useAuth } from '../contexts/AuthContext';
 import ProfileDropDownMenu from '../Profile/ProfileDropDownMenu';
@@ -138,54 +138,30 @@ function Copyright(props: any) {
 }
 );
 
-  function CameraContent() {
-    const [open, setOpen] = React.useState(true);
-    const {currentUser} = useAuth();
-    const [currentPage, setPage] = React.useState('Feed');
-
-    const [isCreateModalOpen, setCreateModalOpen] = React.useState(false);
+function CameraContent() {
+  const [mode, setMode] = useState('receipts'); // 'receipts' or 'fridge'
+  const { currentUser } = useAuth();
+  const [currentPage, setPage] = React.useState('Feed');
+  const [isCreateModalOpen, setCreateModalOpen] = React.useState(false);
     const [isCameraDrawerOpen, setCameraDrawerOpen] = React.useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const navigate = useNavigate();
 
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-    const navigate = useNavigate();
-    
-    const handleToggle = () => {
-      setCameraDrawerOpen(!isCameraDrawerOpen);
-    };
+  const handleModeChange = (event: any, newMode: any) => {
+    if (newMode !== null) {
+      setMode(newMode);
+    }
+  };
 
-    // wait for user to be loaded for 500ms
-    // if user is not loaded, redirect to login page
-    return (
+  return (
     <ThemeProvider theme={mdTheme}>
-      <Box component="div" sx={{ display: 'flex', flexDirection: isMobile ? 'column-reverse' : 'row' }}>
+      <Box component="div" sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar position="absolute" mobileDisplay={isMobile}>
-          <Toolbar
-            sx={{
-                pr: '24px', // keep right padding when drawer closed
-            }}
-          >
-            {/* <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={toggleDrawer}
-              sx={{
-                marginRight: '36px',
-                ...(open && { display: 'none' }),
-              }}
-            >
-              <MenuIcon />
-            </IconButton> */}
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              sx={{ flexGrow: 1 }}
-            >
-              Dashboard 
+        <AppBar position="absolute">
+          <Toolbar>
+            <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
+              Dashboard
             </Typography>
             <ProfileDropDownMenu profile={currentUser?.displayName}/>
             <IconButton color="inherit">
@@ -224,34 +200,36 @@ function Copyright(props: any) {
           </List>
         </Drawer>
         )}
-        <Box
-          component="main"
-          sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === 'light'
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: '100vh',
-            width : '100%',
-            overflow: 'auto',
-            // center the content by shifting the content to the right for the width of the drawer
-            marginLeft: isMobile ? 0 : `${drawerWidth}px`,
-          }}
-        >
-        <Toolbar />
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Camera/>
+        <Box component="main" sx={{
+          flexGrow: 1,
+          height: '100vh',
+          overflow: 'auto',
+          backgroundColor: (theme) =>
+            theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
+        }}>
+          <Toolbar />
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <ToggleButtonGroup
+              color="primary"
+              value={mode}
+              exclusive
+              onChange={handleModeChange}
+              sx={{ marginBottom: 2 }}
+            >
+              <ToggleButton value="receipts">Scan Receipts</ToggleButton>
+              <ToggleButton value="fridge">View Fridge</ToggleButton>
+            </ToggleButtonGroup>
+            <Camera mode={mode} />
             {isCreateModalOpen && (
             <PostModal isOpen={isCreateModalOpen} onClose={() => setCreateModalOpen(false)} />
             )}
-            </Container>
-          </Box>
+          </Container>
         </Box>
-      </ThemeProvider>
-    );
-  }
-  
-  export default function CameraPage() {
-    return <CameraContent />;
-  }
+      </Box>
+    </ThemeProvider>
+  );
+}
+
+export default function CameraPage() {
+  return <CameraContent />;
+}

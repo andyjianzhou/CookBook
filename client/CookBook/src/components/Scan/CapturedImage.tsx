@@ -34,6 +34,7 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
     setInlineResult(URL.createObjectURL(imageFile));
     formData.append("image", imageFile);
     setLoading(true);
+    // set conditional here
     try {
         const response = await axiosInstance.post('http://127.0.0.1:8000/api/detect-receipt/', formData, {
             headers: {
@@ -62,7 +63,7 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
     savedServices.saveReceiptDetection(receiptId, userId, receiptDetails, csrfToken, currentDateTime)
       .then(() => {
         // Close the recipe modal
-        setModalOpen(false);
+        setModalOpen(false)
       })
       .catch((error) => {
         console.error("Error saving receipt:", error);
