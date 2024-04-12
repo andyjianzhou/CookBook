@@ -10,6 +10,7 @@ import { SavedServices } from '../Services/SavedServices';
 import ReceiptSaveModal from '../Save/ReceiptSaveModal';
 import LoadingOverlay from './LoadingOverlay';
 import { v4 as uuidv4 } from 'uuid';
+import ConfirmationModal from '../Save/ConfirmationModal';
 
 type CapturedImageProps = {
   image: string;
@@ -21,9 +22,10 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
   const [receiptDetails, setReceiptDetails] = useState<ReceiptDetails | null>(null);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const savedServices: ISavedServices = new SavedServices();
-  
   const [receiptId] = useState<string>(uuidv4());
+
   const handleClick = async (imageFile: File) => {
     const formData = new FormData();
     // change this to the image file read from webcam
@@ -51,17 +53,31 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
   };
 
   const handleSave = () => {
-    const userId = currentUser?.uid;
-    // Implement your save logic here
-    // For example, sending the receiptDetails to a backend server or updating a global state
-    savedServices.saveReceiptDetection(receiptId, userId, receiptDetails, csrfToken)
-    .then(() => {
-      setModalOpen(false);
-    })
-    .catch((error) => {
-      console.error("Error saving receipt:", error);
-    });
+    // const userId = currentUser?.uid;
+    // // Implement your save logic here
+    // // For example, sending the receiptDetails to a backend server or updating a global state
+    // savedServices.saveReceiptDetection(receiptId, userId, receiptDetails, csrfToken)
+    // .then(() => {
+    //   setModalOpen(false);
+    // })
+    // .catch((error) => {
+    //   console.error("Error saving receipt:", error);
+    // });
+      setShowConfirmationModal(true);
   };
+
+  const onConfirmSave = () => {
+    const userId = currentUser?.uid;
+    savedServices.saveReceiptDetection(receiptId, userId, receiptDetails, csrfToken)
+      .then(() => {
+        // Close the recipe modal
+        setModalOpen(false);
+      })
+      .catch((error) => {
+        console.error("Error saving receipt:", error);
+      });
+    };
+
 
   const urlToImage = async (url: string) => {
     const response = await fetch(url);
@@ -89,9 +105,16 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
           open={modalOpen}
           onClose={() => setModalOpen(false)}
           receiptDetails={receiptDetails}
-          onSave={handleSave} // Pass the onSave function
+          onSave={handleSave}
           receiptImg={inlineResult}
-      />
+        />
+      )}
+      {showConfirmationModal && (
+        <ConfirmationModal
+          open={showConfirmationModal}
+          onSave={onConfirmSave}
+          onClose={() => setShowConfirmationModal(false)}
+        />
       )}
     </div>
   );
