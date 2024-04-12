@@ -51,7 +51,7 @@ class Receipt(models.Model):
     store = models.CharField(max_length=255)
     userId = models.ForeignKey('UserProfile', related_name='receipts', on_delete=models.CASCADE, null=True, blank=True)  # Allowing null for userId as per your structure
     foods = models.JSONField(null=True, blank=True)
-    date = models.DateField()
+    date = models.DateTimeField()
 
 class FridgeDetection(models.Model):
     fridge_detection_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

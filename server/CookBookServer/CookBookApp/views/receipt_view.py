@@ -2,7 +2,10 @@ from django.http import JsonResponse
 from django.views import View
 import json
 from uuid import UUID
-from ..models import Receipt, Product, UserProfile  # Adjust the import path as needed
+from ..models import Receipt, Product, UserProfile
+from datetime import datetime
+from django.utils.dateparse import parse_datetime
+from django.utils.timezone import is_aware, make_aware
 
 class ReceiptFormView(View):
     def post(self, request):
@@ -12,7 +15,9 @@ class ReceiptFormView(View):
             store = request.POST.get('store')
             foods_json = request.POST.get('foods')
             firebase_uid = request.POST.get('firebase_uid')
-            date = request.POST.get('createdAt')
+            date_str = request.POST.get('createdAt')
+            date = parse_datetime(date_str) if date_str else datetime.now()
+
 
             # Retrieve the UserProfile instance for the given firebase_uid, creating one if it doesn't exist
             # Here, user_profile is the object, and created is a boolean indicating if the object was created

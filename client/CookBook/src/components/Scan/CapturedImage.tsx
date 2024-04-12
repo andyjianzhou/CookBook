@@ -58,8 +58,8 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image }) => {
 
   const onConfirmSave = () => {
     const userId = currentUser?.uid;
-    const currentDate = new Date().toISOString().split('T')[0];
-    savedServices.saveReceiptDetection(receiptId, userId, receiptDetails, csrfToken, currentDate)
+    const currentDateTime = new Date().toISOString();
+    savedServices.saveReceiptDetection(receiptId, userId, receiptDetails, csrfToken, currentDateTime)
       .then(() => {
         // Close the recipe modal
         setModalOpen(false);
