@@ -35,22 +35,27 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image, mode }) => {
     setInlineResult(URL.createObjectURL(imageFile));
     formData.append("image", imageFile);
     setLoading(true);
-    // set conditional here
-    try {
-        const response = await axiosInstance.post('http://127.0.0.1:8000/api/detect-receipt/', formData, {
-            headers: {
-                'X-CSRFToken': csrfToken,
-                'Content-Type': 'multipart/form-data',
-            }
-        });
-        setLoading(false);
-        // Convert ReceiptData to ReceiptDetails
-        const receiptDetails = savedServices.createReceiptDetails(response.data);
-        console.log("Receipt Details: ", receiptDetails);
-        setReceiptDetails(receiptDetails);
-        setModalOpen(true);
-    } catch (error) {
-        console.error("Error uploading image:", error);
+    if (mode === "receipts") {
+      try {
+          const response = await axiosInstance.post('http://127.0.0.1:8000/api/detect-receipt/', formData, {
+              headers: {
+                  'X-CSRFToken': csrfToken,
+                  'Content-Type': 'multipart/form-data',
+              }
+          });
+          setLoading(false);
+          // Convert ReceiptData to ReceiptDetails
+          const receiptDetails = savedServices.createReceiptDetails(response.data);
+          console.log("Receipt Details: ", receiptDetails);
+          setReceiptDetails(receiptDetails);
+          setModalOpen(true);
+      } catch (error) {
+          console.error("Error uploading image:", error);
+      }
+    } else {
+      // fridge mode
+      console.log("Fridge mode")
+      setLoading(false);
     }
   };
 

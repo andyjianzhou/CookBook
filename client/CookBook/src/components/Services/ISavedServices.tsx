@@ -1,3 +1,4 @@
+import FridgeDetails from "../../models/FridgeDetails";
 import ReceiptDetails from "../../models/ReceiptDetails";
 
 export interface ISavedServices {
@@ -16,4 +17,5 @@ export interface ISavedServices {
     deleteReply(id: string, commentId: string, replyId: string): Promise<any>;
     saveReceiptDetection(guid: string, userId: string | undefined, receiptDetails: ReceiptDetails | null, csrfToken: string | null, createdAt: string): Promise<any>;
     createReceiptDetails(data: any): ReceiptDetails;
+    createFridgeDetails(data: any): FridgeDetails;
 }

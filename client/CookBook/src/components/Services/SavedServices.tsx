@@ -106,4 +106,9 @@ export class SavedServices implements ISavedServices {
             })),
         };
       };
+
+      createFridgeDetails(data: any): any {
+        // placeholder implementation
+        return data;
+      }
 }
