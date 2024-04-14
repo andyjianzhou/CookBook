@@ -53,9 +53,25 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image, mode }) => {
           console.error("Error uploading image:", error);
       }
     } else {
-      // fridge mode
-      console.log("Fridge mode")
-      setLoading(false);
+      imageFile = await urlToImage('https://cdn.mos.cms.futurecdn.net/iC7HBvohbJqExqvbKcV3pP-970-80.jpg.webp');
+      setInlineResult(URL.createObjectURL(imageFile)); // Delete later
+      formData.append("image", imageFile); // delete later
+
+      try {
+        const response = await axiosInstance.post('http://127.0.0.1:8000/api/detect_fridge/', formData, {
+          headers: {
+            'X-CSRFToken': csrfToken,
+            'Content-Type': 'multipart/form-data',
+          }
+        });
+        setLoading(false);
+        // Convert prediction results to FridgeDetectionDetails
+        // const receiptDetails = savedServices.createReceiptDetails(response.data);
+        setModalOpen(true);
+        console.log("Fridge Details: ", response.data);
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
     }
   };
 
@@ -103,7 +119,7 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image, mode }) => {
       />
       {loading && <LoadingOverlay />}
       
-
+        
       {receiptDetails && mode === 'receipts' && (
         <ReceiptSaveModal
           open={modalOpen}
