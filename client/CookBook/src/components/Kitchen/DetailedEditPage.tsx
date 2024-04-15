@@ -74,12 +74,15 @@ const DetailedKitchenPage = () => {
   };
 
   const handleCreateRecipe = async () => {
+    const currentDateTime = new Date().toISOString();
+
     try {
         const recipeDetails = {
             userId: currentUser?.uid,
             title: 'New Recipe from Kitchen',
             ingredients: editFoods,
-            description: 'Generated from kitchen inventory.'
+            description: 'Generated from kitchen inventory.',
+            createdAt: currentDateTime,
         };
         
         const response = recipeServices.createRecipe(recipeDetails, csrfToken);

@@ -5,6 +5,7 @@ import ModeCommentOutlinedIcon from '@mui/icons-material/ModeCommentOutlined';
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
+import MuiMarkdown from 'mui-markdown';
 
 interface PostProps {
   postId: number,
@@ -80,7 +81,7 @@ const Post: React.FC<PostProps> = ({ postId, userId, userName, content, mediaFil
         </Box>
       </Box>
       <Box component="div" sx={{ padding: '0rem 4rem' }}>
-        <Typography variant="body1">{content}</Typography>
+        <MuiMarkdown>{content}</MuiMarkdown>
         {mediaFiles && (
           <Box component="div" mt={2}>
             {Array.isArray(mediaFiles)

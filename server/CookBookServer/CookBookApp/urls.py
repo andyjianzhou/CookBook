@@ -18,7 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from .views import post_views, user_views, csrf_view, receipt_detection_views, receipt_view, fridge_detection_views, fridge_view, detailed_fridge_views, detailed_receipt_views, recipe_views
+from .views import post_views, recipe_view, user_views, csrf_view, receipt_detection_views, receipt_view, fridge_detection_views, fridge_view, detailed_fridge_views, detailed_receipt_views, detailed_recipe_views, recipe_detection_views
 
 urlpatterns = [
     path('posts/', post_views.PostListView.as_view(), name="post_list"),
@@ -30,7 +30,9 @@ urlpatterns = [
     path('fridge-save/', fridge_view.FridgeFormView.as_view(), name="fridge_save"),
     path('receipt/<uuid:id>/', detailed_receipt_views.DetailedReceipt.as_view(), name='receipt_detail'),
     path('fridge/<uuid:id>/', detailed_fridge_views.DetailedFridge.as_view(), name='fridge_item_detail'),
-    path('recipes/', recipe_views.RecipeView.as_view(), name='recipe_list'),
+    path('recipe/<uuid:id>/', detailed_recipe_views.DetailedRecipe.as_view(), name='recipe_detail'),
+    path('recipes/', recipe_view.RecipeView.as_view(), name='recipe_list'),
+    path('generate-recipe/', recipe_detection_views.AIRecipeGeneratorView.as_view(), name='generate_recipe'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -2,7 +2,7 @@ import axiosInstance from "../Utilities/axiosConfig";
 import FridgeDetails from "../../models/FridgeDetails";
 import ReceiptDetails from "../../models/ReceiptDetails";
 
-const LoadFridgeReceiptService = async (userId: string | undefined) => {
+const LoadDetailsServices = async (userId: string | undefined) => {
     if (!userId) {
         console.error('No user ID provided');
         return null;
@@ -45,4 +45,4 @@ const LoadFridgeReceiptService = async (userId: string | undefined) => {
     }
 }
 
-export default LoadFridgeReceiptService;
+export default LoadDetailsServices;

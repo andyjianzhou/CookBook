@@ -177,7 +177,6 @@ CORS_ALLOW_HEADERS = [
     "x-requested-with",
 ]
 
-
 # media_files blob
 MEDIA_URL = '/media_files/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media_files/')
