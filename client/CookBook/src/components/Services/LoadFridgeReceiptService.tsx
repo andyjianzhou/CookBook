@@ -12,7 +12,7 @@ const LoadFridgeReceiptService = async (userId: string | undefined) => {
         const receiptResponse = await axiosInstance.get(`http://127.0.0.1:8000/api/receipt-save/?firebase_uid=${userId}`);
         const fridgeResponse = await axiosInstance.get(`http://127.0.0.1:8000/api/fridge-save/?firebase_uid=${userId}`);
         
-        console.log(receiptResponse)
+        console.log(receiptResponse.data);
         // Convert to models
         const receiptDetails: ReceiptDetails[] = Array.isArray(receiptResponse.data) ? receiptResponse.data.map((item: any) => ({
             store: item.store,
@@ -22,12 +22,12 @@ const LoadFridgeReceiptService = async (userId: string | undefined) => {
                 brand: prod.brand || null,
                 price: prod.price.toString()
             })) : [],
-            createdAt: item.createdAt
+            createdAt: item.date
         })) : [];
 
         const fridgeDetails: FridgeDetails[] = Array.isArray(fridgeResponse.data) ? fridgeResponse.data.map((item: any) => ({
             foods: item.foods || [],
-            createdAt: item.createdAt 
+            createdAt: item.date 
         })) : [];
 
         console.log('Receipts:', receiptDetails);
