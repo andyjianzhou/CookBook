@@ -46,6 +46,7 @@ class Save(models.Model):
     post = models.ForeignKey('Post', related_name='saved_posts', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
+
 class Receipt(models.Model):
     receipt_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     store = models.CharField(max_length=255)

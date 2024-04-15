@@ -22,12 +22,14 @@ const LoadFridgeReceiptService = async (userId: string | undefined) => {
                 brand: prod.brand || null,
                 price: prod.price.toString()
             })) : [],
-            createdAt: item.date
+            createdAt: item.date,
+            receipt_id: item.receipt_id
         })) : [];
 
         const fridgeDetails: FridgeDetails[] = Array.isArray(fridgeResponse.data) ? fridgeResponse.data.map((item: any) => ({
             foods: item.foods || [],
-            createdAt: item.date 
+            createdAt: item.date,
+            fridge_id: item.fridge_detection_id
         })) : [];
 
         console.log('Receipts:', receiptDetails);

@@ -18,7 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from .views import post_views, user_views, csrf_view, receipt_detection_views, receipt_view, fridge_detection_views, fridge_view
+from .views import post_views, user_views, csrf_view, receipt_detection_views, receipt_view, fridge_detection_views, fridge_view, detailed_fridge_views, detailed_receipt_views
 
 urlpatterns = [
     path('posts/', post_views.PostListView.as_view(), name="post_list"),
@@ -28,6 +28,8 @@ urlpatterns = [
     path('receipt-save/', receipt_view.ReceiptFormView.as_view(), name="receipt_save"),
     path('detect-fridge/', fridge_detection_views.FridgeDetectionView.as_view(), name="detect_fridge"),
     path('fridge-save/', fridge_view.FridgeFormView.as_view(), name="fridge_save"),
+    path('receipt/<uuid:id>/', detailed_receipt_views.DetailedReceipt.as_view(), name='receipt_detail'),
+    path('fridge/<uuid:id>/', detailed_fridge_views.DetailedFridge.as_view(), name='fridge_item_detail'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

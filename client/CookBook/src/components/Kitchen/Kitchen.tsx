@@ -23,18 +23,31 @@
     const navigate = useNavigate();
 
     const handleRowClick = (type: 'receipt' | 'fridge', id: string) => {
-      navigate(`/${type}/${id}`); // This will navigate to /receipt/:id or /fridge/:id
+      navigate(`details/${type}/${id}`);
     };
+
+    const formatDate = (date: string) => {
+      return new Date(date).toLocaleString();
+    }
+  
     useEffect(() => {
-        const fetchData = async () => {
-            if (currentUser?.uid) {
-                const loadedData = await LoadFridgeReceiptService(currentUser.uid);
-                if (loadedData) {
-                    setReceipts(loadedData.receiptsDetails as FetchedReceiptDetails[]);
-                    setFridgeData(loadedData.fridgeDataDetails as FetchedFridgeDetails[]);
-                }
-            }
-        };
+      const fetchData = async () => {
+        if (currentUser?.uid) {
+          const loadedData = await LoadFridgeReceiptService(currentUser.uid);
+          if (loadedData) {
+            // Sort data by most recent date, assuming loadedData properly returns FetchedReceiptDetails and FetchedFridgeDetails
+            const sortedReceipts = (loadedData.receiptsDetails as FetchedReceiptDetails[]).sort(
+              (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            );
+            const sortedFridgeData = (loadedData.fridgeDataDetails as FetchedFridgeDetails[]).sort(
+              (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            );
+            
+            setReceipts(sortedReceipts);
+            setFridgeData(sortedFridgeData);
+          }
+        }
+      };
 
         fetchData();
     }, [currentUser?.uid]);
@@ -46,7 +59,6 @@
     return (
       <div>
         <h1>Kitchen Data</h1>
-        {/* Receipts Table */}
         <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
           <Table>
             <TableHead>
@@ -59,7 +71,7 @@
             <TableBody>
               {receipts.map((receipt) => (
                 <TableRow
-                  key={receipt.receipt_id} // Assuming you have a receipt_id field
+                  key={receipt.receipt_id} 
                   hover
                   onClick={() => handleRowClick('receipt', receipt.receipt_id)}
                   sx={{ cursor: 'pointer' }}
@@ -68,14 +80,13 @@
                     {receipt.store}
                   </TableCell>
                   <TableCell align="right">{receipt.foods.join(', ')}</TableCell>
-                  <TableCell align="right">{receipt.createdAt}</TableCell>
+                  <TableCell align="right">{formatDate(receipt.createdAt)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
         
-        {/* Fridge Data Table */}
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -87,7 +98,7 @@
             <TableBody>
               {fridgeData.map((fridge) => (
                 <TableRow
-                  key={fridge.fridge_id} // Assuming you have a fridge_id field
+                  key={fridge.fridge_id} 
                   hover
                   onClick={() => handleRowClick('fridge', fridge.fridge_id)}
                   sx={{ cursor: 'pointer' }}
@@ -95,7 +106,7 @@
                   <TableCell component="th" scope="row">
                     {fridge.foods.join(', ')}
                   </TableCell>
-                  <TableCell align="right">{fridge.createdAt}</TableCell>
+                  <TableCell align="right">{formatDate(fridge.createdAt)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
