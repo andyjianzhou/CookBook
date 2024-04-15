@@ -159,7 +159,7 @@ const DetailedRecipeEditPage = () => {
         </Grid>
         <Grid item>
           <Button onClick={handleMagicAIRecipe} variant="contained" color="primary" sx={{ mt: 2, mr: 2 }}>
-            Magic AI Recipe
+          ✨ Magic AI Recipe ✨
           </Button>
           <Button onClick={handleCreatePost} variant="contained" color="primary" sx={{ mt: 2 }}>
             Post
