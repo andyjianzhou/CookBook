@@ -15,7 +15,6 @@ export class RecipeServices implements IRecipeServices {
                         description: item.description,
                         ingredients: item.ingredients, 
                         createdAt: item.createdAt,
-                        updatedAt: item.updatedAt || null
                     };
                 });
             } else {

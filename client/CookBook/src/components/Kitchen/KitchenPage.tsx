@@ -246,9 +246,6 @@ function Copyright(props: any) {
                     <Typography component="h2" variant="h6" color="primary" gutterBottom>
                         Kitchen
                     </Typography>
-                    {/* <Typography component="p" variant="body1">
-                        This is where you can see what ingredients you have in your kitchen and get recommended recipes
-                    </Typography> */}
                     <KitchenComponent />
                 </Paper>
             </Grid>

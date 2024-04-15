@@ -3,6 +3,7 @@ import LoadDetailsServices from '../Services/LoadDetailsServices';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import {
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -62,85 +63,87 @@ const KitchenComponent = () => {
   return (
     <div>
       <h1>Hello {currentUser?.displayName}! Welcome to your Kitchen</h1>
-      <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Title</TableCell>
-              <TableCell align="right">Ingredients</TableCell>
-              <TableCell align="right">Created At</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {recipes.map((recipe) => (
-              <TableRow
-                key={recipe.id}
-                hover
-                onClick={() => handleRowClick('recipe', recipe.id)}
-                sx={{ cursor: 'pointer' }}
-              >
-                <TableCell component="th" scope="row">{recipe.title}</TableCell>
-                <TableCell align="right">{recipe.ingredients.map(ingredient => ingredient.name).join(', ')}</TableCell>
-                <TableCell align="right">{formatDate(recipe.createdAt)}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-
-      <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Store</TableCell>
-              <TableCell align="right">Foods</TableCell>
-              <TableCell align="right">Date</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {receipts.map((receipt) => (
-              <TableRow
-                key={receipt.receipt_id} 
-                hover
-                onClick={() => handleRowClick('receipt', receipt.receipt_id)}
-                sx={{ cursor: 'pointer' }}
-              >
-                <TableCell component="th" scope="row">
-                  {receipt.store}
-                </TableCell>
-                <TableCell align="right">{receipt.foods.join(', ')}</TableCell>
-                <TableCell align="right">{formatDate(receipt.createdAt)}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Foods</TableCell>
-              <TableCell align="right">Date</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {fridgeData.map((fridge) => (
-              <TableRow
-                key={fridge.fridge_id} 
-                hover
-                onClick={() => handleRowClick('fridge', fridge.fridge_id)}
-                sx={{ cursor: 'pointer' }}
-              >
-                <TableCell component="th" scope="row">
-                  {fridge.foods.join(', ')}
-                </TableCell>
-                <TableCell align="right">{formatDate(fridge.createdAt)}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Title</TableCell>
+                  <TableCell align="right">Ingredients</TableCell>
+                  <TableCell align="right">Created At</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {recipes.map((recipe) => (
+                  <TableRow
+                    key={recipe.id}
+                    hover
+                    onClick={() => handleRowClick('recipe', recipe.id)}
+                    sx={{ cursor: 'pointer' }}
+                  >
+                    <TableCell component="th" scope="row">{recipe.title}</TableCell>
+                    <TableCell align="right">{recipe.ingredients.map(ingredient => ingredient.name).join(', ')}</TableCell>
+                    <TableCell align="right">{formatDate(recipe.createdAt)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Grid>
+        <Grid item xs={6}>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Store</TableCell>
+                  <TableCell align="right">Foods</TableCell>
+                  <TableCell align="right">Date</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {receipts.map((receipt) => (
+                  <TableRow
+                    key={receipt.receipt_id} 
+                    hover
+                    onClick={() => handleRowClick('receipt', receipt.receipt_id)}
+                    sx={{ cursor: 'pointer' }}
+                  >
+                    <TableCell component="th" scope="row">{receipt.store}</TableCell>
+                    <TableCell align="right">{receipt.foods.join(', ')}</TableCell>
+                    <TableCell align="right">{formatDate(receipt.createdAt)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Grid>
+        <Grid item xs={6}>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Foods</TableCell>
+                  <TableCell align="right">Date</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {fridgeData.map((fridge) => (
+                  <TableRow
+                    key={fridge.fridge_id} 
+                    hover
+                    onClick={() => handleRowClick('fridge', fridge.fridge_id)}
+                    sx={{ cursor: 'pointer' }}
+                  >
+                    <TableCell component="th" scope="row">{fridge.foods.join(', ')}</TableCell>
+                    <TableCell align="right">{formatDate(fridge.createdAt)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Grid>
+      </Grid>
     </div>
   );
 };
