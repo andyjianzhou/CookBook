@@ -10,7 +10,8 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow
+  TableRow,
+  Typography
 } from '@mui/material';
 import FetchedFridgeDetails from '../../models/FetchedFridgeDetails';
 import FetchedReceiptDetails from '../../models/FetchedReceiptDetails';
@@ -65,6 +66,9 @@ const KitchenComponent = () => {
       <h1>Hello {currentUser?.displayName}! Welcome to your Kitchen</h1>
       <Grid container spacing={2}>
         <Grid item xs={12}>
+          <Typography variant="h6" gutterBottom>
+            Recipe's
+          </Typography>
           <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
             <Table>
               <TableHead>
@@ -92,6 +96,9 @@ const KitchenComponent = () => {
           </TableContainer>
         </Grid>
         <Grid item xs={6}>
+          <Typography variant="h6" gutterBottom>
+            Receipts
+          </Typography>
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
@@ -119,6 +126,9 @@ const KitchenComponent = () => {
           </TableContainer>
         </Grid>
         <Grid item xs={6}>
+          <Typography variant="h6" gutterBottom>
+            Food Scan
+          </Typography>
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
