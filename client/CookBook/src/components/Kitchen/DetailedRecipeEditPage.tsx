@@ -10,12 +10,14 @@ import { ISavedServices } from '../Services/ISavedServices';
 import { SavedServices } from '../Services/SavedServices';
 import { useAuth } from '../contexts/AuthContext';
 import { generateRecipe } from '../Services/AIServices';
+import LoadingOverlay from '../Scan/LoadingOverlay';
 
 const DetailedRecipeEditPage = () => {
   const { id } = useParams<{ id: string }>();
   const [recipe, setRecipe] = useState<RecipeDetails | null>(null);
   const [postModalOpen, setPostModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [postInitialContent, setPostInitialContent] = useState('');
   const savedServices: ISavedServices = new SavedServices();
   const [refreshKey, setRefreshKey] = useState(0);
   const { csrfToken } = useAuth();
@@ -70,8 +72,17 @@ const DetailedRecipeEditPage = () => {
   };
 
   const handleCreatePost = () => {
+    if (!recipe) return;
+  
+    const titleMarkdown = `#### ${recipe.title.trim()}`;
+    const ingredientsMarkdown = `##### Ingredients\n${recipe.ingredients.map(ing => `- **${ing.name.trim()}**: ${ing.measure.trim()}`).join('\n')}`;
+    const instructionsMarkdown = `##### Instructions\n${recipe.description.trim()}`;
+    const postContent = [titleMarkdown, ingredientsMarkdown, instructionsMarkdown].join('\n\n');
     setPostModalOpen(true);
+    setPostInitialContent(postContent); // Assuming you add a state to hold this
   };
+  
+  
 
   const handleCloseModal = () => {
     setPostModalOpen(false);
@@ -80,12 +91,16 @@ const DetailedRecipeEditPage = () => {
   const handleMagicAIRecipe = async () => {
     if (!recipe) return;
     const recipeJson = JSON.stringify(recipe);
+    setLoading(true);
     const recipeResults: RecipeDetails = await generateRecipe(recipeJson, csrfToken);
+    setLoading(false);
     setRecipe(recipeResults);
   };
 
   return (
     <Container component={Paper} sx={{ padding: 4 }}>
+      {loading && <LoadingOverlay />}
+
       <Typography variant="h6">Recipe Details</Typography>
       <TextField
         fullWidth
@@ -155,6 +170,7 @@ const DetailedRecipeEditPage = () => {
         <PostModal
           isOpen={postModalOpen}
           onClose={handleCloseModal}
+          initialContent={postInitialContent}
         />
       )}
     </Container>

@@ -14,9 +14,10 @@ import { useMutation, useQueryClient } from 'react-query';
 interface PostModalProps {
     isOpen: boolean;
     onClose: () => void;
+    initialContent?: string; 
 }
 
-const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
+const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, initialContent }) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [file, setFile] = React.useState<File | null>(null);
     const [desc, setDesc] = React.useState('');
@@ -28,6 +29,12 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
     
+    React.useEffect(() => {
+        if (initialContent) {
+          setDesc(initialContent);
+        }
+      }, [initialContent]);
+
     const createPostMutation = useMutation(
         async (newPost: PostDetails) => await PostService.createPost(newPost, csrfToken),
         {
