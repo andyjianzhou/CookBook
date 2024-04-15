@@ -11,7 +11,7 @@ import Dashboard from './components/Dashboard/Dashboard'
 import Search from './components/Search/Search'
 import Login from './components/Login/Login'
 // import Scan from './components/Scan/Camera';
-import Kitchen from './components/Kitchen/Kitchen';
+import KitchenPage from './components/Kitchen/KitchenPage';
 import Explore from './components/Explore/Explore';
 import HomePages from './components/LandingPage/HomePages';
 import CameraPage from './components/Scan/CameraPage';
@@ -54,7 +54,7 @@ const router = createBrowserRouter([
   // },
   {
     path: "/dashboard/kitchen",
-    element: <PrivateRoute component={Kitchen} />,
+    element: <PrivateRoute component={KitchenPage} />,
   },
   {
     path: "/dashboard/explore",
