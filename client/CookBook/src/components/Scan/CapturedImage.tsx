@@ -11,46 +11,63 @@ import ReceiptSaveModal from '../Save/ReceiptSaveModal';
 import LoadingOverlay from './LoadingOverlay';
 import { v4 as uuidv4 } from 'uuid';
 import ConfirmationModal from '../Save/ConfirmationModal';
+import { uploadImageForDetection } from '../Services/ImageService';
+import FridgeDetails from '../../models/FridgeDetails';
+import FridgeSaveModal from '../Save/FridgeSaveModal';
 
 type CapturedImageProps = {
   image: string;
   mode: string;
 }
 
+export interface ApiResponse {
+  classes: number[];
+  names: { [key: number]: string };
+  imageWithDetections: string;
+}
+
 const CapturedImage: React.FC<CapturedImageProps> = ({ image, mode }) => {
   const [inlineResult, setInlineResult] = useState<string | undefined>(undefined);
   const { csrfToken, currentUser } = useAuth();
   const [receiptDetails, setReceiptDetails] = useState<ReceiptDetails | null>(null);
+  const [fridgeDetails, setFridgeDetails] = useState<FridgeDetails | null>(null);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const savedServices: ISavedServices = new SavedServices();
   const [receiptId] = useState<string>(uuidv4());
 
+
   const handleClick = async (imageFile: File) => {
     const formData = new FormData();
     // change this to the image file read from webcam
-    imageFile = await urlToImage('https://live.staticflickr.com/5558/14600361669_b73b9e7f04_b.jpg');
+    if (mode === 'receipts') {
+      imageFile = await urlToImage('https://live.staticflickr.com/5558/14600361669_b73b9e7f04_b.jpg');
+    } else {
+      imageFile = await urlToImage('https://cdn.discordapp.com/attachments/700087629323960351/1229263695578927104/test.jpg?ex=662f0c07&is=661c9707&hm=872fafb768f4a62744b66173c5085d0267c2f73601f8daece861bfacfdaea7b2&');
+    }
     // imageFile = await urlToImage(image);
     setInlineResult(URL.createObjectURL(imageFile));
     formData.append("image", imageFile);
     setLoading(true);
-    // set conditional here
     try {
-        const response = await axiosInstance.post('http://127.0.0.1:8000/api/detect-receipt/', formData, {
-            headers: {
-                'X-CSRFToken': csrfToken,
-                'Content-Type': 'multipart/form-data',
-            }
-        });
-        setLoading(false);
-        // Convert ReceiptData to ReceiptDetails
-        const receiptDetails = savedServices.createReceiptDetails(response.data);
-        console.log("Receipt Details: ", receiptDetails);
+      const data = await uploadImageForDetection(formData, mode, csrfToken);
+      const detectedImage = data.image_with_detections
+
+      if (mode === 'receipts') {
+        const receiptDetails = savedServices.createReceiptDetails(data);
         setReceiptDetails(receiptDetails);
-        setModalOpen(true);
+      } else {
+        const fridgeDetails = savedServices.createFridgeDetails(data);
+        console.log("FridgeDetails:", fridgeDetails)
+        setFridgeDetails(fridgeDetails);
+        setInlineResult(detectedImage) 
+      }
+      setModalOpen(true);
     } catch (error) {
-        console.error("Error uploading image:", error);
+      console.error(`Error in handling the image:`, error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,8 +88,15 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image, mode }) => {
           console.error("Error saving receipt:", error);
         });
       } else {
-        // save to fridge
-        console.log("Save to fridge")
+        savedServices.saveFridgeDetection(receiptId, userId, fridgeDetails, csrfToken, currentDateTime)
+          .then(() => {
+            // Close the recipe modal
+            setModalOpen(false)
+          })
+          .catch((error) => {
+            console.error("Error saving fridge:", error);
+          }
+        );
       }
     };
 
@@ -98,7 +122,7 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image, mode }) => {
       />
       {loading && <LoadingOverlay />}
       
-
+        
       {receiptDetails && mode === 'receipts' && (
         <ReceiptSaveModal
           open={modalOpen}
@@ -107,6 +131,18 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image, mode }) => {
           onSave={handleSave}
           receiptImg={inlineResult}
         />
+      )}
+      {fridgeDetails && mode === 'fridge' && (
+        <FridgeSaveModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSave={handleSave}
+        fridgeDetails={fridgeDetails}
+        updateFridgeDetails={(updatedFoods) => setFridgeDetails({ ...fridgeDetails, foods: updatedFoods })}
+        fridgeImg={inlineResult}
+      />
+    
+        
       )}
       {showConfirmationModal && (
         <ConfirmationModal
