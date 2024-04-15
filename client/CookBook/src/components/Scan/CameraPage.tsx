@@ -154,6 +154,7 @@ function CameraContent() {
     }
   };
 
+  console.log("Mode: ", mode)
   return (
     <ThemeProvider theme={mdTheme}>
       <Box component="div" sx={{ display: 'flex' }}>

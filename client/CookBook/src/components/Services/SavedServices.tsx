@@ -1,7 +1,9 @@
 import React from 'react'
 import { ISavedServices } from './ISavedServices'
 import ReceiptDetails from '../../models/ReceiptDetails';
+import FridgeDetails from '../../models/FridgeDetails';
 import axiosInstance from '../Utilities/axiosConfig';
+import { ApiResponse } from '../Scan/CapturedImage';
 
 export class SavedServices implements ISavedServices {
     
@@ -107,8 +109,22 @@ export class SavedServices implements ISavedServices {
         };
       };
 
-      createFridgeDetails(data: any): any {
-        // placeholder implementation
-        return data;
+      async loadFridgeDetails() {
+        try {
+          const result = await axiosInstance.post<ApiResponse>('api/endpoint/to/get/fridgeDetails');
+        } catch (error) {
+            console.error('Failed to load fridge details:', error);
+        }
       }
+
+      createFridgeDetails(responseData: ApiResponse): FridgeDetails {
+        const { classes, names } = responseData;
+
+        const uniqueClasses = Array.from(new Set(classes.map((cls: number) => Math.round(cls))));
+        const foodNames = uniqueClasses.map(cls => names[cls]);
+    
+        return {
+            foods: foodNames
+        };
+    }
 }

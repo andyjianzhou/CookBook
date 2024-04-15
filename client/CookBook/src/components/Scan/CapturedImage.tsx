@@ -11,67 +11,58 @@ import ReceiptSaveModal from '../Save/ReceiptSaveModal';
 import LoadingOverlay from './LoadingOverlay';
 import { v4 as uuidv4 } from 'uuid';
 import ConfirmationModal from '../Save/ConfirmationModal';
+import { uploadImageForDetection } from '../Services/ImageService';
+import FridgeDetails from '../../models/FridgeDetails';
 
 type CapturedImageProps = {
   image: string;
   mode: string;
 }
 
+export interface ApiResponse {
+  classes: number[];
+  names: { [key: number]: string };
+  imageWithDetections: string;
+}
+
 const CapturedImage: React.FC<CapturedImageProps> = ({ image, mode }) => {
   const [inlineResult, setInlineResult] = useState<string | undefined>(undefined);
   const { csrfToken, currentUser } = useAuth();
   const [receiptDetails, setReceiptDetails] = useState<ReceiptDetails | null>(null);
+  const [fridgeDetails, setFridgeDetails] = useState<FridgeDetails | null>(null);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const savedServices: ISavedServices = new SavedServices();
   const [receiptId] = useState<string>(uuidv4());
 
+
   const handleClick = async (imageFile: File) => {
     const formData = new FormData();
     // change this to the image file read from webcam
-    imageFile = await urlToImage('https://live.staticflickr.com/5558/14600361669_b73b9e7f04_b.jpg');
+    if (mode === 'receipts') {
+      imageFile = await urlToImage('https://live.staticflickr.com/5558/14600361669_b73b9e7f04_b.jpg');
+    } else {
+      imageFile = await urlToImage('https://live.staticflickr.com/5558/14600361669_b73b9e7f04_b.jpg');
+    }
     // imageFile = await urlToImage(image);
     setInlineResult(URL.createObjectURL(imageFile));
     formData.append("image", imageFile);
     setLoading(true);
-    if (mode === "receipts") {
-      try {
-          const response = await axiosInstance.post('http://127.0.0.1:8000/api/detect-receipt/', formData, {
-              headers: {
-                  'X-CSRFToken': csrfToken,
-                  'Content-Type': 'multipart/form-data',
-              }
-          });
-          setLoading(false);
-          // Convert ReceiptData to ReceiptDetails
-          const receiptDetails = savedServices.createReceiptDetails(response.data);
-          console.log("Receipt Details: ", receiptDetails);
-          setReceiptDetails(receiptDetails);
-          setModalOpen(true);
-      } catch (error) {
-          console.error("Error uploading image:", error);
+    try {
+      const data = await uploadImageForDetection(formData, mode, csrfToken);
+      if (mode === 'receipts') {
+        const receiptDetails = savedServices.createReceiptDetails(data);
+        setReceiptDetails(receiptDetails);
+      } else {
+        const fridgeDetails = savedServices.createFridgeDetails(data);
+        setFridgeDetails(fridgeDetails);
       }
-    } else {
-      imageFile = await urlToImage('https://cdn.mos.cms.futurecdn.net/iC7HBvohbJqExqvbKcV3pP-970-80.jpg.webp');
-      setInlineResult(URL.createObjectURL(imageFile)); // Delete later
-      formData.append("image", imageFile); // delete later
-
-      try {
-        const response = await axiosInstance.post('http://127.0.0.1:8000/api/detect_fridge/', formData, {
-          headers: {
-            'X-CSRFToken': csrfToken,
-            'Content-Type': 'multipart/form-data',
-          }
-        });
-        setLoading(false);
-        // Convert prediction results to FridgeDetectionDetails
-        // const receiptDetails = savedServices.createReceiptDetails(response.data);
-        setModalOpen(true);
-        console.log("Fridge Details: ", response.data);
-      } catch (error) {
-        console.error("Error uploading image:", error);
-      }
+      setModalOpen(true);
+    } catch (error) {
+      console.error(`Error in handling the image:`, error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -129,6 +120,10 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image, mode }) => {
           receiptImg={inlineResult}
         />
       )}
+      {/* {fridgeDetails && mode === 'fridge' && (
+        <FridgeSaveModal>
+        
+      )} */}
       {showConfirmationModal && (
         <ConfirmationModal
           open={showConfirmationModal}

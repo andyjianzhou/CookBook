@@ -1,7 +1,7 @@
-type ReceiptDetails = {
+type FridgeDetails = {
     foods: string[];
-    total: number;
-    price?: number;
+    // total: number;
+    // price?: number;
 };
 
-export default ReceiptDetails;
+export default FridgeDetails;

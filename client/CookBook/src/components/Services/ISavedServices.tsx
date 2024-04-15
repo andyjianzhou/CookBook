@@ -1,5 +1,6 @@
 import FridgeDetails from "../../models/FridgeDetails";
 import ReceiptDetails from "../../models/ReceiptDetails";
+import { ApiResponse } from "../Scan/CapturedImage";
 
 export interface ISavedServices {
     getSaved(id: string): Promise<any>;
@@ -17,5 +18,5 @@ export interface ISavedServices {
     deleteReply(id: string, commentId: string, replyId: string): Promise<any>;
     saveReceiptDetection(guid: string, userId: string | undefined, receiptDetails: ReceiptDetails | null, csrfToken: string | null, createdAt: string): Promise<any>;
     createReceiptDetails(data: any): ReceiptDetails;
-    createFridgeDetails(data: any): FridgeDetails;
+    createFridgeDetails(data: ApiResponse): FridgeDetails;
 }
