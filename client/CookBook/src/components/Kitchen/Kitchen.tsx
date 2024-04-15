@@ -31,15 +31,23 @@
     }
   
     useEffect(() => {
-        const fetchData = async () => {
-            if (currentUser?.uid) {
-                const loadedData = await LoadFridgeReceiptService(currentUser.uid);
-                if (loadedData) {
-                    setReceipts(loadedData.receiptsDetails as FetchedReceiptDetails[]);
-                    setFridgeData(loadedData.fridgeDataDetails as FetchedFridgeDetails[]);
-                }
-            }
-        };
+      const fetchData = async () => {
+        if (currentUser?.uid) {
+          const loadedData = await LoadFridgeReceiptService(currentUser.uid);
+          if (loadedData) {
+            // Sort data by most recent date, assuming loadedData properly returns FetchedReceiptDetails and FetchedFridgeDetails
+            const sortedReceipts = (loadedData.receiptsDetails as FetchedReceiptDetails[]).sort(
+              (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            );
+            const sortedFridgeData = (loadedData.fridgeDataDetails as FetchedFridgeDetails[]).sort(
+              (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            );
+            
+            setReceipts(sortedReceipts);
+            setFridgeData(sortedFridgeData);
+          }
+        }
+      };
 
         fetchData();
     }, [currentUser?.uid]);
