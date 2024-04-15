@@ -9,16 +9,17 @@ import { RecipeDetails } from '../../models/RecipeDetails';
 import { ISavedServices } from '../Services/ISavedServices';
 import { SavedServices } from '../Services/SavedServices';
 import { useAuth } from '../contexts/AuthContext';
+import { generateRecipe } from '../Services/AIServices';
 
 const DetailedRecipeEditPage = () => {
   const { id } = useParams<{ id: string }>();
   const [recipe, setRecipe] = useState<RecipeDetails | null>(null);
   const [postModalOpen, setPostModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const savedServices: ISavedServices = new SavedServices();
   const [refreshKey, setRefreshKey] = useState(0);
   const { csrfToken } = useAuth();
 
-  console.log('Recipe:', recipe);
   useEffect(() => {
     const fetchRecipeDetails = async () => {
       try {
@@ -76,8 +77,11 @@ const DetailedRecipeEditPage = () => {
     setPostModalOpen(false);
   };
 
-  const handleMagicAIRecipe = () => {
-    // Logic for generating magic AI recipe
+  const handleMagicAIRecipe = async () => {
+    if (!recipe) return;
+    const recipeJson = JSON.stringify(recipe);
+    const recipeResults: RecipeDetails = await generateRecipe(recipeJson, csrfToken);
+    setRecipe(recipeResults);
   };
 
   return (
