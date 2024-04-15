@@ -27,6 +27,7 @@ const DetailedRecipeEditPage = () => {
       try {
         const { data } = await axiosInstance.get<RecipeDetails>(`http://127.0.0.1:8000/api/recipe/${id}/`);
         setRecipe(data);
+
       } catch (error) {
         console.error('Failed to fetch recipe details:', error);
       }
@@ -73,9 +74,8 @@ const DetailedRecipeEditPage = () => {
 
   const handleCreatePost = () => {
     if (!recipe) return;
-  
     const titleMarkdown = `#### ${recipe.title.trim()}`;
-    const ingredientsMarkdown = `##### Ingredients\n${recipe.ingredients.map(ing => `- **${ing.name.trim()}**: ${ing.measure.trim()}`).join('\n')}`;
+    const ingredientsMarkdown = `##### Ingredients\n${recipe.ingredients.map(ing => `- **${ing.name.trim()}**: ${ing.measure === '' ? "Not specified": ing.measure.trim() }`).join('\n')}`;
     const instructionsMarkdown = `##### Instructions\n${recipe.description.trim()}`;
     const postContent = [titleMarkdown, ingredientsMarkdown, instructionsMarkdown].join('\n\n');
     setPostModalOpen(true);

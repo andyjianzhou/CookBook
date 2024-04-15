@@ -29,8 +29,8 @@ const PostTextField: React.FC<PostTextFieldProps> = ({ value, onChange, onFileCh
     const handleFileDelete = () => {
         if (fileInputRef.current) {
             fileInputRef.current.value = "";  // Clear the input value
-            onFileChange(null);
         }
+        onFileChange(null);
     };
 
     return (
