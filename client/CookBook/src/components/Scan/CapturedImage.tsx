@@ -11,7 +11,7 @@ import ReceiptSaveModal from '../Save/ReceiptSaveModal';
 import LoadingOverlay from './LoadingOverlay';
 import { v4 as uuidv4 } from 'uuid';
 import ConfirmationModal from '../Save/ConfirmationModal';
-import { uploadImageForDetection } from '../Services/ImageService';
+import { uploadImageForDetection } from '../Services/AIServices';
 import FridgeDetails from '../../models/FridgeDetails';
 import FridgeSaveModal from '../Save/FridgeSaveModal';
 
@@ -78,6 +78,7 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image, mode }) => {
   const onConfirmSave = () => {
     const userId = currentUser?.uid;
     const currentDateTime = new Date().toISOString();
+    console.log("Current date", currentDateTime)
     if (mode === "receipts") {
       savedServices.saveReceiptDetection(receiptId, userId, receiptDetails, csrfToken, currentDateTime)
         .then(() => {

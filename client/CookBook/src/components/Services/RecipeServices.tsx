@@ -1,10 +1,31 @@
+import { RecipeDetails } from '../../models/RecipeDetails';
 import axiosInstance from '../Utilities/axiosConfig';
 import { IRecipeServices } from './IRecipeServices'
 
 export class RecipeServices implements IRecipeServices {
-    async getAllRecipes(): Promise<any> {
-        // actual implementation here
-        return Promise.resolve();
+    async getAllRecipes(userId: string): Promise<RecipeDetails[]> {
+        try {
+            const response = await axiosInstance.get(`http://127.0.0.1:8000/api/recipes/?firebase_uid=${userId}`);
+            console.log('response:', response.data)
+            if (Array.isArray(response.data.recipes)) {
+                return response.data.recipes.map((item: any): RecipeDetails => {
+                    return {
+                        id: item.recipe_id, 
+                        title: item.title,
+                        description: item.description,
+                        ingredients: item.ingredients, 
+                        createdAt: item.createdAt,
+                        updatedAt: item.updatedAt || null
+                    };
+                });
+            } else {
+                console.error('Expected an array under "recipes" key but got:', response.data);
+                return [];  
+            }
+        } catch (error) {
+            console.error('Error fetching recipes:', error);
+            throw error;
+        }
     }
 
     async getRecipe(id: string): Promise<any> {

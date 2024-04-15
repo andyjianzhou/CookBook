@@ -16,6 +16,7 @@ import Explore from './components/Explore/Explore';
 import HomePages from './components/LandingPage/HomePages';
 import CameraPage from './components/Scan/CameraPage';
 import DetailedPage from './components/Kitchen/DetailPage';
+import DetailedRecipePage from './components/Kitchen/DetailedRecipePage';
 
 const query = new QueryClient({
   defaultOptions: {
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
     path: "dashboard/kitchen/details/:type/:id",
     element: <PrivateRoute component={DetailedPage} />,
   },
+  {
+    path: "dashboard/kitchen/details/recipe/:id",
+    element: <PrivateRoute component={DetailedRecipePage} />,
+  }
 ]);
 
 function App() {

@@ -1,5 +1,7 @@
+import { RecipeDetails } from "../../models/RecipeDetails";
+
 export interface IRecipeServices {
-    getAllRecipes: () => Promise<any>;
+    getAllRecipes: (userId: string) => Promise<RecipeDetails[]>;
     getRecipe: (id: string) => Promise<any>;
     createRecipe: (formData: any, csrfToken: string | null) => Promise<any>;
     editRecipe: (id: string, recipe: any) => Promise<any>;

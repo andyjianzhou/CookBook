@@ -32,6 +32,7 @@ import DetailedKitchenPage from './DetailedEditPage';
 import { mainMobileListItems } from '../Dashboard/Mobile/ListItemsMobile';
 import CameraDrawer from '../Scan/CameraDrawer';
 import KitchenComponent from './Kitchen';
+import DetailedRecipeEditPage from './DetailedRecipeEditPage';
 
 // page render imports
 // import Chart from './Chart';
@@ -139,7 +140,7 @@ function Copyright(props: any) {
 }
 );
 
-  function DetailedPageContent() {
+  function DetailedRecipePage() {
     const [open, setOpen] = React.useState(true);
     const {currentUser} = useAuth();
     const [currentPage, setPage] = React.useState('Feed');
@@ -242,7 +243,7 @@ function Copyright(props: any) {
         >
         <Toolbar />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <DetailedKitchenPage/>
+            <DetailedRecipeEditPage />
             {isCreateModalOpen && (
             <PostModal isOpen={isCreateModalOpen} onClose={() => setCreateModalOpen(false)} />
             )}
@@ -254,5 +255,5 @@ function Copyright(props: any) {
   }
   
   export default function DetailedPage() {
-    return <DetailedPageContent />;
+    return <DetailedRecipePage />;
   }
