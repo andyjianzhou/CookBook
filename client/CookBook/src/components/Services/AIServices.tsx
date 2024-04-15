@@ -23,9 +23,9 @@ export const uploadImageForDetection = async (formData: FormData, mode: string, 
   }
 }
 
-export const generateRecipe = async (formData: FormData, csrfToken: string| null) => {
+export const generateRecipe = async (data: any, csrfToken: string| null) => {
   try {
-    const response = await axiosInstance.post(apiEndpoints.generateRecipe, formData, {
+    const response = await axiosInstance.post(apiEndpoints.generateRecipe, data, {
       headers: {
         'X-CSRFToken': csrfToken,
         'Content-Type': 'multipart/form-data',

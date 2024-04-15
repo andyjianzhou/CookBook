@@ -18,6 +18,7 @@ const DetailedRecipeEditPage = () => {
   const [refreshKey, setRefreshKey] = useState(0);
   const { csrfToken } = useAuth();
 
+  console.log('Recipe:', recipe);
   useEffect(() => {
     const fetchRecipeDetails = async () => {
       try {
