@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axiosInstance from '../Utilities/axiosConfig';
-import { Container, Paper, Typography, TextField, Button, List, ListItem, IconButton } from '@mui/material';
+import { Container, Paper, Typography, TextField, Button, List, ListItem, IconButton, Grid } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import PostModal from '../Post/PostModal';
 import { RecipeDetails } from '../../models/RecipeDetails';
+import { ISavedServices } from '../Services/ISavedServices';
+import { SavedServices } from '../Services/SavedServices';
+import { useAuth } from '../contexts/AuthContext';
 
 const DetailedRecipeEditPage = () => {
   const { id } = useParams<{ id: string }>();
   const [recipe, setRecipe] = useState<RecipeDetails | null>(null);
   const [postModalOpen, setPostModalOpen] = useState(false);
-  const navigate = useNavigate();
+  const savedServices: ISavedServices = new SavedServices();
+  const [refreshKey, setRefreshKey] = useState(0);
+  const { csrfToken } = useAuth();
 
   useEffect(() => {
     const fetchRecipeDetails = async () => {
@@ -22,13 +27,14 @@ const DetailedRecipeEditPage = () => {
         console.error('Failed to fetch recipe details:', error);
       }
     };
-
     fetchRecipeDetails();
-  }, [id]);
+  }, [id, refreshKey]);
 
-  const handleIngredientChange = (index: number, value: string) => {
+  const handleIngredientChange = (index: number, part: 'name' | 'measure', value: string) => {
     if (recipe) {
-      const updatedIngredients = recipe.ingredients.map((ingredient, idx) => idx === index ? { ...ingredient, name: value } : ingredient);
+      const updatedIngredients = recipe.ingredients.map((ingredient, idx) =>
+        idx === index ? { ...ingredient, [part]: value } : ingredient
+      );
       setRecipe({ ...recipe, ingredients: updatedIngredients });
     }
   };
@@ -48,8 +54,17 @@ const DetailedRecipeEditPage = () => {
     }
   };
 
+  const handleRefreshPage = () => {
+    setRefreshKey((prevKey) => prevKey + 1);
+  };
+
   const handleSaveChanges = async () => {
-    // Save the changes made to the recipe
+    if (!recipe) return;
+    try {
+      await savedServices.updateRecipeDetails(recipe, csrfToken, `http://127.0.0.1:8000/api/recipe/${id}/`);
+    } catch (error) {
+      console.error('Failed to save changes:', error);
+    }
   };
 
   const handleCreatePost = () => {
@@ -82,7 +97,15 @@ const DetailedRecipeEditPage = () => {
               variant="outlined"
               label="Ingredient"
               value={ingredient.name}
-              onChange={(e) => handleIngredientChange(index, e.target.value)}
+              onChange={(e) => handleIngredientChange(index, 'name', e.target.value)}
+              sx={{ mr: 2 }}
+            />
+            <TextField
+              fullWidth
+              variant="outlined"
+              label="Measure"
+              value={ingredient.measure}
+              onChange={(e) => handleIngredientChange(index, 'measure', e.target.value)}
               sx={{ mr: 2 }}
             />
             <IconButton onClick={() => handleRemoveIngredient(index)}>
@@ -105,15 +128,24 @@ const DetailedRecipeEditPage = () => {
         onChange={(e) => recipe && setRecipe({ ...recipe, description: e.target.value })}
         margin="normal"
       />
-      <Button onClick={handleSaveChanges} sx={{ marginRight: 2 }}>
-        Save
-      </Button>
-      <Button onClick={handleCreatePost}>
-        Post
-      </Button>
-      <Button variant="contained" color="primary" onClick={handleMagicAIRecipe} sx={{ marginLeft: 2, width: 'auto' }}>
-        Magic AI Recipe
-      </Button>
+      <Grid container justifyContent="space-between">
+        <Grid item>
+          <Button onClick={handleSaveChanges} variant="contained" sx={{ mt: 2 }}>
+            Save
+          </Button>
+          <Button onClick={handleRefreshPage} variant="contained" color="secondary" sx={{ mt: 2, ml: 2 }}>
+            Refresh
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button onClick={handleMagicAIRecipe} variant="contained" color="primary" sx={{ mt: 2, mr: 2 }}>
+            Magic AI Recipe
+          </Button>
+          <Button onClick={handleCreatePost} variant="contained" color="primary" sx={{ mt: 2 }}>
+            Post
+          </Button>
+        </Grid>
+      </Grid>
       {postModalOpen && (
         <PostModal
           isOpen={postModalOpen}

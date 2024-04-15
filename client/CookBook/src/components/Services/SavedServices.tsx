@@ -4,6 +4,7 @@ import ReceiptDetails from '../../models/ReceiptDetails';
 import FridgeDetails from '../../models/FridgeDetails';
 import axiosInstance from '../Utilities/axiosConfig';
 import { ApiResponse } from '../Scan/CapturedImage';
+import { RecipeDetails } from '../../models/RecipeDetails';
 
 export class SavedServices implements ISavedServices {
     
@@ -141,5 +142,27 @@ export class SavedServices implements ISavedServices {
         return {
             foods: foodNames
         };
-    }
+      }
+
+      async updateRecipeDetails(data: any, csrfToken: string | null, url: string): Promise<RecipeDetails> {
+        try {
+          const payload = JSON.stringify({
+            title: data.title,
+            description: data.description,
+            ingredients: data.ingredients
+          });
+      
+          const response = await axiosInstance.patch(url, payload, {
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'Content-Type': 'application/json',
+            }
+          });
+          return response.data;
+        } catch (error) {
+          console.error('Failed to update recipe details:', error);
+          throw error;
+        }
+      }
+      
 }

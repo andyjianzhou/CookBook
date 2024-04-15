@@ -134,10 +134,9 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
                     p: 4,
                     borderRadius: '20px',
                     display: 'flex',
-                    flexDirection: 'column',  // make sure children are stacked vertically
+                    flexDirection: 'column', 
                 }}
             >
-                {/* Header */}
                 <Box component="div" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
                     <Typography variant="h6">Create Post</Typography>
                     <IconButton size="small" onClick={onClose}>
@@ -146,7 +145,6 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
                 </Box>
                 
                 <Box component="div" sx={{ flex: 1, overflowY: 'auto' }}>
-                    {/* Input fields and buttons for creating a post */}
                     <PostTextField
                         value={desc}
                         onChange={setDesc}
@@ -154,7 +152,6 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
                         file={file} 
                     />
                 </Box>
-                {/* Sticky Controls */}
                 <Box component="div"
                     sx={{ 
                         position: 'sticky',
@@ -164,13 +161,11 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
                         borderTop: '1px solid rgba(0,0,0,0.1)',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '8px'  // space between controls
+                        gap: '8px' 
                     }}
                 >
                     <Box component="div" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    {/* Container for media buttons */}
                         <Box component="div" sx={{ display: 'flex', gap: '8px' }}>
-                            {/* Invisible file input */}
                             <input 
                                 type="file" 
                                 ref={fileInputRef} 
@@ -185,7 +180,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose }) => {
                                 <GifBox />
                             </IconButton>
                             <IconButton size="small">
-                                <EmojiEmotions /> {/* Replace with actual icon for emojis */}
+                                <EmojiEmotions />
                             </IconButton>
                         </Box>
                     </Box>

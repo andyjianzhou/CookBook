@@ -9,7 +9,6 @@ title: string;
 description: string;
 ingredients: Ingredient[];
 createdAt: string;
-updatedAt: string | null;
 }
 
 export type { RecipeDetails };
