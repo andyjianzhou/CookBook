@@ -44,20 +44,11 @@ class FridgeFormView(View):
         
     def get(self, request):
         firebase_uid = request.GET.get('firebase_uid')
-        fridge_id = request.GET.get('fridge_id')
-
         if firebase_uid:
             try:
                 user_profile = UserProfile.objects.get(firebase_uid=firebase_uid)
-                fridges = FridgeDetection.objects.filter(userId=user_profile)
-                return JsonResponse({'fridges': [fridge.to_dict() for fridge in fridges]}, status=200)
-            except ObjectDoesNotExist:
+                fridge_data = FridgeDetection.objects.filter(userId=user_profile).values()
+                return JsonResponse(list(fridge_data), safe=False, status=200)
+            except UserProfile.DoesNotExist:
                 return JsonResponse({'error': 'User not found'}, status=404)
-        elif fridge_id:
-            try:
-                fridge = FridgeDetection.objects.get(fridge_detection_id=fridge_id)
-                return JsonResponse({'fridge': fridge.to_dict()}, status=200)
-            except ObjectDoesNotExist:
-                return JsonResponse({'error': 'Fridge detection not found'}, status=404)
-        else:
-            return JsonResponse({'error': 'Missing firebase_uid or fridge_id'}, status=400)
+        return JsonResponse({'error': 'firebase_uid not provided'}, status=400)

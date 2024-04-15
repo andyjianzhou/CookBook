@@ -69,16 +69,13 @@ class ReceiptFormView(View):
         
     def get(self, request):
         firebase_uid = request.GET.get('firebase_uid')
-        try:
-            if firebase_uid:
+        if firebase_uid:
+            try:
                 user_profile = UserProfile.objects.get(firebase_uid=firebase_uid)
-                receipts = Receipt.objects.filter(userId=user_profile)
-                return JsonResponse({'receipts': [receipt.to_dict() for receipt in receipts]}, status=200)
-            else:
-                receipts = Receipt.objects.all()
-                return JsonResponse({'receipts': [receipt.to_dict() for receipt in receipts]}, status=200)
-        except ObjectDoesNotExist:
-            return JsonResponse({'error': 'No records found'}, status=404)
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
+                receipts = Receipt.objects.filter(userId=user_profile).values()
+                return JsonResponse(list(receipts), safe=False, status=200)
+            except UserProfile.DoesNotExist:
+                return JsonResponse({'error': 'User not found'}, status=404)
+        return JsonResponse({'error': 'firebase_uid not provided'}, status=400)
+
     
