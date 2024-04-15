@@ -1,4 +1,3 @@
-// ISaveModal.ts
 export interface IReceiptSaveModal {
 
     receiptDetails: {

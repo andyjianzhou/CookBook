@@ -67,14 +67,15 @@ def draw_detections(image, results):
         # Put the label near the bounding box
         label = f"{class_name}: {confidence:.2f}"
         cv2.putText(image, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-
+    
+    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     return image
 
     
 
 if __name__ == "__main__":
     
-    image_path = "./OIP.jpg"
+    image_path = "./test.jpg"
     image = cv2.imread(image_path)
     if image is None:
         print("Image not loaded correctly")
@@ -85,5 +86,6 @@ if __name__ == "__main__":
         cv2.imshow('Detections', drawn_image)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
+        
     
     

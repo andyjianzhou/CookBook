@@ -109,14 +109,6 @@ export class SavedServices implements ISavedServices {
         };
       };
 
-      async loadFridgeDetails() {
-        try {
-          const result = await axiosInstance.post<ApiResponse>('api/endpoint/to/get/fridgeDetails');
-        } catch (error) {
-            console.error('Failed to load fridge details:', error);
-        }
-      }
-
       createFridgeDetails(responseData: ApiResponse): FridgeDetails {
         const { classes, names } = responseData;
 
