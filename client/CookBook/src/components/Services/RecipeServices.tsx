@@ -1,6 +1,7 @@
+import axiosInstance from '../Utilities/axiosConfig';
 import { IRecipeServices } from './IRecipeServices'
 
-class RecipeServices implements IRecipeServices {
+export class RecipeServices implements IRecipeServices {
     async getAllRecipes(): Promise<any> {
         // actual implementation here
         return Promise.resolve();
@@ -11,9 +12,20 @@ class RecipeServices implements IRecipeServices {
         return Promise.resolve();
     }
 
-    async createRecipe(recipe: any): Promise<any> {
-        // actual implementation here
-        return Promise.resolve();
+    async createRecipe(recipeDetails: any, csrfToken: string | null): Promise<any> {
+        try {
+            const response = await axiosInstance.post('http://127.0.0.1:8000/api/recipes/', JSON.stringify(recipeDetails), {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            console.error('Error creating recipe:', error);
+            return error;
+        }
     }
 
     async editRecipe(id: string, recipe: any): Promise<any> {

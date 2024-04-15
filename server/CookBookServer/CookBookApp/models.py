@@ -28,6 +28,15 @@ class Post(models.Model):
     createdAt = models.DateTimeField(auto_now_add=True)
     # comments is already a many - to many relation
 
+class Recipe(models.Model):
+    recipe_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    userId = models.ForeignKey('UserProfile', related_name='recipes', on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    ingredients = models.JSONField()
+    description = models.TextField(blank=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
+    updatedAt = models.DateTimeField(auto_now=True)
+
 class Comment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     content = models.TextField()

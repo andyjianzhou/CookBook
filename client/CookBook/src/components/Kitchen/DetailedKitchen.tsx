@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Container,
   Paper,
@@ -15,6 +15,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import axiosInstance from '../Utilities/axiosConfig';
 import { useAuth } from '../contexts/AuthContext';
+import { IRecipeServices } from '../Services/IRecipeServices';
+import { RecipeServices } from '../Services/RecipeServices';
 
 interface KitchenItemDetails {
   foods: string[];
@@ -28,7 +30,10 @@ interface FoodItem {
 const DetailedKitchenPage = () => {
   const { type, id } = useParams<{ type: string; id: string }>();
   const [editFoods, setEditFoods] = useState<FoodItem[]>([{ name: '', measure: '' }]);
-  const {csrfToken} = useAuth();
+  const { csrfToken, currentUser } = useAuth();
+  const recipeServices: IRecipeServices = new RecipeServices();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchItemDetails = async () => {
@@ -55,6 +60,7 @@ const DetailedKitchenPage = () => {
     const newFoods = [...editFoods];
     newFoods[index].measure = measure;
     setEditFoods(newFoods);
+    console.log('newFoods:', newFoods)
   };
 
   const handleAddFood = () => {
@@ -66,6 +72,23 @@ const DetailedKitchenPage = () => {
     newFoods.splice(index, 1);
     setEditFoods(newFoods);
   };
+
+  const handleCreateRecipe = async () => {
+    try {
+        const recipeDetails = {
+            userId: currentUser?.uid,
+            title: 'New Recipe from Kitchen',
+            ingredients: editFoods,
+            description: 'Generated from kitchen inventory.'
+        };
+        
+        const response = recipeServices.createRecipe(recipeDetails, csrfToken);
+        console.log('Recipe created:', response);
+        navigate(`/dashboard/kitchen`);
+    } catch (error) {
+        console.error('Error creating recipe:', error);
+    }
+};
 
   const handleSaveChanges = async () => {
     try {
@@ -132,10 +155,14 @@ const DetailedKitchenPage = () => {
           </Button>
         </ListItem>
       </List>
-      <Button variant="contained" color="primary" onClick={handleSaveChanges} sx={{ mt: 2 }}>
-        Save Changes
-      </Button>
-      {/* Implement "Create Recipe" button functionality */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px' }}>
+        <Button variant="contained" color="primary" onClick={handleSaveChanges} sx={{ mt: 2 }}>
+          Save Changes
+        </Button>
+        <Button variant="contained" color="primary" onClick={handleCreateRecipe} sx={{ mt: 2 }}>
+          Create Recipe
+        </Button>
+      </div>
     </Container>
   );
 };
