@@ -23,7 +23,7 @@
     const navigate = useNavigate();
 
     const handleRowClick = (type: 'receipt' | 'fridge', id: string) => {
-      navigate(`/${type}/${id}`);
+      navigate(`details/${type}/${id}`);
     };
 
     const formatDate = (date: string) => {
