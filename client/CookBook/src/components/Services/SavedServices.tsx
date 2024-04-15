@@ -97,6 +97,29 @@ export class SavedServices implements ISavedServices {
       }
     }
 
+    async saveFridgeDetection(guid: string, userId: string | undefined, fridgeDetails: FridgeDetails | null, csrfToken: string | null, createdAt: string): Promise<any> {
+        // ensure that foods is in json format string
+        const combinedFridgeDetails = {
+          fridge_id: guid,
+          firebase_uid: userId,
+          foods: JSON.stringify(fridgeDetails?.foods),
+          createdAt: createdAt,
+        }
+
+        console.log("Combined with userID: ", combinedFridgeDetails);
+        try {
+          const response = await axiosInstance.post('http://127.0.0.1:8000/api/fridge-save/', combinedFridgeDetails, {
+              headers: {
+                  'X-CSRFToken': csrfToken,
+              }
+          });
+          return response.data; 
+        } catch (error) {
+          console.error("Error saving fridge:", error);
+          throw error;
+        }
+      }
+
       createReceiptDetails(data: any): ReceiptDetails {
         return {
             store: data.store,

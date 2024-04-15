@@ -6,6 +6,7 @@ from ..models import Receipt, Product, UserProfile
 from datetime import datetime
 from django.utils.dateparse import parse_datetime
 from django.utils.timezone import is_aware, make_aware
+from django.core.exceptions import ObjectDoesNotExist
 
 class ReceiptFormView(View):
     def post(self, request):
@@ -67,7 +68,17 @@ class ReceiptFormView(View):
             return JsonResponse({'error': str(e)}, status=400)
         
     def get(self, request):
-        # Retrieve all Receipt instances and serialize them to JSON
-        # Create a serializer and service layer to handle this logic in a more organized way
-        receipts = list(Receipt.objects.values())
-        return JsonResponse(receipts, safe=False)
+        firebase_uid = request.GET.get('firebase_uid')
+        try:
+            if firebase_uid:
+                user_profile = UserProfile.objects.get(firebase_uid=firebase_uid)
+                receipts = Receipt.objects.filter(userId=user_profile)
+                return JsonResponse({'receipts': [receipt.to_dict() for receipt in receipts]}, status=200)
+            else:
+                receipts = Receipt.objects.all()
+                return JsonResponse({'receipts': [receipt.to_dict() for receipt in receipts]}, status=200)
+        except ObjectDoesNotExist:
+            return JsonResponse({'error': 'No records found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    

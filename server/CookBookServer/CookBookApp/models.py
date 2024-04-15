@@ -56,7 +56,7 @@ class Receipt(models.Model):
 class FridgeDetection(models.Model):
     fridge_detection_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     userId = models.ForeignKey('UserProfile', related_name='fridge_detections', on_delete=models.CASCADE)
-    foods = models.JSONField()
+    foods = models.JSONField(null=True, blank=True)
     date = models.DateField()
 
 class Product(models.Model):

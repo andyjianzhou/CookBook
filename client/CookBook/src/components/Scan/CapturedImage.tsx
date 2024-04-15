@@ -88,9 +88,15 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image, mode }) => {
           console.error("Error saving receipt:", error);
         });
       } else {
-        // save to fridge
-        console.log(fridgeDetails)
-        console.log("Save to fridge")
+        savedServices.saveFridgeDetection(receiptId, userId, fridgeDetails, csrfToken, currentDateTime)
+          .then(() => {
+            // Close the recipe modal
+            setModalOpen(false)
+          })
+          .catch((error) => {
+            console.error("Error saving fridge:", error);
+          }
+        );
       }
     };
 
