@@ -22,7 +22,8 @@ import { useAuth } from '../contexts/AuthContext';
 const styles = {
   // styles moves everything to the top of the page, how to make the contents center?
   paperContainer: {
-    backgroundColor: 'white', // change to backgroundImage in the future
+    // backgroundColor: 'white', // change to backgroundImage in the future
+    backgroundImage: 'url(https://simplehealthfacts.com/media/2021/07/44-healthy-foods-to-eat-that-you-should-include-in-your-diet.jpg)',
     top: 0,
     left: 0,
     width: '100%',
@@ -35,9 +36,9 @@ const styles = {
 }
 function Copyright(props: any) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+    <Typography variant="body2" color="#ffff" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="#ffff" href="https://mui.com/">
         CookBook
       </Link>{' '}
       {new Date().getFullYear()}
