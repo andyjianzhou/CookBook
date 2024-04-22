@@ -41,8 +41,8 @@ const KitchenComponent = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (currentUser?.uid) {
-        const loadedData = await LoadDetailsServices(currentUser.uid);
-        const allRecipes = await recipeServices.getAllRecipes(currentUser.uid);
+        const loadedData = await LoadDetailsServices(currentUser.uid); // Receipt and FridgeData
+        const allRecipes = await recipeServices.getAllRecipes(currentUser.uid); // Recipe Data
         if (loadedData) {
           const sortedReceipts = (loadedData.receiptsDetails as FetchedReceiptDetails[]).sort(
             (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()

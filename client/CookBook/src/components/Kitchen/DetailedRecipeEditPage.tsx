@@ -35,6 +35,7 @@ const DetailedRecipeEditPage = () => {
     fetchRecipeDetails();
   }, [id, refreshKey]);
 
+  // Explain HandleIngredientChange
   const handleIngredientChange = (index: number, part: 'name' | 'measure', value: string) => {
     if (recipe) {
       const updatedIngredients = recipe.ingredients.map((ingredient, idx) =>
@@ -79,7 +80,7 @@ const DetailedRecipeEditPage = () => {
     const instructionsMarkdown = `##### Instructions\n${recipe.description.trim()}`;
     const postContent = [titleMarkdown, ingredientsMarkdown, instructionsMarkdown].join('\n\n');
     setPostModalOpen(true);
-    setPostInitialContent(postContent); // Assuming you add a state to hold this
+    setPostInitialContent(postContent); 
   };
   
   

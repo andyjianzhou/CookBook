@@ -11,7 +11,7 @@ class PostListView(View):
     parser_classes = (FormParser, MultiPartParser)
     
     def get(self, request):
-        page = request.GET.get('page', 1)
+        page = request.GET.get('page', 1) # Default page is 1, meaning the first page
         page_size = request.GET.get('page_size', 20)  # 10 posts per page by default
 
         posts = Post.objects.all()

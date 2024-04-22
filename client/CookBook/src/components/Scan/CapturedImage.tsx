@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { PinturaEditor } from '@pqina/react-pintura';
 import '@pqina/pintura/pintura.css';
 import { getEditorDefaults } from '@pqina/pintura';
-import axiosInstance from '../Utilities/axiosConfig';
 import { useAuth } from '../contexts/AuthContext';
 import ReceiptDetails from '../../models/ReceiptDetails';
 import { ISavedServices } from '../Services/ISavedServices';
@@ -34,7 +33,7 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image, mode }) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-  const savedServices: ISavedServices = new SavedServices();
+  const savedServices: ISavedServices = new SavedServices(); // Replicates Dependency Injection
   const [receiptId] = useState<string>(uuidv4());
 
 
@@ -111,13 +110,10 @@ const CapturedImage: React.FC<CapturedImageProps> = ({ image, mode }) => {
     
   return (
     <div style={{height: '80vh'}}>
-    {/* <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}> */}
-      {/* Create a custom component to make edits on the image - copy snapchat in Features page */}
       <PinturaEditor
         {...getEditorDefaults()}
           src={image}
           onProcess={(res) =>
-              // setInlineResult(URL.createObjectURL(res.dest))
               handleClick(res.dest)
           }
       />

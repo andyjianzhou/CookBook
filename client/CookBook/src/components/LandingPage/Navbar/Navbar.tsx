@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 
 const Section = styled.div`
@@ -30,7 +31,8 @@ const Links = styled.div`
 `;
 
 const Logo = styled.img`
-  height: 50px;
+  height: 100px;
+  z-index: 1;
 `;
 
 const List = styled.ul`
@@ -67,25 +69,32 @@ const Button = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  z-index: 1;
 `;
 
 export const Navbar = () => {
+    const navigate = useNavigate();
+
+    const handleTryNow = () => {
+      navigate('/login');
+    }
+
     return (
       <Section>
         <Container>
           <Links>
-            {/* <Logo src="./img/logo.png" /> */}
+            <Logo src="./img/main.png"/>
             <List>
               <ListItem>Home</ListItem>
-              <ListItem>Studio</ListItem>
-              <ListItem>Works</ListItem>
+              <ListItem>About</ListItem>
+              <ListItem>Demo</ListItem>
               <ListItem>Contact</ListItem>
             </List>
           </Links>
           <Icons>
             {/* Changed the image due to copyright problems */}
             <Icon src="./img/search.png" />
-            <Button>Try Now</Button>
+            <Button onClick={handleTryNow}>Try Now</Button>
           </Icons>
         </Container>
       </Section>

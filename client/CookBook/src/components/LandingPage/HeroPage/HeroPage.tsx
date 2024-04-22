@@ -5,10 +5,10 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Sphere, MeshDistortMaterial, PerspectiveCamera } from "@react-three/drei";
 import { Banana } from "../3DModels/Banana";
 import FruitDisplay from "../3DModels/FruitDisplay";
+import { useNavigate } from "react-router-dom";
 
 const Section = styled.div`
   position: relative;
-  // background-color: rgba(255,255,255,0.5); 
   height: 100vh;
   scroll-snap-align: center;
   display: flex;
@@ -132,11 +132,12 @@ const Button = styled.button`
   background-color: #93E9BE;
   color: white;
   font-weight: 500;
-  width: 100px;
+  width: 150px;
   padding: 10px;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
+  z-index: 1;
 `;
 
 const Right = styled.div`
@@ -173,6 +174,11 @@ const Img = styled.img`
 `;
 
 const Hero = () => {
+  const navigate = useNavigate();
+
+  const handleClickKitchen = () => {
+    navigate("/dashboard");
+  }
   return (
     <>
       <Section>
@@ -195,7 +201,8 @@ const Hero = () => {
             <Desc>
               With the power of AI, we can help you find the perfect recipe for your ingredients.
             </Desc>
-            <Button>Learn More</Button>
+            <Button
+              onClick={handleClickKitchen}>Go to your Kitchen</Button>
           </Left>
           <Right>
             <Canvas>

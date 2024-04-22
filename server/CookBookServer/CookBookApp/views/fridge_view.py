@@ -23,14 +23,7 @@ class FridgeFormView(View):
                 fridge_detection_id=fridge_id,
                 userId=user_profile,
                 date=date,
-            )
-            
-            user_profile = UserProfile.objects.get_or_create(firebase_uid=firebase_uid)[0]
-
-            # Create a new Receipt instance, associating it with the user and storing the foods as JSON
-            fridge, created = FridgeDetection.objects.get_or_create(
-                fridge_detection_id=fridge_id,
-                defaults={'userId': user_profile, 'foods': json.loads(foods_json) if foods_json else [], 'date': date}
+                foods=json.loads(foods_json) if foods_json else [],
             )
             
             if not created:
